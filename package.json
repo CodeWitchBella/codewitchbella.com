@@ -11,6 +11,9 @@
     "assert": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-katex": "^2.0.2",
+    "react-router-dom": "^6.2.1",
+    "react-spring": "^9.4.2",
     "spectacle": "^8.5.0"
   },
   "devDependencies": {
