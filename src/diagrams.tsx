@@ -16,17 +16,27 @@ export function Defs() {
         <marker id="arrow-yaxis" viewBox="0 -5 10 10" orient="auto">
           <path d="M-1,-5L10,0L-1,5" fill={yaxis} />
         </marker>
+        <marker id="arrow-white" viewBox="0 -5 10 10" orient="auto">
+          <path d="M-1,-5L10,0L-1,5" fill="white" />
+        </marker>
+        <clipPath id="clip-to-content">
+          <rect x="0" y="0" width="10" height="10" />
+        </clipPath>
       </defs>
     </svg>
   )
 }
 
-export function Axes({ children }: PropsWithChildren<{}>) {
+export function Axes({
+  children,
+  pre,
+}: PropsWithChildren<{ pre?: JSX.Element }>) {
   return (
     <svg
       viewBox="-2 -2 102 102"
       style={{ width: '100%', aspectRatio: '1 / 1' }}
     >
+      {pre ? <g style={{ transform: 'scale(10)' }}>{pre}</g> : null}
       <line
         x1={0}
         x2={90}

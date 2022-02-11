@@ -1,10 +1,8 @@
 import {
   FlexBox,
   Heading,
-  SpectacleLogo,
   UnorderedList,
   CodeSpan,
-  OrderedList,
   ListItem,
   FullScreen,
   Progress,
@@ -12,20 +10,15 @@ import {
   Stepper,
   Slide,
   Deck,
-  Text,
   Grid,
   Box,
   Image,
-  CodePane,
-  MarkdownSlide,
-  MarkdownSlideSet,
   Notes,
-  fadeTransition,
 } from 'spectacle'
 import { Axes, ExampleObjects, GSpringLoop, GStepperSpring } from './diagrams'
 import 'katex/dist/katex.min.css'
 import { InlineMath } from 'react-katex'
-import { OriginScale } from './origin-scale'
+import { Orders, OriginScale, RotateAround, TRS } from './origin-scale'
 
 const theme = {
   //https://coolors.co/palette/713e5a-63a375-edc79b-d57a66-ca6680-f283b6-f0544f-bc96e6-d8b4e2-a44200
@@ -222,8 +215,7 @@ export function Presentation() {
         <UnorderedList>
           <ListItem>
             Example: rotate by{' '}
-            <InlineMath math="{\pi \over 8} = 22.5^{\circ}" />
-            counter-clockwise
+            <InlineMath math="{\pi \over 8} = 22.5^{\circ}" /> counter-clockwise
           </ListItem>
         </UnorderedList>
         <Grid gridTemplateColumns="0.5fr 1fr 1fr 0.5fr">
@@ -375,6 +367,7 @@ export function Presentation() {
               fontSize: '20px',
               gap: '20px',
               textAlign: 'center',
+              fontFamily: 'Inter',
             }}
           >
             <div>Point: </div>
@@ -403,6 +396,15 @@ export function Presentation() {
             />
           </div>
           <Axes>
+            <line
+              x1={0}
+              y1={0}
+              x2={8}
+              y2={2}
+              stroke="currentColor"
+              strokeWidth={0.1}
+              markerEnd="url(#arrow-white)"
+            />
             <GSpringLoop
               from={{ transform: 'translateX(0px) translateY(0px)' }}
               to={{ transform: 'translateX(3px) translateY(1px)' }}
@@ -411,6 +413,58 @@ export function Presentation() {
             </GSpringLoop>
           </Axes>
         </Grid>
+      </Slide>
+      <Slide>
+        <Heading>Inverse transformation</Heading>
+        <UnorderedList>
+          <ListItem>Invert the matrix</ListItem>
+          <ListItem>
+            Notation: <InlineMath math="M^{-1}" />
+          </ListItem>
+          <ListItem>
+            <InlineMath math="M^{-1}\cdot M = I = M\cdot M^{-1}" />
+          </ListItem>
+        </UnorderedList>
+      </Slide>
+      <RotateAround />
+      <TRS />
+      <Orders />
+      <Slide
+        transition={{
+          from: { transform: 'translateX(100%)' },
+          enter: { opacity: 2, transform: 'translateX(0%)' },
+          leave: { opacity: 1, transform: 'translateX(0%)' },
+        }}
+      >
+        <Heading>In JavaScript</Heading>
+        <UnorderedList>
+          <ListItem>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix"
+              target="_blank"
+              style={{
+                all: 'unset',
+                cursor: 'pointer',
+                textDecoration: 'underline',
+              }}
+            >
+              <CodeSpan>DOMMatrix</CodeSpan>
+            </a>
+          </ListItem>
+          <ListItem>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrixReadOnly"
+              target="_blank"
+              style={{
+                all: 'unset',
+                cursor: 'pointer',
+                textDecoration: 'underline',
+              }}
+            >
+              <CodeSpan>DOMMatrixReadOnly</CodeSpan>
+            </a>
+          </ListItem>
+        </UnorderedList>
       </Slide>
 
       <Slide
@@ -446,6 +500,22 @@ export function Presentation() {
           </ListItem>
           <ListItem>Click on something</ListItem>
         </UnorderedList>
+      </Slide>
+      <Slide>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            height: '100%',
+          }}
+        >
+          <Heading>
+            Thank you
+            <br />
+            for your attention
+          </Heading>
+        </div>
       </Slide>
     </Deck>
   )
