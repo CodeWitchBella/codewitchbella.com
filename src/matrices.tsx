@@ -87,6 +87,11 @@ function Presentation() {
               Skořepová
             </a>
           </Heading>
+          <div style={{ position: 'absolute', bottom: 0 }}>
+            <Heading margin="32px 0px 0px 0px" color="primary">
+              <CodeSpan fontSize="20px">isbl.cz/p/matrices</CodeSpan>
+            </Heading>
+          </div>
         </FlexBox>
       </Slide>
       <Slide
