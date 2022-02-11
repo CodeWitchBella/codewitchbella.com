@@ -6,6 +6,12 @@ const yaxis = '#63A375'
 const xaxis = '#F0544F'
 const items = '#EDC79B'
 
+export function SlideGuard({ children }: PropsWithChildren<{}>) {
+  const { isSlideActive } = useContext(SlideContext)
+  if (!isSlideActive) return null
+  return <>{children}</>
+}
+
 export function Defs() {
   return (
     <svg>
@@ -67,7 +73,7 @@ export function ExampleObjects() {
   )
 }
 
-type Defined<T> = T extends undefined ? never : V
+type Defined<T> = T extends undefined ? never : T
 
 export function GStepperSpring({
   from,
@@ -79,7 +85,7 @@ export function GStepperSpring({
   to: Defined<React.SVGAttributes<SVGGElement>['style']>
   step?: number
 }>) {
-  const { activeStepIndex, isSlideActive } = useContext(SlideContext)
+  const { activeStepIndex } = useContext(SlideContext)
   const spring = useSpring(
     step === 0
       ? {

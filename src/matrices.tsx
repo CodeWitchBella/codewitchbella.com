@@ -15,10 +15,17 @@ import {
   Image,
   Notes,
 } from 'spectacle'
-import { Axes, ExampleObjects, GSpringLoop, GStepperSpring } from './diagrams'
+import {
+  Axes,
+  Defs,
+  ExampleObjects,
+  GSpringLoop,
+  GStepperSpring,
+} from './diagrams'
 import 'katex/dist/katex.min.css'
 import { InlineMath } from 'react-katex'
 import { Orders, OriginScale, RotateAround, TRS } from './origin-scale'
+import { useLocation } from 'react-router-dom'
 
 const theme = {
   //https://coolors.co/palette/713e5a-63a375-edc79b-d57a66-ca6680-f283b6-f0544f-bc96e6-d8b4e2-a44200
@@ -49,7 +56,17 @@ const template = () => (
   </FlexBox>
 )
 
-export function Presentation() {
+export default function Matrices() {
+  return (
+    <>
+      <Defs />
+      <Presentation />
+    </>
+  )
+}
+
+function Presentation() {
+  const location = useLocation()
   return (
     <Deck theme={theme} template={template}>
       <Slide>
@@ -63,7 +80,7 @@ export function Presentation() {
           <Heading margin="0px 32px" color="primary" fontSize="30px">
             Isabella{' '}
             <a
-              href="/?presenterMode=true"
+              href={location.pathname + '?presenterMode=true'}
               style={{ all: 'unset', cursor: 'pointer' }}
               target="_blank"
             >

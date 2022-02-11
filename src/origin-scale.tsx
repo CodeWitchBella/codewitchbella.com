@@ -1,7 +1,7 @@
 import { InlineMath } from 'react-katex'
 import { animated, useSpring } from 'react-spring'
 import { Slide, Heading, Grid, UnorderedList, ListItem } from 'spectacle'
-import { Axes, ExampleObjects } from './diagrams'
+import { Axes, ExampleObjects, SlideGuard } from './diagrams'
 const scale = [2, 2] as const
 
 export function OriginScale() {
@@ -24,7 +24,9 @@ export function OriginScale() {
           />
         </UnorderedList>
       </div>
-      <Animation from="scale(1,1)" to={`scale(${scale.join(',')})`} />
+      <SlideGuard>
+        <Animation from="scale(1,1)" to={`scale(${scale.join(',')})`} />
+      </SlideGuard>
     </Slide>
   )
 }
@@ -94,7 +96,9 @@ export function RotateAround() {
           />
         </UnorderedList>
       </div>
-      <Animation from="rotate(0deg)" to="rotate(-22.5deg)" />
+      <SlideGuard>
+        <Animation from="rotate(0deg)" to="rotate(-22.5deg)" />
+      </SlideGuard>
     </Slide>
   )
 }
@@ -144,6 +148,7 @@ function OrdersAnimation({ order = 'trs' }: { order?: Order }) {
     length: 0,
   }
   const spring = useSpring({
+    delay: 1000,
     to: async (next) => {
       while (true) {
         for (let i = order.length - 1; i >= 0; --i) {
@@ -214,12 +219,14 @@ export function Orders() {
       <Heading>Different orders</Heading>
       <div style={{ maxWidth: 880, margin: '-25px auto 0 auto' }}>
         <Grid gridTemplateColumns="repeat(3, 1fr)">
-          <OrderGridItem order="trs" />
-          <OrderGridItem order="srt" />
-          <OrderGridItem order="str" />
-          <OrderGridItem order="tsr" />
-          <OrderGridItem order="rst" />
-          <OrderGridItem order="rts" />
+          <SlideGuard>
+            <OrderGridItem order="trs" />
+            <OrderGridItem order="srt" />
+            <OrderGridItem order="str" />
+            <OrderGridItem order="tsr" />
+            <OrderGridItem order="rst" />
+            <OrderGridItem order="rts" />
+          </SlideGuard>
         </Grid>
       </div>
     </Slide>
