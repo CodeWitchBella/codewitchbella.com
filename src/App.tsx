@@ -170,6 +170,28 @@ export function Presentation() {
         </Grid>
       </Slide>
       <Slide>
+        <Heading>Translation</Heading>
+        <Grid gridTemplateColumns="2fr 1fr">
+          <UnorderedList>
+            <InlineMath
+              math={`\\begin{aligned}
+                T &= \\begin{bmatrix}3 \\\\ 1\\end{bmatrix} \\\\
+                x{^\\prime} &= x + T_x \\\\
+                y{^\\prime} &= y + T_y
+              \\end{aligned}`}
+            />
+          </UnorderedList>
+          <Axes>
+            <GSpringLoop
+              from={{ transform: 'translateX(0px) translateY(0px)' }}
+              to={{ transform: 'translateX(3px) translateY(1px)' }}
+            >
+              <ExampleObjects />
+            </GSpringLoop>
+          </Axes>
+        </Grid>
+      </Slide>
+      <Slide>
         <Heading>Rotation</Heading>
         <UnorderedList>
           <ListItem>
