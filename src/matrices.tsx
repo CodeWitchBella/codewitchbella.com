@@ -48,10 +48,10 @@ const template = () => (
     width={1}
   >
     <Box padding="0 1em">
-      <FullScreen />
+      <FullScreen color="white" size={16} />
     </Box>
     <Box padding="1em">
-      <Progress />
+      <Progress color="white" size={8} />
     </Box>
   </FlexBox>
 )

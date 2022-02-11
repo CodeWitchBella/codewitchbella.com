@@ -73,16 +73,14 @@ export function ExampleObjects() {
   )
 }
 
-type Defined<T> = T extends undefined ? never : T
-
 export function GStepperSpring({
   from,
   to,
   children,
   step = 0,
 }: PropsWithChildren<{
-  from: React.SVGAttributes<SVGGElement>['style']
-  to: Defined<React.SVGAttributes<SVGGElement>['style']>
+  from: React.CSSProperties
+  to: React.CSSProperties
   step?: number
 }>) {
   const { activeStepIndex } = useContext(SlideContext)
@@ -110,8 +108,8 @@ export function GSpringLoop({
   to,
   children,
 }: PropsWithChildren<{
-  from: React.SVGAttributes<SVGGElement>['style']
-  to: Defined<React.SVGAttributes<SVGGElement>['style']>
+  from: React.CSSProperties
+  to: React.CSSProperties
 }>) {
   const spring = useSpring({
     from,
