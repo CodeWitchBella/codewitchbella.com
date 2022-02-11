@@ -1,11 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
-import App from './App'
+import { Presentation } from './App'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Presentation />
   </React.StrictMode>,
   document.getElementById('root')
 )
