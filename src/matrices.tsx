@@ -538,6 +538,18 @@ function Presentation() {
             for your attention
           </Heading>
         </div>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: '50%',
+            transform: 'translate(-50%)',
+          }}
+        >
+          <Heading margin="32px 0px 0px 0px" color="primary">
+            <CodeSpan fontSize="20px">isbl.cz/p/matrices</CodeSpan>
+          </Heading>
+        </div>
       </Slide>
     </Deck>
   )
