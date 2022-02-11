@@ -2,15 +2,19 @@ import { PropsWithChildren, useContext, useEffect, useRef } from 'react'
 import { SlideContext, Stepper } from 'spectacle'
 import { useSpring, animated } from 'react-spring'
 
+const yaxis = '#63A375'
+const xaxis = '#F0544F'
+const items = '#EDC79B'
+
 export function Defs() {
   return (
     <svg>
       <defs>
-        <marker id="arrow-red" viewBox="0 -5 10 10" orient="auto">
-          <path d="M-1,-5L10,0L-1,5" fill="red" />
+        <marker id="arrow-xaxis" viewBox="0 -5 10 10" orient="auto">
+          <path d="M-1,-5L10,0L-1,5" fill={xaxis} />
         </marker>
-        <marker id="arrow-blue" viewBox="0 -5 10 10" orient="auto">
-          <path d="M-1,-5L10,0L-1,5" fill="lightblue" />
+        <marker id="arrow-yaxis" viewBox="0 -5 10 10" orient="auto">
+          <path d="M-1,-5L10,0L-1,5" fill={yaxis} />
         </marker>
       </defs>
     </svg>
@@ -28,16 +32,16 @@ export function Axes({ children }: PropsWithChildren<{}>) {
         x2={90}
         y1={0}
         y2={0}
-        stroke="red"
-        markerEnd="url(#arrow-red)"
+        stroke={xaxis}
+        markerEnd="url(#arrow-xaxis)"
       />
       <line
         x1={0}
         x2={0}
         y1={-0.5}
         y2={90}
-        stroke="lightblue"
-        markerEnd="url(#arrow-blue)"
+        stroke={yaxis}
+        markerEnd="url(#arrow-yaxis)"
       />
       <g style={{ transform: 'scale(10)' }}>{children}</g>
     </svg>
@@ -47,8 +51,8 @@ export function Axes({ children }: PropsWithChildren<{}>) {
 export function ExampleObjects() {
   return (
     <>
-      <circle cx={2} cy={7} r={0.5} fill="white" />
-      <rect x={1} y={2} width={2} height={1} fill="white" />
+      <circle cx={2} cy={4.5} r={0.5} fill={items} />
+      <rect x={1} y={2} width={2} height={1} fill={items} />
     </>
   )
 }
