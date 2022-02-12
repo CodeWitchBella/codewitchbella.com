@@ -7,7 +7,6 @@
     ".": "./src/main.tsx",
     "./css": "./src/index.css"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11"
