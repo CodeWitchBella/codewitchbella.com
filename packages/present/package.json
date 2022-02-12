@@ -1,0 +1,20 @@
+{
+  "name": "@codewitchbella.com/present",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "main": "./src/main.tsx",
+  "dependencies": {
+    "assert": "^2.0.0",
+    "react-katex": "^2.0.2",
+    "react-spring": "^9.4.2",
+    "spectacle": "^8.5.0",
+    "@codewitchbella.com/base": "*",
+    "react-router-dom": "^6.2.1",
+    "react": "*"
+  },
+  "peerDependencies": {},
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  }
+}

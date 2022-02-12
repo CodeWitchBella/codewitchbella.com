@@ -1,0 +1,15 @@
+{
+  "name": "@codewitchbella.com/base",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/main.tsx",
+    "./css": "./src/index.css"
+  },
+  "peerDependencies": {},
+  "devDependencies": {
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.11"
+  }
+}

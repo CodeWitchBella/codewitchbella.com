@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
-import './inter-3.19/inter.css'
-const Matrices = React.lazy(() => import('./matrices'))
+import '@codewitchbella.com/base/css'
+import Present from '@codewitchbella.com/present'
 
 function Index() {
   return (
     <div>
-      <Link to="/matrices">CG Math</Link>
+      <Link to="/present">Presentations</Link>
     </div>
   )
 }
@@ -18,7 +18,7 @@ ReactDOM.render(
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route index element={<Index />} />
-          <Route path="/matrices" element={<Matrices />} />
+          <Route path="present/*" element={<Present />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
