@@ -5,6 +5,7 @@ import '@codewitchbella.com/base/css'
 import Present from '@codewitchbella.com/present'
 const Rozvrh = React.lazy(() => import('./rozvrh/rozvrh'))
 const RozvrhSemester1 = React.lazy(() => import('./rozvrh/semester1'))
+const MiDi = React.lazy(() => import('./midi'))
 
 function Index() {
   return (
@@ -23,6 +24,7 @@ ReactDOM.render(
           <Route path="present/*" element={<Present />} />
           <Route path="rozvrh" element={<Rozvrh />} />
           <Route path="rozvrh/semester1" element={<RozvrhSemester1 />} />
+          <Route path="midi" element={<MiDi />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
