@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import '@codewitchbella.com/base/css'
 import Present from '@codewitchbella.com/present'
+const Rozvrh = React.lazy(() => import('./rozvrh/rozvrh'))
+const RozvrhSemester1 = React.lazy(() => import('./rozvrh/semester1'))
 
 function Index() {
   return (
@@ -19,6 +21,8 @@ ReactDOM.render(
         <Routes>
           <Route index element={<Index />} />
           <Route path="present/*" element={<Present />} />
+          <Route path="rozvrh" element={<Rozvrh />} />
+          <Route path="rozvrh/semester1" element={<RozvrhSemester1 />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
