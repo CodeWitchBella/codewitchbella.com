@@ -10,7 +10,7 @@ import {
 import type { MetaFunction } from 'remix'
 
 export const meta: MetaFunction = () => {
-  return { title: 'New Remix App' }
+  return { title: 'Isabella Skořepová' }
 }
 
 export const links: LinksFunction = () => {
@@ -28,6 +28,7 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <link rel="icon" href="/cwb.svg?3" type="image/svg+xml" />
         <Meta />
         <Links />
       </head>
