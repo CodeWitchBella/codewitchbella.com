@@ -24,7 +24,7 @@ import {
 } from './diagrams'
 import { InlineMath } from 'react-katex'
 import { Orders, OriginScale, RotateAround, TRS } from './origin-scale'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'remix'
 
 // TODO: use new URL (see below) once/if remix supports it
 import ctuLion from './ctu_lion.svg'
