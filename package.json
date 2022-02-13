@@ -5,6 +5,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "build": "cd packages/remix && yarn build"
+  },
   "packageManager": "yarn@3.1.1",
   "engines": {
     "yarn": ">=2"
