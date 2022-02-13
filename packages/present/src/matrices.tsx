@@ -22,7 +22,6 @@ import {
   GSpringLoop,
   GStepperSpring,
 } from './diagrams'
-import 'katex/dist/katex.min.css'
 import { InlineMath } from 'react-katex'
 import { Orders, OriginScale, RotateAround, TRS } from './origin-scale'
 import { useLocation } from 'react-router-dom'

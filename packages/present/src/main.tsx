@@ -1,9 +1,8 @@
 import React from 'react'
-import { Link, Route, Routes } from 'react-router-dom'
-import './inter-3.19/inter.css'
+import { Link } from 'react-router-dom'
 const Matrices = React.lazy(() => import('./matrices'))
 
-function Index() {
+export function PresentIndex() {
   return (
     <div>
       <Link to="matrices">CG Math</Link>
@@ -11,11 +10,16 @@ function Index() {
   )
 }
 
-export default function PresentApp() {
-  return (
-    <Routes>
-      <Route index element={<Index />} />
-      <Route path="matrices" element={<Matrices />} />
-    </Routes>
-  )
+const routes: { [key: string]: JSX.Element } = {
+  matrices: <Matrices />,
+}
+
+export function isValidRoute(param?: string) {
+  return param && param in routes
+}
+
+export default function PresentApp({ route }: { route: string }) {
+  const val = routes[route]
+  if (!val) return null
+  return val
 }
