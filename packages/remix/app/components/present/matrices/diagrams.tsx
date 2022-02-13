@@ -1,6 +1,6 @@
 import { PropsWithChildren, useContext, useEffect, useRef } from 'react'
-import { SlideContext, Stepper } from 'spectacle'
-import { useSpring, animated } from 'react-spring'
+import { SlideContext, Stepper } from '@codewitchbella.com/spectacle'
+import { useSpring, animated } from '@react-spring/web'
 
 const yaxis = '#63A375'
 const xaxis = '#F0544F'

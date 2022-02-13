@@ -17,7 +17,7 @@ export const links: LinksFunction = () => {
   return [
     {
       rel: 'stylesheet',
-      href: '/fonts/inter-3.19/inter.css',
+      href: '/vendor/inter-3.19/inter.css',
     },
   ]
 }

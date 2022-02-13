@@ -1,18 +1,23 @@
-import Present, { isValidRoute } from '@codewitchbella.com/present'
-import styles from 'katex/dist/katex.min.css'
-import { Suspense, useEffect } from 'react'
+import Present, { isValidRoute } from '~/components/present/present'
+import { Suspense } from 'react'
 import { useParams } from 'remix'
-import { ClientOnly, Loading, patchWindow } from '~/components/client-only'
+import { ClientOnly, Loading } from '~/components/client-only'
 
 export function links() {
-  return [{ rel: 'stylesheet', href: styles }]
+  return [
+    {
+      rel: 'stylesheet',
+      href: '/vendor/katex-0.9.0/katex.min.css',
+    },
+  ]
 }
 
 export default function PresentRoute() {
   const param = useParams().present
-  if (!isValidRoute(param)) throw new Response('Not Found', { status: 404 })
+  if (!isValidRoute(param) || !param)
+    throw new Response('Not Found', { status: 404 })
   return (
-    <ClientOnly onBeforeLoad={patchWindow}>
+    <ClientOnly>
       <Suspense fallback={<Loading />}>
         <Present route={param} />
       </Suspense>

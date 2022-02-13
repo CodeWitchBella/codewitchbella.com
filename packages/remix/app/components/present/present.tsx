@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-const Matrices = React.lazy(() => import('./matrices'))
+const Matrices = React.lazy(() => import('./matrices/matrices'))
 
 export function PresentIndex() {
   return (

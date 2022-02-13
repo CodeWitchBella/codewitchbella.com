@@ -1,0 +1,21 @@
+{
+  "name": "@codewitchbella.com/spectacle",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "types": "./dist/base/src/main.d.ts",
+    "default": "./dist/index.js"
+  },
+  "types": "./dist/base/src/main.d.ts",
+  "scripts": {
+    "build": "yarn esbuild --bundle src/index.ts --outfile=dist/index.js --external:react\\* --external:prop-types --external:history --format=esm --inject:./src/shim.ts && node patch.js",
+    "postinstall": "yarn build"
+  },
+  "devDependencies": {
+    "assert": "^2.0.0",
+    "esbuild": "^0.14.21",
+    "microbundle": "^0.14.2",
+    "spectacle": "^8.5.0"
+  }
+}

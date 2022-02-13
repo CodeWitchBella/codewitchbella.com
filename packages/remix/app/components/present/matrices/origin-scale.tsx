@@ -1,6 +1,12 @@
 import { InlineMath } from 'react-katex'
-import { animated, useSpring } from 'react-spring'
-import { Slide, Heading, Grid, UnorderedList, ListItem } from 'spectacle'
+import { animated, useSpring } from '@react-spring/web'
+import {
+  Slide,
+  Heading,
+  Grid,
+  UnorderedList,
+  ListItem,
+} from '@codewitchbella.com/spectacle'
 import { Axes, ExampleObjects, SlideGuard } from './diagrams'
 const scale = [2, 2] as const
 

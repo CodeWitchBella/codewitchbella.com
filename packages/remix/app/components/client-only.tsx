@@ -1,28 +1,22 @@
-import { PropsWithChildren, useEffect, useRef, useState } from 'react'
+import { PropsWithChildren, useEffect, useState } from 'react'
 import { Scripts } from 'remix'
 
-export function ClientOnly({
-  onBeforeLoad,
-  children,
-}: PropsWithChildren<{ onBeforeLoad?: () => void }>) {
+export function ClientOnly({ children }: PropsWithChildren<{}>) {
   const [loading, setLoading] = useState(true)
   useEffect(() => {
-    onBeforeLoad?.()
+    shim()
     setLoading(false)
-  }, [onBeforeLoad])
-  if (process.env.NODE_ENV) {
-    const beforeLoadRef = useRef(onBeforeLoad)
-    if (beforeLoadRef.current !== onBeforeLoad) {
-      throw new Error('onBeforeLoad should be stable')
-    }
-  }
-  if (loading)
+  }, [])
+
+  if (loading) {
     return (
       <>
         <Scripts />
         <Loading />
       </>
     )
+  }
+
   return (
     <>
       <Scripts />
@@ -35,6 +29,6 @@ export function Loading() {
   return <div>Loading...</div>
 }
 
-export function patchWindow() {
+function shim() {
   window.global = window
 }

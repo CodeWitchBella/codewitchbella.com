@@ -14,7 +14,7 @@ import {
   Box,
   Image,
   Notes,
-} from 'spectacle'
+} from '@codewitchbella.com/spectacle'
 import {
   Axes,
   Defs,
@@ -25,6 +25,14 @@ import {
 import { InlineMath } from 'react-katex'
 import { Orders, OriginScale, RotateAround, TRS } from './origin-scale'
 import { useLocation } from 'react-router-dom'
+
+// TODO: use new URL (see below) once/if remix supports it
+import ctuLion from './ctu_lion.svg'
+// const ctuLion = new URL('./ctu_lion.svg', import.meta.url).href
+import headsetsUrl from './headsets.png'
+// const headsetsUrl = new URL('./headsets.png', import.meta.url).href
+import octopusInspect from './octopus-inspect.png'
+// const octopusInspect = new URL('./octopus-inspect.png', import.meta.url).href
 
 const theme = {
   //https://coolors.co/palette/713e5a-63a375-edc79b-d57a66-ca6680-f283b6-f0544f-bc96e6-d8b4e2-a44200
@@ -95,9 +103,7 @@ function Presentation() {
       </Slide>
       <Slide
         backgroundColor="tertiary"
-        backgroundImage={`url(${
-          new URL('./headsets.png', import.meta.url).href
-        })`}
+        backgroundImage={`url(${headsetsUrl})`}
         backgroundOpacity={0.5}
       >
         <Heading>About me</Heading>
@@ -105,9 +111,7 @@ function Presentation() {
           <ListItem>
             Student of Computer Graphics at CTU FEE{' '}
             <svg viewBox="0 0 125.762 96.137004" height="1em">
-              <use
-                href={new URL('./ctu_lion.svg', import.meta.url).href + '#lion'}
-              />
+              <use href={ctuLion + '#lion'} />
             </svg>
           </ListItem>
           <ListItem>VR developer and enthusiast</ListItem>
@@ -496,10 +500,7 @@ function Presentation() {
         }}
       >
         <Heading>Octopus 2 Inspector</Heading>
-        <Image
-          src={new URL('./octopus-inspect.png', import.meta.url).href}
-          style={{ maxWidth: '100%' }}
-        />
+        <Image src={octopusInspect} style={{ maxWidth: '100%' }} />
       </Slide>
       <Slide
         transition={{
