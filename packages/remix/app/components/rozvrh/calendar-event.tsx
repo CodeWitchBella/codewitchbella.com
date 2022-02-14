@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import styled from '@emotion/styled'
-import { ReactNode, useContext, createContext } from 'react'
+import { ReactNode, useContext, createContext, PropsWithChildren } from 'react'
 
 export function CalEvent({
   title,
@@ -17,7 +16,7 @@ export function CalEvent({
   const subject = ctx.subjects[title]
   return (
     <Event>
-      <div css={{ fontWeight: 'bold' }}>
+      <div className="bold">
         {title}{' '}
         {!ctx.czech
           ? type
@@ -45,11 +44,9 @@ export function CalEvent({
   )
 }
 
-const Event = styled.div({
-  padding: '.5rem',
-  border: '1px solid gray',
-  borderRadius: '.5rem',
-})
+function Event({ children }: PropsWithChildren<{}>) {
+  return <div className="event">{children}</div>
+}
 
 const eventContext = createContext({
   subjects: {} as {

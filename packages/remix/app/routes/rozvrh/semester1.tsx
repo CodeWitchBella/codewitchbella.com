@@ -1,9 +1,34 @@
 /** @jsxImportSource @emotion/react */
-import styled from '@emotion/styled'
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
-import { CalEvent, Cz, Deets, En, EventProvider } from './calendar-event'
+import {
+  PropsWithChildren,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
+import {
+  CalEvent,
+  Cz,
+  Deets,
+  En,
+  EventProvider,
+} from '../../components/rozvrh/calendar-event'
 import { DateTime, Interval } from 'luxon'
-import { useBooleanQueryParam, useEn } from './rozvrh-helpers'
+import {
+  useBooleanQueryParam,
+  useEn,
+} from '../../components/rozvrh/rozvrh-helpers'
+import css from '../../components/rozvrh/rozvrh.css'
+
+export function links() {
+  return [
+    {
+      rel: 'stylesheet',
+      href: css,
+    },
+  ]
+}
 
 function WeekNumber({ children }: { children: JSX.Element | JSX.Element[] }) {
   const [week, setWeek] = useState<null | number>(null)
@@ -144,16 +169,16 @@ export default function FEL() {
         },
       }}
     >
-      <div css={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+      <div className="flex-center-gap">
         <button onClick={() => toggleLang()} type="button">
-          <span css={english ? {} : { fontWeight: 'bold' }}>CZ</span> |{' '}
-          <span css={english ? { fontWeight: 'bold' } : {}}>EN</span>
+          <span className={english ? '' : 'bold'}>CZ</span> |{' '}
+          <span className={english ? 'bold' : ''}>EN</span>
         </button>
         <label>
           <input
             type="checkbox"
             onChange={(evt) => setShowTitles(evt.target.checked)}
-            css={{ paddingInlineEnd: '.5rem' }}
+            className="pie"
             checked={showTitles}
           />
           <Cz>Zobraz názvy</Cz>
@@ -163,7 +188,7 @@ export default function FEL() {
           <input
             type="checkbox"
             onChange={(evt) => setDeets(evt.target.checked)}
-            css={{ paddingInlineEnd: '.5rem' }}
+            className="pie"
             checked={deets}
           />
           <Cz>Detaily</Cz>
@@ -228,38 +253,21 @@ export default function FEL() {
   )
 }
 
-const Week = styled.div({
-  display: 'flex',
-  gap: '1rem',
-  justifyContent: 'space-evenly',
-  flexWrap: 'wrap',
-})
+function Week({ children }: PropsWithChildren<{}>) {
+  return <div className="week">{children}</div>
+}
 
-const Day = styled.div({
-  paddingBlock: '1rem',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'stretch',
-  gap: '.5rem',
-  minWidth: '10rem',
-  // make sure that 5 cols fit
-  '@media (min-width: 60rem)': {
-    maxWidth: 'calc((100% - 4rem) / 5)',
-  },
-})
+function Day({ children }: PropsWithChildren<{}>) {
+  return <div className="day">{children}</div>
+}
 
-const DayTitle = styled.div({
-  alignSelf: 'center',
-})
+function DayTitle({ children }: PropsWithChildren<{}>) {
+  return <div className="self-center">{children}</div>
+}
 
 function Link({ to, children }: { to: string; children: ReactNode }) {
   return (
-    <a
-      href={to}
-      target="_blank"
-      rel="noopener noreferrer"
-      css={{ color: 'black' }}
-    >
+    <a href={to} target="_blank" rel="noopener noreferrer" className="link">
       {children}
     </a>
   )
