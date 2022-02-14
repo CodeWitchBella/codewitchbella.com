@@ -6,15 +6,16 @@ import fde from 'fast-deep-equal'
 export function useWorkerizedStepper<OutData = any, InData = any>(
   modPath: string,
   fn: string,
-  inputData: InData,
+  inputData: InData
 ) {
   const [state, setState] = useState({
     data: null as OutData | null,
     last: true,
     first: true,
   })
-  const instance = useRef({} as { next?: () => void; back?: () => void })
-    .current
+  const instance = useRef(
+    {} as { next?: () => void; back?: () => void }
+  ).current
 
   const callbacks = useRef({
     next() {
@@ -27,7 +28,9 @@ export function useWorkerizedStepper<OutData = any, InData = any>(
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let obj: any = Comlink.wrap(new Worker('/worker.js', { type: 'module' }))
+    let obj: any = Comlink.wrap(
+      new Worker('/wasm/wasm_worker.js', { type: 'module' })
+    )
     const history: OutData[] = []
     let historyPtr = 0
 
