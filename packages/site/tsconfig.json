@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-    "outDir": "node_modules/.tmp/ts-out"
-  },
-  "extends": "../base/tsconfig.json",
-  "references": [{ "path": "../base" }, { "path": "../present" }]
-}
