@@ -1,4 +1,4 @@
-/** @jsxImportSource @emotion/react */
+import React from 'react'
 import { ReactNode, useContext, createContext, PropsWithChildren } from 'react'
 
 export function CalEvent({

@@ -1,7 +1,14 @@
-/** @jsxImportSource @emotion/react */
+import React, { CSSProperties } from 'react'
 import { useEffect, useRef } from 'react'
 
-export function ArrowEnd({ id, ...rest }: { id: string; className?: string }) {
+export function ArrowEnd({
+  id,
+  ...rest
+}: {
+  id: string
+  className?: string
+  style?: CSSProperties
+}) {
   return <div data-arrow-end-id={id} {...rest} />
 }
 
@@ -11,6 +18,7 @@ export function ArrowStart({
 }: {
   id: string
   className?: string
+  style?: CSSProperties
 }) {
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -37,9 +45,13 @@ export function ArrowStart({
     }
   })
   return (
-    <div {...rest} css={{ position: 'relative' }} data-arrow-to={id}>
+    <div
+      {...rest}
+      className={'position-relative ' + (rest.className || '')}
+      data-arrow-to={id}
+    >
       <div
-        css={{
+        style={{
           position: 'absolute',
           borderBottom: '1px solid black',
           transformOrigin: 'top left',

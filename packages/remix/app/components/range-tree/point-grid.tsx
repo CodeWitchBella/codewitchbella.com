@@ -1,4 +1,4 @@
-/** @jsxImportSource @emotion/react */
+import React from 'react'
 import { Fragment, useMemo, useRef, useState } from 'react'
 import { useRangeTreeDispatch, useRangeTreeState } from './range-tree-state'
 import Resizer from '@isbl/react-resizer'
@@ -33,11 +33,6 @@ export function PointGrid({ xmax, ymax }: { xmax: number; ymax: number }) {
         position: 'relative',
       }}
       ref={wrap}
-      css={{
-        '&:hover .label': {
-          display: 'block',
-        },
-      }}
     >
       <svg
         style={{
@@ -120,7 +115,7 @@ export function PointGrid({ xmax, ymax }: { xmax: number; ymax: number }) {
               return (
                 <Fragment key={y}>
                   <g
-                    css={{ cursor: 'pointer' }}
+                    className="cursor-pointer"
                     transform={`translate(${x}, ${ymax - y})`}
                     onClick={() => {
                       if (typeof pointId === 'number')
@@ -135,7 +130,7 @@ export function PointGrid({ xmax, ymax }: { xmax: number; ymax: number }) {
                       r={0.3}
                       data-point-id={pointId}
                       data-point={`${x}:${y}`}
-                      css={{
+                      style={{
                         fill:
                           hover && hover.x === x && hover.y === y
                             ? 'lime'
@@ -154,16 +149,7 @@ export function PointGrid({ xmax, ymax }: { xmax: number; ymax: number }) {
       <div
         ref={label}
         className="label"
-        css={{
-          position: 'absolute',
-          display: 'none',
-          pointerEvents: 'none',
-          background: 'white',
-          paddingInline: '.5rem',
-          paddingBlock: '.25rem',
-          opacity: labelValue ? 1 : 0,
-          border: '1px solid black',
-        }}
+        style={{ opacity: labelValue ? 1 : 0 }}
       >
         {labelValue}
       </div>

@@ -1,4 +1,4 @@
-/** @jsxImportSource @emotion/react */
+import React, { PropsWithChildren } from 'react'
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import {
   Points,
@@ -8,7 +8,6 @@ import {
   useRangeTreeState,
 } from './range-tree-state'
 import { ArrowEnd, ArrowStart } from './range-tree-arrow'
-import styled from '@emotion/styled'
 import { nextState } from './range-tree-next-step'
 import {
   comesFrom,
@@ -45,23 +44,16 @@ function RangeTreeView() {
   const { points } = state
   return (
     <div
-      css={{
-        fontFamily: 'sans-serif',
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        paddingTop: '3rem',
-      }}
+      className="range-tree"
       onMouseOver={(evt) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const point = getPoint(evt.target as any)
         dispatch({ type: 'setHover', value: point })
       }}
     >
-      <div css={{ textDecoration: 'underline' }}>isbl.cz/range-tree</div>
+      <div style={{ textDecoration: 'underline' }}>isbl.cz/range-tree</div>
 
-      <div css={{ paddingBlock: '1rem' }}>
+      <div style={{ paddingBlock: '1rem' }}>
         <PointInput
           onPoint={(point) => {
             dispatch({ type: 'addPoint', point })
@@ -84,14 +76,14 @@ function RangeTreeView() {
       </div>
 
       <PointChart points={points} />
-      <div css={{ paddingBlock: '1rem' }}>
+      <div style={{ paddingBlock: '1rem' }}>
         <div>Query:</div>
-        <div css={{ display: 'flex', gap: '1ch' }}>
-          <div css={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', gap: '1ch' }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
             <QueryField field="xmin" />
             <QueryField field="xmax" />
           </div>
-          <div css={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
             <QueryField field="ymin" />
             <QueryField field="ymax" />
           </div>
@@ -102,7 +94,7 @@ function RangeTreeView() {
           <div>
             Next step: {nextState[state.searchState.status].description}{' '}
           </div>
-          <div css={{ display: 'flex', alignItems: 'stretch' }}>
+          <div style={{ display: 'flex', alignItems: 'stretch' }}>
             <button
               type="button"
               onClick={() => dispatch({ type: 'undo' })}
@@ -129,27 +121,28 @@ function RangeTreeView() {
             </button>
           </div>
 
-          <div css={{ display: 'flex', gap: '2rem', paddingTop: '1rem' }}>
+          <div style={{ display: 'flex', gap: '2rem', paddingTop: '1rem' }}>
             <BBSTView />
             <Fractal />
             <div>
               <div>Legend</div>
               <div>
-                <span css={{ background: 'yellow' }}>0</span> active node
+                <span style={{ background: 'yellow' }}>0</span> active node
               </div>
               <div>
-                <span css={{ textDecoration: 'underline' }}>0</span> split point
+                <span style={{ textDecoration: 'underline' }}>0</span> split
+                point
               </div>
               <div>
-                <span css={{ fontWeight: 'bold' }}>0</span> search position
+                <span style={{ fontWeight: 'bold' }}>0</span> search position
               </div>
               <div>
-                <span css={{ background: 'lime' }}>0</span> mouse hover
+                <span style={{ background: 'lime' }}>0</span> mouse hover
               </div>
             </div>
           </div>
           <div
-            css={{
+            style={{
               marginTop: '1rem',
               display: 'flex',
               flexDirection: 'column',
@@ -158,7 +151,7 @@ function RangeTreeView() {
           >
             <div>Results:</div>
             <div
-              css={{
+              style={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-around',
@@ -171,7 +164,7 @@ function RangeTreeView() {
               {state.results.map(({ x, y }, i) => (
                 <div
                   key={i}
-                  css={{
+                  style={{
                     background:
                       state.hover && state.hover.x === x && state.hover.y === y
                         ? 'lime'
@@ -183,7 +176,7 @@ function RangeTreeView() {
                 </div>
               ))}
             </div>
-            <div css={{ minHeight: '100vh' }} />
+            <div style={{ minHeight: '100vh' }} />
           </div>
         </>
       ) : null}
@@ -206,24 +199,40 @@ function QueryField({ field }: { field: keyof RangeTreeState['query'] }) {
           if (Number.isInteger(next))
             dispatch({ type: 'querySet', key: field, value: next })
         }}
-        css={{ width: '5ch' }}
+        style={{ width: '5ch' }}
       />
     </label>
   )
 }
 
-const TreeRoot = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'stretch',
-  gap: '1rem',
-})
+function TreeRoot({ children }: PropsWithChildren<{}>) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        gap: '1rem',
+      }}
+    >
+      {children}
+    </div>
+  )
+}
 
-const TreeLine = styled.div({
-  display: 'flex',
-  justifyContent: 'space-evenly',
-  gap: '.25rem',
-})
+function TreeLine({ children }: PropsWithChildren<{}>) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        gap: '.25rem',
+      }}
+    >
+      {children}
+    </div>
+  )
+}
 
 function Fractal() {
   const state = useRangeTreeState()
@@ -244,43 +253,39 @@ function Fractal() {
                 <Fragment key={i}>
                   <span
                     data-point={`${node.x}:${node.value}`}
-                    css={[
-                      {
-                        background:
-                          hover && node.x === hover.x && node.value === hover.y
-                            ? 'lime'
-                            : node === highlightedNode
-                            ? 'yellow'
-                            : undefined,
-                        position: 'relative',
-                        cursor: 'pointer',
-                        padding: 2,
-                        '.arrow': {
-                          pointerEvents: 'none',
-                          opacity: comesFrom(node, highlightedNode) ? 1 : 0,
-                        },
-                        ':hover .arrow': {
-                          opacity: 1,
-                        },
-                      },
-                    ]}
+                    style={{
+                      background:
+                        hover && node.x === hover.x && node.value === hover.y
+                          ? 'lime'
+                          : node === highlightedNode
+                          ? 'yellow'
+                          : undefined,
+                      position: 'relative',
+                      cursor: 'pointer',
+                      padding: 2,
+                    }}
+                    className={
+                      comesFrom(node, highlightedNode)
+                        ? 'always-arrow point'
+                        : 'point'
+                    }
                   >
                     {node.value}
                     <ArrowEnd
                       id={`frac:${node.key}`}
-                      css={{ position: 'absolute', top: 0, left: '50%' }}
+                      style={{ position: 'absolute', top: 0, left: '50%' }}
                     />
                     {node.left ? (
                       <ArrowStart
                         id={`frac:${node.left.key}`}
-                        css={{ position: 'absolute', bottom: 0, left: '50%' }}
+                        style={{ position: 'absolute', bottom: 0, left: '50%' }}
                         className="arrow"
                       />
                     ) : null}
                     {node.right ? (
                       <ArrowStart
                         id={`frac:${node.right.key}`}
-                        css={{ position: 'absolute', bottom: 0, left: '50%' }}
+                        style={{ position: 'absolute', bottom: 0, left: '50%' }}
                         className="arrow"
                       />
                     ) : null}
@@ -302,12 +307,12 @@ function BBSTView() {
     derived: { bbst },
   } = useRangeTreeState()
   return (
-    <div css={{ display: 'flex' }}>
+    <div style={{ display: 'flex' }}>
       <TreeRoot>
         {bbst.layers.map((layer, li) => (
           <div
             key={li}
-            css={{
+            style={{
               display: 'flex',
               justifyContent: 'space-evenly',
             }}
@@ -341,7 +346,7 @@ function BBSTNodeView({
     <Fragment>
       <span
         data-point={`${node.value}:${node.y}`}
-        css={{
+        style={{
           width: '2.2ch',
           textAlign: 'center',
           cursor: 'pointer',
@@ -369,22 +374,22 @@ function BBSTNodeView({
         {node.value}
         <ArrowEnd
           id={`bbst:${li}:${ni}`}
-          css={{ position: 'absolute', top: 0, left: '50%' }}
+          style={{ position: 'absolute', top: 0, left: '50%' }}
         />
         <ArrowStart
           id={`bbst:${li + 1}:${ni * 2}`}
-          css={{ position: 'absolute', bottom: 0, left: '50%' }}
+          style={{ position: 'absolute', bottom: 0, left: '50%' }}
         />
         <ArrowStart
           id={`bbst:${li + 1}:${ni * 2 + 1}`}
-          css={{ position: 'absolute', bottom: 0, left: '50%' }}
+          style={{ position: 'absolute', bottom: 0, left: '50%' }}
         />
       </span>
       {ni + 1 === bbst.layers[li].length
         ? Array.from({
             length: missingToPowerOfTwo(bbst.layers[li].length),
           }).map((_, fill) => (
-            <span key={'fill:' + fill} css={{ width: '2.2ch' }} />
+            <span key={'fill:' + fill} style={{ width: '2.2ch' }} />
           ))
         : null}
     </Fragment>
@@ -419,11 +424,11 @@ function PointChart({ points }: { points: Points }) {
   if (useSSR()) return null
   const xmax = points.reduce(
     (b, { x: a }) => Math.max(a, b),
-    Math.max(query.xmax, 8),
+    Math.max(query.xmax, 8)
   )
   const ymax = points.reduce(
     (b, { y: a }) => Math.max(a, b),
-    Math.max(query.ymax, 8),
+    Math.max(query.ymax, 8)
   )
 
   return <PointGrid xmax={xmax} ymax={ymax} />
@@ -461,7 +466,7 @@ function PointInput({
           max={100}
           step={1}
           name="x"
-          css={{ maxWidth: '5ch', marginRight: '1ch' }}
+          style={{ maxWidth: '5ch', marginRight: '1ch' }}
         />
       </label>
       <label>
@@ -473,7 +478,7 @@ function PointInput({
           max={100}
           step={1}
           name="y"
-          css={{ maxWidth: '5ch' }}
+          style={{ maxWidth: '5ch' }}
         />
       </label>
       <button>Add point</button>
