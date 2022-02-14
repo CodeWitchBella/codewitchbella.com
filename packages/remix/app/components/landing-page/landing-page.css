@@ -42,3 +42,17 @@ h1 {
   font-size: calc(18px + 4vw);
   margin: 20px 0;
 }
+
+.mono {
+  font-family: monospace;
+  word-wrap: break-word;
+  max-width: 800px;
+  white-space: pre-line;
+  max-height: 143px;
+  overflow-y: hidden;
+  word-break: break-all;
+}
+
+.nonvisible {
+  visibility: hidden;
+}

@@ -5,17 +5,6 @@ let timeoutHandle: ReturnType<typeof setTimeout> | null
 function CopyOnClick({ children }: { children: ReactNode }) {
   return (
     <>
-      <style jsx>{`
-        .mono {
-          font-family: monospace;
-          word-wrap: break-word;
-          max-width: 800px;
-          white-space: pre-line;
-          max-height: 143px;
-          overflow-y: hidden;
-          word-break: break-all;
-        }
-      `}</style>
       <div
         className="mono"
         onClick={(event) => {
@@ -42,11 +31,6 @@ export function Technical() {
   const toggle = () => setVisible((v) => !v)
   return (
     <>
-      <style jsx>{`
-        .nonvisible {
-          visibility: hidden;
-        }
-      `}</style>
       <button className="technical" onClick={toggle}>
         Technical stuff
       </button>
