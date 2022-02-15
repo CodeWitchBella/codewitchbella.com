@@ -1,12 +1,10 @@
-import { createPagesFunctionHandler } from "@remix-run/cloudflare-pages";
+export async function onRequest(context) {
+  const { createPagesFunctionHandler } = await import(
+    '@remix-run/cloudflare-pages'
+  )
 
-// @ts-ignore
-import * as build from "../build";
+  const build = await import('../build')
 
-const handleRequest = createPagesFunctionHandler({
-  build
-});
-
-export function onRequest(context) {
-  return handleRequest(context);
+  const handleRequest = createPagesFunctionHandler({ build })
+  return handleRequest(context)
 }
