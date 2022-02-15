@@ -9,7 +9,7 @@
   },
   "types": "./dist/base/src/main.d.ts",
   "scripts": {
-    "build": "yarn esbuild --bundle src/index.ts --outfile=dist/index.js --external:react\\* --external:prop-types --external:history --format=esm --inject:./src/shim.ts && node patch.js",
+    "build": "../../node_modules/.bin/esbuild --bundle src/index.ts --outfile=dist/index.js --external:react --external:react-dom --external:react-spring --external:react-swipeable --external:prop-types --external:history --format=esm --inject:./src/shim.ts && node patch.js",
     "postinstall": "yarn build"
   },
   "devDependencies": {

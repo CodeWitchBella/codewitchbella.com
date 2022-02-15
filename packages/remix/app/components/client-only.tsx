@@ -4,7 +4,6 @@ import { Scripts } from 'remix'
 export function ClientOnly({ children }: PropsWithChildren<{}>) {
   const [loading, setLoading] = useState(true)
   useEffect(() => {
-    shim()
     setLoading(false)
   }, [])
 
@@ -27,8 +26,4 @@ export function ClientOnly({ children }: PropsWithChildren<{}>) {
 
 export function Loading() {
   return <div>Loading...</div>
-}
-
-function shim() {
-  window.global = window
 }
