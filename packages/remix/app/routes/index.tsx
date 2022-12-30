@@ -27,6 +27,9 @@ export default function Index() {
       </p>
       <ul>
         <li>
+          <Link href="https://brehoni.cz">Stránky našeho oddílu Brehoni</Link>
+        </li>
+        <li>
           <Link href="https://isbl.cz/zpevnik">Zpěvník (funguje offline)</Link>
         </li>
         <li>
@@ -44,12 +47,13 @@ export default function Index() {
           <Link href="https://isbl.cz/reflektor-ios">App Store</Link>
         </li>
         <li>
-          <Link href="https://ok1kvk.cz/">ok1kvk.cz</Link>
+          <Link href="https://ok1kvk.cz/tag/vse/1/">ok1kvk.cz</Link>
         </li>
         <li>
           <Link href="https://rekonstrukcestatu.cz/">
             Rekonstrukce státu.cz
-          </Link>
+          </Link>{' '}
+          (předchozí verze)
         </li>
         <li>
           Profil na <Link href="https://isbl.cz/gitlab">GitLab.com</Link> a{' '}
