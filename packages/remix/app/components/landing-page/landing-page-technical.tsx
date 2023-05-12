@@ -1,4 +1,5 @@
-import { ReactNode, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useState } from 'react'
 
 let timeoutHandle: ReturnType<typeof setTimeout> | null
 
@@ -42,18 +43,31 @@ export function Technical() {
         {/*<h2>Desktop SSH key (rsa)</h2>
         <CopyOnClick>{`ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQDAyefs+TDyduI7SECWwgBLGRYT+G6LEQZjbzJjI0Fkp4350WJjBg6EfRSDevDr4/scQBPW0ElbMiHOG6GskhfCVLkCjnJfxplYIsTcSgYyuaQcBJitbcHO0g8J0Nf4/dPVm3PyTXeukcZ8f5Odnf+Ipi2W+WH4iBuFF63Fieq3Uo+xKASEcReZy3XCiBfgIwgv7ratqut0XNZQ9QMp//y+0a4s4y3tF/nNOPl3XkqYT/O2+cSaPYgp2W2V+0qwVMNef5BVRhzFMMAo4RO6Q4/vFaI7hQ/P47JLfxqulk/Ppb9gBNPmjXoxZHGOfE8VpdEBVNLcKmFl3q1OHbM0urifgB1Xp3rKETxbtJuIZW5xLFMEnblTliB/hsX1GwJ7risV497uNaamV2Lan+0nkb32tA9o+f/7vDGBd9TfqZjRS10HZLwPc9ylyAHXB018TCow9YGsDbXydkSnpwbEkKLE7mLj4HZyOsmGSanlUzT8xD3vIX9bqZP9sqT2c2BER/68vqSe/PMB0wihFdmTEa2DWyqfVyfavj7+rpRq8Cr8N+yozZtbkOfL5pMXPrt/rNZHSD6wtuO8gwG6Vmg3HwP0H5pEMQhUj65piU2CR2gNc7TWaCWPpm3LDq3gfqPciuj0ORc03HOu3RUBTRNtF27ZC7z3yUFdsv/n/Fwvsbw0MZLrAxnPFBWBhLxIEI7jbaJHkr33tDh3paLi5lPMldMiGfqqWE4t5Hl0d5LAO4FKOEH9CPWBx5xtA/mmHrDXtuaBQ15L++Ugs/C2rEQ4LE3utVWjHQKmDx4Fq0rbU8MQfYUVeYTtiCz1oDo/49NEy8y51yyOiEG2hii8ZFRyQczME/sJWrY91VCsecg+vQfr1BerI+PWgHWMfAydEY/J0bQE/TLDi9yDBTAlvRqxpzz2/Vpaq7/bVuf9M2hXu0H1r06KdjD/qF7djoakc92WaZTNjloZ0bmlVSosgbetgiYeTk6tD7gVN7ew1LT5H9YKYXiOLfo1JF2yvx0XsCjJsOeh5h5XzjGk9a1YdggoLTlKIhF/pHK9BJuGfg13DB6sVT8ZK9rr69FjuGvQrmogqRD86Vv8+tmT0vFskO4yHpc3ylwJWOWYSZlsjw8V7egQ7oNTDRx5lofKtIdJp33jFeeqzuiPlfPeshFy6Dd0W18YO+pNawlxs57WmMY9UK0Rc52/C/jXedMAnYnUNDeaTZDXoIVGyu0C7Yn1dLKXT3vZJ8og4zjARs2WuIcdKsH5/lrrCLngMttaVpdCxlurkRxt6ibfF/SgLIahYulD3yTawmRpjK6ttbUoKbP7cU1uFnPODLPU7zzEpktUaHPtT4/Uv4lZTVzP2HvV/oIH0uE/ isabella@desktop.skorepova.info`}</CopyOnClick>
         */}
-        <h2>GPG key</h2>
+        <h2>Desktop GPG key</h2>
         <CopyOnClick>{gpg}</CopyOnClick>
-        <h2>Notebook GPG key</h2>
+        {/*<h2>Notebook GPG key</h2>
         <CopyOnClick>{ntbGpg}</CopyOnClick>
         <h2>Mobile SSH key</h2>
         <CopyOnClick>{`ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5NK1BZtumG4+huAH3K6T8L3UeWyVe2+71VZWcuop/6zj5m9wP2AqdJ8H0BVUPJWawOIYBtyBizg6+vCOZ/H7DGi+KmyxhNqUWyXuTjHhiCMZP1ilB0n7EiQOI/6LK9F6xC6U5MyWPVTMyYAg4rjuK+8vNLlPVlx0ezsDrqTNUQaNDxjaExj4nUHsKg334gZ8QwnTSrXGw+2Wx2NsxE0HTMUygyuz2CH84fPfZBE4d2wnUPlWC/lxk6HBvBiRDArGay53Fo/M8ihRbB50kn1arPkkJQnGP+ZQf82phTxiMPjOmwZj+QxjnR9WbEmNa28qoUibeYmUaYYYmIs6iMz2eUZnU+zJyhm2ShCpYn76w/hKxZZ1nd+7oSWMVZs9cgHX2pmMmmg+8Tc4f5RefhxXjfYPtaXKQaqK+sN5VeKk+AqTnAoBwFARjNEjVbMcc1ZTB79h0GzhQlyRai9Z2I4fET0uoBhl2R7wjsADN9k6abxTpZG7+g29aMCfZpz+SRTH4WDUCCtel7pZNbAGnfhL6/9NfsrklSt9p+9LrV+9eZovwoCFV4gt+A4KPLFuHJi6CVgjG5VBADOWxB5EstoQvBhccoJBUcVPju+aGUDm4MApnSmRDLilLKXYiYZW4aHnB3DAiiyEqLUG/rzuCICugm6Rn5z1YV+7VjR+uQpRO4Q== isabella@xiaomi-mi-a1`}</CopyOnClick>
         <h2>Notebook SSH key</h2>
-        <CopyOnClick>{`ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFDcrPFUXJT5IdBPJajZggzpEWEX4eeSrGNY3DDMc9b+y/bA3vRflMWph07HxPURMG3NNdro6md3Ra53Sk4EBHst7ziEVmbIyLGuNXm273bpKoLRmW+HSf4s/q/6VNtCTt1ddgyL8s6IM9ndHr4VCis3msQuTyHCZMp9Ktfao38DNIMdOIOm3wRsOy7oyYWUbabmxK7HTnAiK4YljpSPAgQRyEz9+h04QHH991NSwq9IKELKwOlQ7czSwxbmR4yc00Zame2d8gZ502e1Q3OYoijTLwXZSApibMif4VASmylktu/uTxvm9jHZJu54Vv8L2K5vOY7Lyk/GYIfdoAU2lP isabella@ntb.skorepova.info`}</CopyOnClick>
-        <h2>MacBook Pro M2 SSH key</h2>
+        <CopyOnClick>{`ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFDcrPFUXJT5IdBPJajZggzpEWEX4eeSrGNY3DDMc9b+y/bA3vRflMWph07HxPURMG3NNdro6md3Ra53Sk4EBHst7ziEVmbIyLGuNXm273bpKoLRmW+HSf4s/q/6VNtCTt1ddgyL8s6IM9ndHr4VCis3msQuTyHCZMp9Ktfao38DNIMdOIOm3wRsOy7oyYWUbabmxK7HTnAiK4YljpSPAgQRyEz9+h04QHH991NSwq9IKELKwOlQ7czSwxbmR4yc00Zame2d8gZ502e1Q3OYoijTLwXZSApibMif4VASmylktu/uTxvm9jHZJu54Vv8L2K5vOY7Lyk/GYIfdoAU2lP isabella@ntb.skorepova.info`}</CopyOnClick>*/}
+        <h2>Work laptop SSH key</h2>
         <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ0I3KLkmwtJHFdQz73UhZYKzU/qDA2cuSFb+5rKoWAV isabella@macbook-m2.isbl.cz`}</CopyOnClick>
-        <h2>MacBook Pro 2019 SSH key</h2>
-        <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOFCQf9NCVUDWZDZknKveDad4M9dlQV/5ULzTTgMYpE/ isabella@macbook2019.isbl.cz`}</CopyOnClick>
+        <h2>Work laptop GPG key</h2>
+        <div>
+          Uploaded to{' '}
+          <a
+            href="https://keyserver.ubuntu.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            keyserver.ubuntu.com
+          </a>{' '}
+          as 06A2060326D1DE6BA2990455385E484995021C2F
+        </div>
+        <CopyOnClick>{workGpg}</CopyOnClick>
+        {/*<h2>MacBook Pro 2019 SSH key</h2>
+        <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOFCQf9NCVUDWZDZknKveDad4M9dlQV/5ULzTTgMYpE/ isabella@macbook2019.isbl.cz`}</CopyOnClick>*/}
         {/*<CopyOnClick>{`ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWlvC/C5vT3BksVmC4c2ua0+D+2VoNvcXzuOLjFrlgKlr2xsP34GsawBkz4n1aDT3u4t4MBTEXFVF95JYJkGyEv/190LpiDFBICiOOLlekssc+HxDfY27eOM4begRUoIXqE6IvZtbbH0w5q8J32IPIIatPWnIYovhwH7jaoPNpBSFRIuj4sIMe5NU6bTyCjK/hNiOLe2HpshI9IX8V8TiUs3mpegzf4Ls/zE+CewyZx82QSKr2lyVNpRsck+4Z9KJGg3L6WN2O44Lgqy+Apmu0fRBgyD2uKwPqdNuEI4Ci0vr3azVX/WwogQTBBEOXV3jYLzXPeZJ+3YSBbhXqeuhh isabella@Isabellas-MacBook-Pro.local`}</CopyOnClick>*/}
         <h2>How I generate ssh keys</h2>
         <CopyOnClick>{`ssh-keygen -a 100 -t ed25519 -C "isabella@skorepova.info"`}</CopyOnClick>
@@ -142,6 +156,24 @@ zxPWvWZxNza3BQ==
 -----END PGP PUBLIC KEY BLOCK-----
 `.trim()
 
+const workGpg = `
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mDMEZF5CahYJKwYBBAHaRw8BAQdAyHECFxHUar8FkqpFa8+vZWz1ZHxQcPnVVsZm
+skJOMY60LklzYWJlbGxhIFNrb8WZZXBvdsOhIDxpc2FiZWxsYUBza29yZXBvdmEu
+aW5mbz6ImQQTFgoAQRYhBAaiBgMm0d5ropkEVTheSEmVAhwvBQJkXkJqAhsDBQkD
+wmcABQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEDheSEmVAhwvBWcBAM2U
+T27CiNhAmzdqoc29NNJ62i1lP4mkmYD636tgByq4AP9kzBhRoAs2Yth5xtssJc8N
+oa4mNw/mLKOqqCsiQ2WOALg4BGReQmoSCisGAQQBl1UBBQEBB0ABPu7sgDrgLCqG
+LZXg21DYN1h5hnpyNublZzIHkxFRTgMBCAeIfgQYFgoAJhYhBAaiBgMm0d5ropkE
+VTheSEmVAhwvBQJkXkJqAhsMBQkDwmcAAAoJEDheSEmVAhwvvlQBALNPXJcrZlhK
+7Gv3SrG61DaWrsn+UKyhI8oKltMqEPLyAQD97UX0Z3cuO2kcAN2B9dIMbkJ7WyJ7
+hDH+oViNGCh8DQ==
+=NUN7
+-----END PGP PUBLIC KEY BLOCK-----
+`.trim()
+
+/*
 const ntbGpg = `
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 mQINBFuztzEBEAC6bUeRqTDSEucmySBjc/Zuo9sIhNwhXzDNMjB+LlGH6KwcNthD
@@ -195,3 +227,4 @@ xe6jvnOCdfyAsVWF8DuaIQ==
 =Ws/U
 -----END PGP PUBLIC KEY BLOCK-----
 `.trim()
+*/
