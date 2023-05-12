@@ -37,7 +37,7 @@ export function Technical() {
       </button>
       <div className="technical" style={visible ? {} : { display: 'none' }}>
         <h2>Desktop Linux (primary) SSH key</h2>
-        <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBxPNmNRwDY3Az5S7O5IXVzHG0tNp1J1A9ndLvGjk1X7 isabella@isabella-pc`}</CopyOnClick>
+        <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBxPNmNRwDY3Az5S7O5IXVzHG0tNp1J1A9ndLvGjk1X7 isabella@desktop.isbl.cz`}</CopyOnClick>
         <h2>Desktop Windows SSH key</h2>
         <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILf9Ii8EKyr/UiXz5fSkM4Z/B6UF0W9NTz7IYbwScgUm isabella@windows-desktop.isbl.cz`}</CopyOnClick>
         {/*<h2>Desktop SSH key (rsa)</h2>
