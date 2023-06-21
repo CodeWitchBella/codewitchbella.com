@@ -14,7 +14,7 @@ export function links() {
 export default function Index() {
   return (
     <>
-      <h1>Isabella Skořepová</h1>
+      <h1>Ing. Isabella Skořepová</h1>
       <div className="img">
         <img src="/static/avatar3_cropped.png" />
       </div>
@@ -23,6 +23,8 @@ export default function Index() {
         stránky...
         <br />
         Ale co naplat. Kovářova kobyla chodí bosa 😆
+        <br />
+        Státnice skončily úspěchem, ergo Ing. 🎉
       </p>
       <ul>
         <li>
