@@ -11,8 +11,7 @@
     "@codewitchbella.com/spectacle": "workspace:",
     "@isbl/react-resizer": "0.2.4",
     "@react-spring/web": "^9.7.3",
-    "@remix-run/cloudflare": "^1.19.3",
-    "@remix-run/cloudflare-pages": "^1.19.3",
+    "@remix-run/node": "^1.19.3",
     "@remix-run/react": "^1.19.3",
     "@remix-run/serve": "^1.19.3",
     "comlink": "^4.4.1",
@@ -24,7 +23,6 @@
     "react-katex": "^3.0.1"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20230814.0",
     "@remix-run/dev": "^1.19.3",
     "@types/luxon": "^3.3.1",
     "@types/react": "^18.2.20",
@@ -32,8 +30,7 @@
     "cross-env": "^7.0.3",
     "esbuild": "0.19.2",
     "npm-run-all": "^4.1.5",
-    "typescript": "^5.1.6",
-    "wrangler": "^3.5.1"
+    "typescript": "^5.1.6"
   },
   "sideEffects": false,
   "main": "dist/worker.js",

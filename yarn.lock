@@ -1581,6 +1581,7 @@ __metadata:
     "@remix-run/cloudflare": "npm:^1.19.3"
     "@remix-run/cloudflare-pages": "npm:^1.19.3"
     "@remix-run/dev": "npm:^1.19.3"
+    "@remix-run/node": "npm:^1.19.3"
     "@remix-run/react": "npm:^1.19.3"
     "@remix-run/serve": "npm:^1.19.3"
     "@types/luxon": "npm:^3.3.1"
@@ -2873,7 +2874,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/node@npm:1.19.3":
+"@remix-run/node@npm:1.19.3, @remix-run/node@npm:^1.19.3":
   version: 1.19.3
   resolution: "@remix-run/node@npm:1.19.3"
   dependencies:
