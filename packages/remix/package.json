@@ -39,7 +39,6 @@
   },
   "sideEffects": false,
   "main": "dist/worker.js",
-  "packageManager": "yarn@3.1.1",
   "engines": {
     "node": ">=14",
     "yarn": ">=2"

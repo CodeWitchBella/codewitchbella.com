@@ -9,7 +9,7 @@
     "build": "cd packages/remix && yarn build",
     "dev": "cd packages/remix && yarn dev"
   },
-  "packageManager": "yarn@3.3.1+sha256.1d2760eb5c0e525abe9c5306fac5fe0b5628c0955072a0da2f4043524497526a",
+  "packageManager": "yarn@4.0.0-rc.49+sha256.edf1409148eecd06c06d9c198d104046fb1e2e50890563924d99eb23bc2ed660",
   "engines": {
     "yarn": ">=2"
   },
