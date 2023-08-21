@@ -1,16 +1,20 @@
+/* eslint-disable no-undef */
+
 module.exports = {
   name: `fix-vercels-shit`,
   factory: (require) => {
     const { Option } = require(`clipanion`);
     const essentials = require("@yarnpkg/plugin-essentials").default;
-    const idx = essentials.commands.findIndex((c) =>
-      c.paths?.flat().includes("add"),
+    const AddCommand = essentials.commands.find(
+      (c) =>
+        c.paths?.flat().includes("add") ||
+        c.paths?.flat().includes("add-original"),
     );
-    const AddCommand = essentials.commands[idx];
-    const NewAddCommand = class extends AddCommand {
-      static paths = AddCommand.paths;
+    const NewAddCommand = class NewAddCommand extends AddCommand {
+      static paths = AddCommand.paths.slice(0);
       ignored = Option.Boolean(`--ignore-workspace-root-check`, false);
     };
+    AddCommand.paths = [["add-original"]];
 
     return {
       commands: [NewAddCommand],
