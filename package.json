@@ -14,7 +14,7 @@
     "yarn": ">=2"
   },
   "devDependencies": {
-    "@remix-run/eslint-config": "^1.6.5",
-    "eslint": "^8.20.0"
+    "@remix-run/eslint-config": "^1.19.3",
+    "eslint": "^8.47.0"
   }
 }

@@ -14,8 +14,8 @@
   },
   "devDependencies": {
     "assert": "^2.0.0",
-    "esbuild": "^0.14.21",
-    "microbundle": "^0.14.2",
-    "spectacle": "^8.5.0"
+    "esbuild": "^0.19.2",
+    "microbundle": "^0.15.1",
+    "spectacle": "^10.1.5"
   }
 }
