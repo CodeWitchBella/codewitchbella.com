@@ -1,6 +1,6 @@
 import Present, { isValidRoute } from '~/components/present/present'
 import { Suspense } from 'react'
-import { useParams } from 'remix'
+import { useParams } from "@remix-run/react";
 import { ClientOnly, Loading } from '~/components/client-only'
 
 export function links() {

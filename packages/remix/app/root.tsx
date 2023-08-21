@@ -1,26 +1,25 @@
 import {
   Links,
-  LinksFunction,
   LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-} from 'remix'
-import type { MetaFunction } from 'remix'
+} from "@remix-run/react";
+import type { MetaFunction, LinksFunction } from "@remix-run/cloudflare";
 
 export const meta: MetaFunction = () => {
-  return { title: 'Isabella Skořepová' }
-}
+  return { title: "Isabella Skořepová" };
+};
 
 export const links: LinksFunction = () => {
   return [
     {
-      rel: 'stylesheet',
-      href: '/vendor/inter-3.19/inter.css',
+      rel: "stylesheet",
+      href: "/vendor/inter-3.19/inter.css",
     },
-  ]
-}
+  ];
+};
 
 export default function App() {
   return (
@@ -36,8 +35,8 @@ export default function App() {
         <Outlet />
         <ScrollRestoration />
         <Scripts />
-        {process.env.NODE_ENV === 'development' && <LiveReload />}
+        {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
-  )
+  );
 }

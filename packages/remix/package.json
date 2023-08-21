@@ -11,6 +11,7 @@
     "@codewitchbella.com/spectacle": "workspace:",
     "@isbl/react-resizer": "0.2.4",
     "@react-spring/web": "^9.7.3",
+    "@remix-run/cloudflare": "^1.19.3",
     "@remix-run/cloudflare-pages": "^1.19.3",
     "@remix-run/react": "^1.19.3",
     "@remix-run/serve": "^1.19.3",
@@ -19,8 +20,7 @@
     "luxon": "^3.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-katex": "^3.0.1",
-    "remix": "^1.19.3"
+    "react-katex": "^3.0.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230814.0",

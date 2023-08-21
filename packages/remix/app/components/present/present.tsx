@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'remix'
+import { Link } from "@remix-run/react";
 const Matrices = React.lazy(() => import('./matrices/matrices'))
 
 export function PresentIndex() {

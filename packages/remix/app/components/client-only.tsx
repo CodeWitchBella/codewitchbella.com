@@ -1,5 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from 'react'
-import { Scripts } from 'remix'
+import { Scripts } from "@remix-run/react";
 
 export function ClientOnly({ children }: PropsWithChildren<{}>) {
   const [loading, setLoading] = useState(true)

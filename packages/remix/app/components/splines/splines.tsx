@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react'
-import { useSearchParams } from 'remix'
+import { useSearchParams } from "@remix-run/react";
 import { cubicHermiteSpline } from './cubic-hermite-spline'
 export { default as styles } from './splines.css'
 

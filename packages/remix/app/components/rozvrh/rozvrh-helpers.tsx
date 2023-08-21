@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useSearchParams } from 'remix'
+import { useSearchParams } from "@remix-run/react";
 
 export function useEn() {
   const [params, setParams] = useSearchParams()
