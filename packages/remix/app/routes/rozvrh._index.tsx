@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/ban-types */
 import type { PropsWithChildren, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -14,7 +14,7 @@ import {
   useBooleanQueryParam,
   useEn,
 } from "../components/rozvrh/rozvrh-helpers";
-import css from "../../components/rozvrh/rozvrh.css";
+import css from "../components/rozvrh/rozvrh.css";
 
 export function links() {
   return [

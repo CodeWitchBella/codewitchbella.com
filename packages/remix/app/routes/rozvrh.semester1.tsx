@@ -1,63 +1,57 @@
-import React from 'react'
-import {
-  PropsWithChildren,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+/* eslint-disable @typescript-eslint/ban-types */
+import type { PropsWithChildren, ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   CalEvent,
   Cz,
   Deets,
   En,
   EventProvider,
-} from '../../components/rozvrh/calendar-event'
-import { DateTime, Interval } from 'luxon'
+} from "../components/rozvrh/calendar-event";
+import { DateTime, Interval } from "luxon";
 import {
   useBooleanQueryParam,
   useEn,
-} from '../../components/rozvrh/rozvrh-helpers'
-import css from '../../components/rozvrh/rozvrh.css'
+} from "../components/rozvrh/rozvrh-helpers";
+import css from "../components/rozvrh/rozvrh.css";
 
 export function links() {
   return [
     {
-      rel: 'stylesheet',
+      rel: "stylesheet",
       href: css,
     },
-  ]
+  ];
 }
 
 function WeekNumber({ children }: { children: JSX.Element | JSX.Element[] }) {
-  const [week, setWeek] = useState<null | number>(null)
+  const [week, setWeek] = useState<null | number>(null);
 
   useEffect(() => {
     const int = Interval.fromDateTimes(
       DateTime.fromObject({ year: 2020, month: 9, day: 21 }),
       DateTime.local()
-    ).toDuration()
-    setWeek(Math.floor(int.as('week') + 1))
-  }, [])
-  if (week === null) return null
+    ).toDuration();
+    setWeek(Math.floor(int.as("week") + 1));
+  }, []);
+  if (week === null) return null;
   return (
     <>
       {children}
       {week}
     </>
-  )
+  );
 }
 
 export default function FEL() {
-  const [showTitles, setShowTitles] = useBooleanQueryParam('titles', false)
-  const [english, toggleLang] = useEn()
-  const [deets, setDeets] = useBooleanQueryParam('deets', true)
-  const [links, setLinks] = useLocalStorage('rozvrh:links')
+  const [showTitles, setShowTitles] = useBooleanQueryParam("titles", false);
+  const [english, toggleLang] = useEn();
+  const [deets, setDeets] = useBooleanQueryParam("deets", true);
+  const [links, setLinks] = useLocalStorage("rozvrh:links");
 
-  useSetOnWindow('setLink', (type: string, value: string) => {
-    setLinks({ ...links, [type]: value })
-  })
+  useSetOnWindow("setLink", (type: string, value: string) => {
+    setLinks({ ...links, [type]: value });
+  });
 
   return (
     <EventProvider
@@ -68,9 +62,9 @@ export default function FEL() {
         deets,
         subjects: {
           DPG: {
-            longcode: 'B4M39DPG',
-            name: 'Datové struktury počítačové grafiky',
-            enname: 'Data Structures for Computer Graphics',
+            longcode: "B4M39DPG",
+            name: "Datové struktury počítačové grafiky",
+            enname: "Data Structures for Computer Graphics",
             deets: (
               <>
                 Havran
@@ -84,9 +78,9 @@ export default function FEL() {
             ),
           },
           APG: {
-            longcode: 'B4M39APG',
-            name: 'Algoritmy počítačové grafiky',
-            enname: 'Algorithms of Computer Graphics',
+            longcode: "B4M39APG",
+            name: "Algoritmy počítačové grafiky",
+            enname: "Algorithms of Computer Graphics",
             deets: (
               <>
                 Teams
@@ -102,9 +96,9 @@ export default function FEL() {
             ),
           },
           GPU: {
-            longcode: 'B4M39GPU',
-            name: 'Obecné výpočty na grafických procesorech',
-            enname: 'General-Purpose Computing on GPU',
+            longcode: "B4M39GPU",
+            name: "Obecné výpočty na grafických procesorech",
+            enname: "General-Purpose Computing on GPU",
             deets: (
               <>
                 <MaybeLink to={links?.GPU}>Zoom</MaybeLink>
@@ -117,9 +111,9 @@ export default function FEL() {
             ),
           },
           VG: {
-            longcode: 'B4M39VG',
-            name: 'Výpočetní geometrie',
-            enname: 'Computational Geometry',
+            longcode: "B4M39VG",
+            name: "Výpočetní geometrie",
+            enname: "Computational Geometry",
             deets: (
               <>
                 <MaybeLink to={links?.CG}>Zoom</MaybeLink>
@@ -135,9 +129,9 @@ export default function FEL() {
             ),
           },
           MMA: {
-            longcode: 'B4M39MMA',
-            name: 'Multimédia a počítačová animace',
-            enname: 'Multimedia and Computer Animation',
+            longcode: "B4M39MMA",
+            name: "Multimédia a počítačová animace",
+            enname: "Multimedia and Computer Animation",
             deets: (
               <>
                 Teams
@@ -149,9 +143,9 @@ export default function FEL() {
             ),
           },
           ITT: {
-            longcode: 'B0M39ITT1',
-            name: 'Intermediální tvorba a technologie I',
-            enname: 'Applied Multimedia and Technology I',
+            longcode: "B0M39ITT1",
+            name: "Intermediální tvorba a technologie I",
+            enname: "Applied Multimedia and Technology I",
             deets: (
               <>
                 <div>
@@ -171,8 +165,8 @@ export default function FEL() {
     >
       <div className="flex-center-gap">
         <button onClick={() => toggleLang()} type="button">
-          <span className={english ? '' : 'bold'}>CZ</span> |{' '}
-          <span className={english ? 'bold' : ''}>EN</span>
+          <span className={english ? "" : "bold"}>CZ</span> |{" "}
+          <span className={english ? "bold" : ""}>EN</span>
         </button>
         <label>
           <input
@@ -250,19 +244,19 @@ export default function FEL() {
         </Day>
       </Week>
     </EventProvider>
-  )
+  );
 }
 
 function Week({ children }: PropsWithChildren<{}>) {
-  return <div className="week">{children}</div>
+  return <div className="week">{children}</div>;
 }
 
 function Day({ children }: PropsWithChildren<{}>) {
-  return <div className="day">{children}</div>
+  return <div className="day">{children}</div>;
 }
 
 function DayTitle({ children }: PropsWithChildren<{}>) {
-  return <div className="self-center">{children}</div>
+  return <div className="self-center">{children}</div>;
 }
 
 function Link({ to, children }: { to: string; children: ReactNode }) {
@@ -270,68 +264,68 @@ function Link({ to, children }: { to: string; children: ReactNode }) {
     <a href={to} target="_blank" rel="noopener noreferrer" className="link">
       {children}
     </a>
-  )
+  );
 }
 
 function MaybeLink({
   to,
   children,
 }: {
-  to: string | null
-  children: React.ReactNode
+  to: string | null;
+  children: React.ReactNode;
 }) {
-  if (!to) return <>{children}</>
-  return <Link to={to}>{children}</Link>
+  if (!to) return <>{children}</>;
+  return <Link to={to}>{children}</Link>;
 }
 
 function useSetOnWindow(name: string, value: unknown) {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const anyWindow = typeof window !== 'undefined' ? (window as any) : null
-    if (!anyWindow) return
-    const prev = anyWindow[name]
-    anyWindow[name] = value
+    const anyWindow = typeof window !== "undefined" ? (window as any) : null;
+    if (!anyWindow) return;
+    const prev = anyWindow[name];
+    anyWindow[name] = value;
     return () => {
-      if (!prev) delete anyWindow[name]
-      else anyWindow[name] = prev
-    }
-  }, [name, value])
+      if (!prev) delete anyWindow[name];
+      else anyWindow[name] = prev;
+    };
+  }, [name, value]);
 }
 
 function safeParse(v: string | null) {
-  if (v === null) return null
+  if (v === null) return null;
   try {
-    return JSON.parse(v)
+    return JSON.parse(v);
   } catch {
-    return null
+    return null;
   }
 }
 
-let isSSR = true
+let isSSR = true;
 
 function useLocalStorage(key: string) {
   const [value, setValue] = useState(() => {
-    if (isSSR) return null
-    return localStorage.getItem(key) ?? null
-  })
+    if (isSSR) return null;
+    return localStorage.getItem(key) ?? null;
+  });
   useEffect(() => {
-    setValue((v) => (v === null ? localStorage.getItem(key) ?? null : v))
-    isSSR = false
-    window.addEventListener('storage', (event) => {
-      if (event.key !== key) return
-      setValue(event.newValue)
-    })
-  }, [key])
+    setValue((v) => (v === null ? localStorage.getItem(key) ?? null : v));
+    isSSR = false;
+    window.addEventListener("storage", (event) => {
+      if (event.key !== key) return;
+      setValue(event.newValue);
+    });
+  }, [key]);
   return [
     useMemo(() => safeParse(value), [value]),
     useCallback(
       (value: unknown) => {
-        const json = value === null ? null : JSON.stringify(value)
-        if (json === null) localStorage.removeItem(key)
-        else localStorage.setItem(key, json)
-        setValue(json)
+        const json = value === null ? null : JSON.stringify(value);
+        if (json === null) localStorage.removeItem(key);
+        else localStorage.setItem(key, json);
+        setValue(json);
       },
       [key]
     ),
-  ] as const
+  ] as const;
 }
