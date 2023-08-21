@@ -9,5 +9,5 @@
     }
   },
   "extends": "../base/tsconfig.json",
-  "references": [{ "path": "../base" }, { "path": "../spectacle" }]
+  "references": [{ "path": "../base" }]
 }

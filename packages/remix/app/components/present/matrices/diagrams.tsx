@@ -1,15 +1,16 @@
-import { PropsWithChildren, useContext, useEffect, useRef } from 'react'
-import { SlideContext, Stepper } from '@codewitchbella.com/spectacle'
-import { useSpring, animated } from '@react-spring/web'
+import type { PropsWithChildren } from "react";
+import { useContext, useEffect, useRef } from "react";
+import { SlideContext, Stepper } from "spectacle";
+import { useSpring, animated } from "@react-spring/web";
 
-const yaxis = '#63A375'
-const xaxis = '#F0544F'
-const items = '#EDC79B'
+const yaxis = "#63A375";
+const xaxis = "#F0544F";
+const items = "#EDC79B";
 
 export function SlideGuard({ children }: PropsWithChildren<{}>) {
-  const { isSlideActive } = useContext(SlideContext)
-  if (!isSlideActive) return null
-  return <>{children}</>
+  const { isSlideActive } = useContext(SlideContext);
+  if (!isSlideActive) return null;
+  return <>{children}</>;
 }
 
 export function Defs() {
@@ -30,7 +31,7 @@ export function Defs() {
         </clipPath>
       </defs>
     </svg>
-  )
+  );
 }
 
 export function Axes({
@@ -40,9 +41,9 @@ export function Axes({
   return (
     <svg
       viewBox="-2 -2 102 102"
-      style={{ width: '100%', aspectRatio: '1 / 1' }}
+      style={{ width: "100%", aspectRatio: "1 / 1" }}
     >
-      {pre ? <g style={{ transform: 'scale(10)' }}>{pre}</g> : null}
+      {pre ? <g style={{ transform: "scale(10)" }}>{pre}</g> : null}
       <line
         x1={0}
         x2={90}
@@ -59,9 +60,9 @@ export function Axes({
         stroke={yaxis}
         markerEnd="url(#arrow-yaxis)"
       />
-      <g style={{ transform: 'scale(10)' }}>{children}</g>
+      <g style={{ transform: "scale(10)" }}>{children}</g>
     </svg>
-  )
+  );
 }
 
 export function ExampleObjects() {
@@ -70,7 +71,7 @@ export function ExampleObjects() {
       <circle cx={2} cy={4.5} r={0.5} fill={items} />
       <rect x={1} y={2} width={2} height={1} fill={items} />
     </>
-  )
+  );
 }
 
 export function GStepperSpring({
@@ -79,11 +80,11 @@ export function GStepperSpring({
   children,
   step = 0,
 }: PropsWithChildren<{
-  from: React.CSSProperties
-  to: React.CSSProperties
-  step?: number
+  from: React.CSSProperties;
+  to: React.CSSProperties;
+  step?: number;
 }>) {
-  const { activeStepIndex } = useContext(SlideContext)
+  const { activeStepIndex } = useContext(SlideContext);
   const spring = useSpring(
     step === 0
       ? {
@@ -93,14 +94,14 @@ export function GStepperSpring({
         }
       : activeStepIndex >= 0
       ? to
-      : from
-  )
+      : from,
+  );
   return (
     <>
       {step > 0 ? <Stepper values={[0]}>{() => null}</Stepper> : null}
       <animated.g style={spring}>{children}</animated.g>
     </>
-  )
+  );
 }
 
 export function GSpringLoop({
@@ -108,13 +109,13 @@ export function GSpringLoop({
   to,
   children,
 }: PropsWithChildren<{
-  from: React.CSSProperties
-  to: React.CSSProperties
+  from: React.CSSProperties;
+  to: React.CSSProperties;
 }>) {
   const spring = useSpring({
     from,
     to,
     loop: { reverse: true, delay: 500 },
-  })
-  return <animated.g style={spring}>{children}</animated.g>
+  });
+  return <animated.g style={spring}>{children}</animated.g>;
 }

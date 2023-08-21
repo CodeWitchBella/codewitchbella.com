@@ -8,7 +8,6 @@
     "dev": "remix dev"
   },
   "dependencies": {
-    "@codewitchbella.com/spectacle": "workspace:",
     "@isbl/react-resizer": "0.2.4",
     "@react-spring/web": "^9.7.3",
     "@remix-run/node": "^1.19.3",

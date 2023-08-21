@@ -12,40 +12,39 @@ import {
   Deck,
   Grid,
   Box,
-  Image,
   Notes,
-} from '@codewitchbella.com/spectacle'
+} from "spectacle";
 import {
   Axes,
   Defs,
   ExampleObjects,
   GSpringLoop,
   GStepperSpring,
-} from './diagrams'
-import { InlineMath } from 'react-katex'
-import { Orders, OriginScale, RotateAround, TRS } from './origin-scale'
+} from "./diagrams";
+import { InlineMath } from "react-katex";
+import { Orders, OriginScale, RotateAround, TRS } from "./origin-scale";
 import { useLocation } from "@remix-run/react";
 
 // TODO: use new URL (see below) once/if remix supports it
-import ctuLion from './ctu_lion.svg'
+import ctuLion from "./ctu_lion.svg";
 // const ctuLion = new URL('./ctu_lion.svg', import.meta.url).href
-import headsetsUrl from './headsets.png'
+import headsetsUrl from "./headsets.png";
 // const headsetsUrl = new URL('./headsets.png', import.meta.url).href
-import octopusInspect from './octopus-inspect.png'
+import octopusInspect from "./octopus-inspect.png";
 // const octopusInspect = new URL('./octopus-inspect.png', import.meta.url).href
 
 const theme = {
   //https://coolors.co/palette/713e5a-63a375-edc79b-d57a66-ca6680-f283b6-f0544f-bc96e6-d8b4e2-a44200
   colors: {
-    primary: '#f8e9d7',
-    secondary: '#f8c1da',
-    tertiary: '#2d1924',
+    primary: "#f8e9d7",
+    secondary: "#f8c1da",
+    tertiary: "#2d1924",
   },
   fonts: {
     header: 'Inter, "Open Sans Condensed", Helvetica, Arial, sans-serif',
     text: 'Inter, "Open Sans Condensed", Helvetica, Arial, sans-serif',
   },
-}
+};
 
 const template = () => (
   <FlexBox
@@ -61,7 +60,7 @@ const template = () => (
       <Progress color="white" size={8} />
     </Box>
   </FlexBox>
-)
+);
 
 export default function Matrices() {
   return (
@@ -69,11 +68,11 @@ export default function Matrices() {
       <Defs />
       <Presentation />
     </>
-  )
+  );
 }
 
 function Presentation() {
-  const location = useLocation()
+  const location = useLocation();
   return (
     <Deck theme={theme} template={template}>
       <Slide>
@@ -85,16 +84,17 @@ function Presentation() {
             Maths for Computer Graphics
           </Heading>
           <Heading margin="0px 32px" color="primary" fontSize="30px">
-            Isabella{' '}
+            Isabella{" "}
             <a
-              href={location.pathname + '?presenterMode=true'}
-              style={{ all: 'unset', cursor: 'pointer' }}
+              href={location.pathname + "?presenterMode=true"}
+              style={{ all: "unset", cursor: "pointer" }}
               target="_blank"
+              rel="noreferrer"
             >
               Skořepová
             </a>
           </Heading>
-          <div style={{ position: 'absolute', bottom: 0 }}>
+          <div style={{ position: "absolute", bottom: 0 }}>
             <Heading margin="32px 0px 0px 0px" color="primary">
               <CodeSpan fontSize="20px">isbl.cz/p/matrices</CodeSpan>
             </Heading>
@@ -109,14 +109,14 @@ function Presentation() {
         <Heading>About me</Heading>
         <UnorderedList>
           <ListItem>
-            Student of Computer Graphics at CTU FEE{' '}
+            Student of Computer Graphics at CTU FEE{" "}
             <svg viewBox="0 0 125.762 96.137004" height="1em">
-              <use href={ctuLion + '#lion'} />
+              <use href={ctuLion + "#lion"} />
             </svg>
           </ListItem>
           <ListItem>VR developer and enthusiast</ListItem>
           <ListItem>
-            Full-Stack <i style={{ fontSize: '0.5em' }}>(almost)</i> Engineer
+            Full-Stack <i style={{ fontSize: "0.5em" }}>(almost)</i> Engineer
           </ListItem>
         </UnorderedList>
         <Notes>Full-Stack: I can do many things, some of them well</Notes>
@@ -151,7 +151,7 @@ function Presentation() {
         <Heading>Translation</Heading>
         <UnorderedList>
           <ListItem>
-            Example: move by{' '}
+            Example: move by{" "}
             <InlineMath math="\begin{bmatrix}3 \\ 1\end{bmatrix}" />
           </ListItem>
         </UnorderedList>
@@ -162,8 +162,8 @@ function Presentation() {
           </Axes>
           <Axes>
             <GStepperSpring
-              from={{ transform: 'translateX(0px) translateY(0px)' }}
-              to={{ transform: 'translateX(3px) translateY(1px)' }}
+              from={{ transform: "translateX(0px) translateY(0px)" }}
+              to={{ transform: "translateX(3px) translateY(1px)" }}
             >
               <ExampleObjects />
             </GStepperSpring>
@@ -184,8 +184,8 @@ function Presentation() {
           </UnorderedList>
           <Axes>
             <GSpringLoop
-              from={{ transform: 'translateX(0px) translateY(0px)' }}
-              to={{ transform: 'translateX(3px) translateY(1px)' }}
+              from={{ transform: "translateX(0px) translateY(0px)" }}
+              to={{ transform: "translateX(3px) translateY(1px)" }}
             >
               <ExampleObjects />
             </GSpringLoop>
@@ -204,8 +204,8 @@ function Presentation() {
           </Axes>
           <Axes>
             <GStepperSpring
-              from={{ transform: 'scale(1)' }}
-              to={{ transform: 'scale(2)' }}
+              from={{ transform: "scale(1)" }}
+              to={{ transform: "scale(2)" }}
             >
               <ExampleObjects />
             </GStepperSpring>
@@ -226,8 +226,8 @@ function Presentation() {
           </UnorderedList>
           <Axes>
             <GSpringLoop
-              from={{ transform: 'scale(1)' }}
-              to={{ transform: 'scale(2)' }}
+              from={{ transform: "scale(1)" }}
+              to={{ transform: "scale(2)" }}
             >
               <ExampleObjects />
             </GSpringLoop>
@@ -239,7 +239,7 @@ function Presentation() {
         <Heading>Rotation</Heading>
         <UnorderedList>
           <ListItem>
-            Example: rotate by{' '}
+            Example: rotate by{" "}
             <InlineMath math="{\pi \over 8} = 22.5^{\circ}" /> counter-clockwise
           </ListItem>
         </UnorderedList>
@@ -250,8 +250,8 @@ function Presentation() {
           </Axes>
           <Axes>
             <GStepperSpring
-              from={{ transform: 'rotate(0deg)' }}
-              to={{ transform: 'rotate(-22.5deg)' }}
+              from={{ transform: "rotate(0deg)" }}
+              to={{ transform: "rotate(-22.5deg)" }}
             >
               <ExampleObjects />
             </GStepperSpring>
@@ -274,8 +274,8 @@ function Presentation() {
           </UnorderedList>
           <Axes>
             <GSpringLoop
-              from={{ transform: 'rotate(0deg)' }}
-              to={{ transform: 'rotate(-22.5deg)' }}
+              from={{ transform: "rotate(0deg)" }}
+              to={{ transform: "rotate(-22.5deg)" }}
             >
               <ExampleObjects />
             </GSpringLoop>
@@ -301,8 +301,8 @@ function Presentation() {
           </UnorderedList>
           <Axes>
             <GSpringLoop
-              from={{ transform: 'rotate(0deg)' }}
-              to={{ transform: 'rotate(-22.5deg)' }}
+              from={{ transform: "rotate(0deg)" }}
+              to={{ transform: "rotate(-22.5deg)" }}
             >
               <ExampleObjects />
             </GSpringLoop>
@@ -328,8 +328,8 @@ function Presentation() {
           </UnorderedList>
           <Axes>
             <GSpringLoop
-              from={{ transform: 'scale(1)' }}
-              to={{ transform: 'scale(2)' }}
+              from={{ transform: "scale(1)" }}
+              to={{ transform: "scale(2)" }}
             >
               <ExampleObjects />
             </GSpringLoop>
@@ -373,8 +373,8 @@ function Presentation() {
           </UnorderedList>
           <Axes>
             <GSpringLoop
-              from={{ transform: 'translateX(0px) translateY(0px)' }}
-              to={{ transform: 'translateX(3px) translateY(1px)' }}
+              from={{ transform: "translateX(0px) translateY(0px)" }}
+              to={{ transform: "translateX(3px) translateY(1px)" }}
             >
               <ExampleObjects />
             </GSpringLoop>
@@ -386,13 +386,13 @@ function Presentation() {
         <Grid gridTemplateColumns="2fr 1fr">
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gridTemplateRows: 'repeat(4, auto) 1fr',
-              fontSize: '20px',
-              gap: '20px',
-              textAlign: 'center',
-              fontFamily: 'Inter',
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gridTemplateRows: "repeat(4, auto) 1fr",
+              fontSize: "20px",
+              gap: "20px",
+              textAlign: "center",
+              fontFamily: "Inter",
             }}
           >
             <div>Point: </div>
@@ -403,8 +403,8 @@ function Presentation() {
             <InlineMath
               math={`\\begin{bmatrix}x \\\\ y \\\\ 0\\end{bmatrix}`}
             />
-            <div style={{ marginTop: 24, gridColumn: '1 / 3' }}>
-              Translated by{' '}
+            <div style={{ marginTop: 24, gridColumn: "1 / 3" }}>
+              Translated by{" "}
               <InlineMath
                 math={`M_T = \\begin{bmatrix}1 & 0 & T_x \\\\
                 0 & 1 & T_y \\\\
@@ -431,8 +431,8 @@ function Presentation() {
               markerEnd="url(#arrow-white)"
             />
             <GSpringLoop
-              from={{ transform: 'translateX(0px) translateY(0px)' }}
-              to={{ transform: 'translateX(3px) translateY(1px)' }}
+              from={{ transform: "translateX(0px) translateY(0px)" }}
+              to={{ transform: "translateX(3px) translateY(1px)" }}
             >
               <ExampleObjects />
             </GSpringLoop>
@@ -457,10 +457,10 @@ function Presentation() {
       <Slide>
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            height: '100%',
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            height: "100%",
           }}
         >
           <Heading>
@@ -471,10 +471,10 @@ function Presentation() {
         </div>
         <div
           style={{
-            position: 'absolute',
+            position: "absolute",
             bottom: 0,
-            left: '50%',
-            transform: 'translate(-50%)',
+            left: "50%",
+            transform: "translate(-50%)",
           }}
         >
           <Heading margin="32px 0px 0px 0px" color="primary">
@@ -483,5 +483,5 @@ function Presentation() {
         </div>
       </Slide>
     </Deck>
-  )
+  );
 }
