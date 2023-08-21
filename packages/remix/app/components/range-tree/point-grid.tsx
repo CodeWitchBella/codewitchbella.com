@@ -1,5 +1,4 @@
-import React from 'react'
-import { Fragment, useMemo, useRef, useState } from 'react'
+import React, { Fragment, useMemo, useRef, useState } from 'react'
 import { useRangeTreeDispatch, useRangeTreeState } from './range-tree-state'
 import Resizer from '@isbl/react-resizer'
 

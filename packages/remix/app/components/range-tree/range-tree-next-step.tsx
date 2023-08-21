@@ -1,9 +1,11 @@
-import { findHighlightedNodeFractal, FractalNode } from './derived'
-import {
+import type { FractalNode } from './derived';
+import { findHighlightedNodeFractal } from './derived'
+import type {
   DerivedState,
   Highlight,
-  initialState,
-  StateBase,
+  StateBase} from './range-tree-state';
+import {
+  initialState
 } from './range-tree-state'
 
 type Status =

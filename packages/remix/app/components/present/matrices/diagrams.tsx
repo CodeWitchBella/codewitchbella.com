@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { useContext, useEffect, useRef } from "react";
+import { useContext } from "react";
 import { SlideContext, Stepper } from "spectacle";
 import { useSpring, animated } from "@react-spring/web";
 

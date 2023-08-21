@@ -1,14 +1,14 @@
-import { Technical } from '../components/landing-page/landing-page-technical'
-import type { PropsWithChildren } from 'react'
-import css from '../components/landing-page/landing-page.css'
+import { Technical } from "../components/landing-page/landing-page-technical";
+import type { PropsWithChildren } from "react";
+import css from "../components/landing-page/landing-page.css";
 
 export function links() {
   return [
     {
-      rel: 'stylesheet',
+      rel: "stylesheet",
       href: css,
     },
-  ]
+  ];
 }
 
 export default function Index() {
@@ -16,7 +16,7 @@ export default function Index() {
     <>
       <h1>Ing. Isabella Skořepová</h1>
       <div className="img">
-        <img src="/static/avatar3_cropped.png" />
+        <img src="/static/avatar3_cropped.png" alt="Moje profilovka" />
       </div>
       <p>
         Člověk by řekl, že když dělám webovky už několik let, že budu mít hezčí
@@ -39,12 +39,12 @@ export default function Index() {
           </Link>
         </li>
         <li>
-          <Link href="https://isbl.cz/mantinely">mantinelydemokracie.cz</Link>{' '}
+          <Link href="https://isbl.cz/mantinely">mantinelydemokracie.cz</Link>{" "}
           (archiv)
         </li>
         <li>
-          Reflektor{' '}
-          <Link href="https://isbl.cz/reflektor-android">Google Play</Link>{' '}
+          Reflektor{" "}
+          <Link href="https://isbl.cz/reflektor-android">Google Play</Link>{" "}
           <Link href="https://isbl.cz/reflektor-ios">App Store</Link>
         </li>
         <li>
@@ -53,18 +53,18 @@ export default function Index() {
         <li>
           <Link href="https://rekonstrukcestatu.cz/">
             Rekonstrukce státu.cz
-          </Link>{' '}
+          </Link>{" "}
           (předchozí verze)
         </li>
         <li>
-          Profil na <Link href="https://isbl.cz/gitlab">GitLab.com</Link> a{' '}
+          Profil na <Link href="https://isbl.cz/gitlab">GitLab.com</Link> a{" "}
           <Link href="https://isbl.cz/github">GitHub</Link>
         </li>
         <li>A další neveřejné projekty</li>
       </ul>
       <Technical />
     </>
-  )
+  );
 }
 
 function Link({ href, children }: PropsWithChildren<{ href: string }>) {
@@ -72,5 +72,5 @@ function Link({ href, children }: PropsWithChildren<{ href: string }>) {
     <a href={href} target="_blank" rel="noreferrer noopener">
       {children}
     </a>
-  )
+  );
 }

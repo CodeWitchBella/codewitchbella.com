@@ -1,5 +1,5 @@
-import React, { CSSProperties } from 'react'
-import { useEffect, useRef } from 'react'
+import type { CSSProperties } from 'react';
+import React, { useEffect, useRef } from 'react'
 
 export function ArrowEnd({
   id,

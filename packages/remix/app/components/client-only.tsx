@@ -1,4 +1,5 @@
-import { PropsWithChildren, useEffect, useState } from 'react'
+import type { PropsWithChildren} from 'react';
+import { useEffect, useState } from 'react'
 import { Scripts } from "@remix-run/react";
 
 export function ClientOnly({ children }: PropsWithChildren<{}>) {

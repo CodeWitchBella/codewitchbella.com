@@ -1,5 +1,5 @@
-import React from 'react'
-import { ReactNode, useContext, createContext, PropsWithChildren } from 'react'
+import type { ReactNode, PropsWithChildren } from 'react';
+import React, { useContext, createContext } from 'react'
 
 export function CalEvent({
   title,

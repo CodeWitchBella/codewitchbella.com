@@ -1,7 +1,8 @@
+import type {
+  Dispatch,
+  ReactNode} from 'react';
 import {
   createContext,
-  Dispatch,
-  ReactNode,
   useContext,
   useReducer,
 } from 'react'

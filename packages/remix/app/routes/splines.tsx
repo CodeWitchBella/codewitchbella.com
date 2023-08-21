@@ -1,15 +1,9 @@
-import React from 'react'
-import { Splines, styles } from '~/components/splines/splines'
+import { Splines, styles } from "~/components/splines/splines";
 
 export function links() {
-  return [
-    {
-      rel: 'stylesheet',
-      href: styles,
-    },
-  ]
+  return [{ rel: "stylesheet", href: styles }];
 }
 
 export default function SplinesRoute() {
-  return <Splines />
+  return <Splines />;
 }

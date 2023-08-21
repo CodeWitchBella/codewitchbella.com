@@ -1,9 +1,10 @@
-import React, { PropsWithChildren } from 'react'
-import { Fragment, useEffect, useMemo, useState } from 'react'
-import {
+import type { PropsWithChildren } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react'
+import type {
   Points,
+  RangeTreeState} from './range-tree-state';
+import {
   RangeTreeProvider,
-  RangeTreeState,
   useRangeTreeDispatch,
   useRangeTreeState,
 } from './range-tree-state'

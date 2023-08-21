@@ -30,8 +30,6 @@ import ctuLion from "./ctu_lion.svg";
 // const ctuLion = new URL('./ctu_lion.svg', import.meta.url).href
 import headsetsUrl from "./headsets.png";
 // const headsetsUrl = new URL('./headsets.png', import.meta.url).href
-import octopusInspect from "./octopus-inspect.png";
-// const octopusInspect = new URL('./octopus-inspect.png', import.meta.url).href
 
 const theme = {
   //https://coolors.co/palette/713e5a-63a375-edc79b-d57a66-ca6680-f283b6-f0544f-bc96e6-d8b4e2-a44200
