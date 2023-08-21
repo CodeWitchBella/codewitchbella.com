@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import type { V2_MetaFunction, LinksFunction } from "@remix-run/node";
+import css from "./index.css";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Isabella Skořepová" }];
@@ -16,7 +17,7 @@ export const links: LinksFunction = () => {
   return [
     {
       rel: "stylesheet",
-      href: "/vendor/inter-3.19/inter.css",
+      href: css,
     },
   ];
 };
