@@ -1578,6 +1578,7 @@ __metadata:
     "@codewitchbella.com/spectacle": "workspace:"
     "@isbl/react-resizer": "npm:0.2.4"
     "@react-spring/web": "npm:^9.7.3"
+    "@remix-run/cloudflare": "npm:^1.19.3"
     "@remix-run/cloudflare-pages": "npm:^1.19.3"
     "@remix-run/dev": "npm:^1.19.3"
     "@remix-run/react": "npm:^1.19.3"
@@ -1589,12 +1590,12 @@ __metadata:
     cross-env: "npm:^7.0.3"
     esbuild: "npm:0.19.2"
     fast-deep-equal: "npm:^3.1.3"
+    isbot: "npm:latest"
     luxon: "npm:^3.4.0"
     npm-run-all: "npm:^4.1.5"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-katex: "npm:^3.0.1"
-    remix: "npm:^1.19.3"
     typescript: "npm:^5.1.6"
     wrangler: "npm:^3.5.1"
   languageName: unknown
@@ -2749,7 +2750,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/cloudflare@npm:1.19.3":
+"@remix-run/cloudflare@npm:1.19.3, @remix-run/cloudflare@npm:^1.19.3":
   version: 1.19.3
   resolution: "@remix-run/cloudflare@npm:1.19.3"
   dependencies:
@@ -8425,6 +8426,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"isbot@npm:latest":
+  version: 3.6.13
+  resolution: "isbot@npm:3.6.13"
+  checksum: 7b3a3f534e0d4d3c7a4bee7444d432355528271a6d4d6e003fd1b46447aaa05b576c5f88b87d9429c268f36ec8165aa205fc16700d469ca9a198528db774e41c
+  languageName: node
+  linkType: hard
+
 "isexe@npm:^2.0.0":
   version: 2.0.0
   resolution: "isexe@npm:2.0.0"
@@ -11927,13 +11935,6 @@ __metadata:
     mdast-util-to-hast: "npm:^11.0.0"
     unified: "npm:^10.0.0"
   checksum: e47d0700b3ce0caf4183878c449590f9dc4845000113098b0c3d042ed54e94a209f52d39cde6a83171c28839ed52991464e6c6bf0509777f68999ffd30965d19
-  languageName: node
-  linkType: hard
-
-"remix@npm:^1.19.3":
-  version: 1.19.3
-  resolution: "remix@npm:1.19.3"
-  checksum: c99ee8f123204c22ba4f19ab748706ffe8388cb2ca7879d07ff0107de509459f4a26f1392ebe80160637e62aedf1a7e96819ce804f416adda56772f337dfef8b
   languageName: node
   linkType: hard
 

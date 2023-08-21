@@ -17,6 +17,7 @@
     "@remix-run/serve": "^1.19.3",
     "comlink": "^4.4.1",
     "fast-deep-equal": "^3.1.3",
+    "isbot": "latest",
     "luxon": "^3.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
