@@ -6,10 +6,10 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import type { MetaFunction, LinksFunction } from "@remix-run/node";
+import type { V2_MetaFunction, LinksFunction } from "@remix-run/node";
 
-export const meta: MetaFunction = () => {
-  return { title: "Isabella Skořepová" };
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "Isabella Skořepová" }];
 };
 
 export const links: LinksFunction = () => {
