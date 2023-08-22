@@ -23,6 +23,5 @@
     "paths": {
       "~/*": ["./app/*"]
     }
-  },
-  "extends": "../base/tsconfig.json"
+  }
 }
