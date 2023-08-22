@@ -1,3 +1,4 @@
+import { Link } from "@remix-run/react";
 import { Technical } from "../components/landing-page/landing-page-technical";
 import type { PropsWithChildren } from "react";
 
@@ -34,6 +35,20 @@ export default function Index() {
                 Mám stránky, mám stránky. Nic moc tu není, ale už to nevypadá
                 vyloženě hnusně. Jenom trochu 😄️️️️️️
               </p>
+              <div className="flex gap-4 flex-wrap">
+                <Link
+                  to="/blog"
+                  className="inline-flex items-center font-semibold text-blue-600 lg:mb-0 hover:text-neutral-600"
+                >
+                  Blog »
+                </Link>
+                <Link
+                  to="/demos"
+                  className="inline-flex items-center font-semibold text-blue-600 lg:mb-0 hover:text-neutral-600"
+                >
+                  Demos »
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -41,39 +56,52 @@ export default function Index() {
       <section className="prose max-w-prose mx-auto">
         <ul>
           <li>
-            <Link href="https://brehoni.cz">Stránky našeho oddílu Brehoni</Link>
+            <ExternalLink href="https://brehoni.cz">
+              Stránky našeho oddílu Brehoni
+            </ExternalLink>
           </li>
           <li>
-            <Link href="https://isbl.cz/zpevnik">
+            <ExternalLink href="https://isbl.cz/zpevnik">
               Zpěvník (funguje offline)
-            </Link>
+            </ExternalLink>
           </li>
           <li>
-            <Link href="https://github.com/CodeWitchBella/itt2021-host#readme">
+            <ExternalLink href="https://github.com/CodeWitchBella/itt2021-host#readme">
               Host
-            </Link>
+            </ExternalLink>
           </li>
           <li>
-            <Link href="https://isbl.cz/mantinely">mantinelydemokracie.cz</Link>{" "}
+            <ExternalLink href="https://isbl.cz/mantinely">
+              mantinelydemokracie.cz
+            </ExternalLink>{" "}
             (archiv)
           </li>
           <li>
             Reflektor{" "}
-            <Link href="https://isbl.cz/reflektor-android">Google Play</Link>{" "}
-            <Link href="https://isbl.cz/reflektor-ios">App Store</Link>
+            <ExternalLink href="https://isbl.cz/reflektor-android">
+              Google Play
+            </ExternalLink>{" "}
+            <ExternalLink href="https://isbl.cz/reflektor-ios">
+              App Store
+            </ExternalLink>
           </li>
           <li>
-            <Link href="https://ok1kvk.cz/tag/vse/1/">ok1kvk.cz</Link>
+            <ExternalLink href="https://ok1kvk.cz/tag/vse/1/">
+              ok1kvk.cz
+            </ExternalLink>
           </li>
           <li>
-            <Link href="https://rekonstrukcestatu.cz/">
+            <ExternalLink href="https://rekonstrukcestatu.cz/">
               Rekonstrukce státu.cz
-            </Link>{" "}
+            </ExternalLink>{" "}
             (předchozí verze)
           </li>
           <li>
-            Profil na <Link href="https://isbl.cz/gitlab">GitLab.com</Link> a{" "}
-            <Link href="https://isbl.cz/github">GitHub</Link>
+            Profil na{" "}
+            <ExternalLink href="https://isbl.cz/gitlab">
+              GitLab.com
+            </ExternalLink>{" "}
+            a <ExternalLink href="https://isbl.cz/github">GitHub</ExternalLink>
           </li>
           <li>A další neveřejné projekty</li>
         </ul>
@@ -83,7 +111,7 @@ export default function Index() {
   );
 }
 
-function Link({ href, children }: PropsWithChildren<{ href: string }>) {
+function ExternalLink({ href, children }: PropsWithChildren<{ href: string }>) {
   return (
     <a href={href} target="_blank" rel="noreferrer noopener">
       {children}

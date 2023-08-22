@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
+import { Button } from "./button";
 
 let timeoutHandle: ReturnType<typeof setTimeout> | null;
 
@@ -30,12 +31,7 @@ export function Technical() {
   const toggle = () => setVisible((v) => !v);
   return (
     <section className="my-8 prose max-w-prose mx-auto">
-      <button
-        className="px-5 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-blue-600 lg:px-10 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        onClick={toggle}
-      >
-        Technical stuff
-      </button>
+      <Button onClick={toggle}>Technical stuff</Button>
       <div style={visible ? {} : { display: "none" }}>
         <h2>Desktop Linux (primary) SSH key</h2>
         <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBxPNmNRwDY3Az5S7O5IXVzHG0tNp1J1A9ndLvGjk1X7 isabella@desktop.isbl.cz`}</CopyOnClick>
