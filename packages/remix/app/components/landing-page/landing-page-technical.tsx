@@ -1,41 +1,42 @@
-import type { ReactNode } from 'react'
-import { useState } from 'react'
+import type { ReactNode } from "react";
+import { useState } from "react";
 
-let timeoutHandle: ReturnType<typeof setTimeout> | null
+let timeoutHandle: ReturnType<typeof setTimeout> | null;
 
 function CopyOnClick({ children }: { children: ReactNode }) {
   return (
-    <>
-      <div
-        className="mono"
-        onClick={(event) => {
-          const selection = window.getSelection()
-          if (!selection) return
-          selection.selectAllChildren(event.currentTarget)
-          document.execCommand('copy')
-          document.querySelector('.copied')?.classList.remove('nonvisible')
-          if (timeoutHandle) clearTimeout(timeoutHandle)
-          timeoutHandle = setTimeout(function () {
-            document.querySelector('.copied')?.classList.add('nonvisible')
-            timeoutHandle = null
-          }, 2500)
-        }}
-      >
-        {children}
-      </div>
-    </>
-  )
+    <div
+      className="not-prose font-mono bg-gray-200 rounded p-2 pr-6 max-h-28 overflow-y-auto overflow-x-hidden whitespace-pre-line"
+      onClick={(event) => {
+        const selection = window.getSelection();
+        if (!selection) return;
+        selection.selectAllChildren(event.currentTarget);
+        document.execCommand("copy");
+        document.querySelector(".copied")?.classList.remove("invisible");
+        if (timeoutHandle) clearTimeout(timeoutHandle);
+        timeoutHandle = setTimeout(function () {
+          document.querySelector(".copied")?.classList.add("invisible");
+          timeoutHandle = null;
+        }, 2500);
+      }}
+    >
+      {children}
+    </div>
+  );
 }
 
 export function Technical() {
-  const [visible, setVisible] = useState(false)
-  const toggle = () => setVisible((v) => !v)
+  const [visible, setVisible] = useState(false);
+  const toggle = () => setVisible((v) => !v);
   return (
-    <>
-      <button className="technical" onClick={toggle}>
+    <section className="my-8 prose max-w-prose mx-auto">
+      <button
+        className="px-5 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-blue-600 lg:px-10 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        onClick={toggle}
+      >
         Technical stuff
       </button>
-      <div className="technical" style={visible ? {} : { display: 'none' }}>
+      <div style={visible ? {} : { display: "none" }}>
         <h2>Desktop Linux (primary) SSH key</h2>
         <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBxPNmNRwDY3Az5S7O5IXVzHG0tNp1J1A9ndLvGjk1X7 isabella@desktop.isbl.cz`}</CopyOnClick>
         <h2>Desktop Windows SSH key</h2>
@@ -45,14 +46,14 @@ export function Technical() {
         */}
         <h2>Desktop GPG key</h2>
         <div>
-          Uploaded to{' '}
+          Uploaded to{" "}
           <a
             href="https://keyserver.ubuntu.com/"
             target="_blank"
             rel="noopener noreferrer"
           >
             keyserver.ubuntu.com
-          </a>{' '}
+          </a>{" "}
           as A6D87DDFE25D143505C2E04BBC6A9D1F83CBCE7B
         </div>
         <CopyOnClick>{gpg}</CopyOnClick>
@@ -66,14 +67,14 @@ export function Technical() {
         <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ0I3KLkmwtJHFdQz73UhZYKzU/qDA2cuSFb+5rKoWAV isabella@macbook-m2.isbl.cz`}</CopyOnClick>
         <h2>Work laptop GPG key</h2>
         <div>
-          Uploaded to{' '}
+          Uploaded to{" "}
           <a
             href="https://keyserver.ubuntu.com/"
             target="_blank"
             rel="noopener noreferrer"
           >
             keyserver.ubuntu.com
-          </a>{' '}
+          </a>{" "}
           as 06A2060326D1DE6BA2990455385E484995021C2F
         </div>
         <CopyOnClick>{workGpg}</CopyOnClick>
@@ -84,33 +85,33 @@ export function Technical() {
         <CopyOnClick>{`ssh-keygen -a 100 -t ed25519 -C "isabella@skorepova.info"`}</CopyOnClick>
       </div>
       <div
-        className="copied nonvisible"
+        className="copied invisible"
         style={{
-          position: 'fixed',
+          position: "fixed",
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          pointerEvents: 'none',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          pointerEvents: "none",
         }}
       >
         <div
           style={{
-            background: 'black',
-            color: 'white',
-            fontSize: '3vw',
-            padding: '3vw',
-            borderRadius: '3vw',
+            background: "black",
+            color: "white",
+            fontSize: "3vw",
+            padding: "3vw",
+            borderRadius: "3vw",
           }}
         >
           Zkopírováno!
         </div>
       </div>
-    </>
-  )
+    </section>
+  );
 }
 
 const gpg = `
@@ -128,7 +129,7 @@ Fzu35i8Lf9Y5778ZFhTt5oETCxgQ7RPUAP4hl13YqsIabMTv2cNHanyaBUuY/4es
 riCWwZgVz0tvDg==
 =cb6g
 -----END PGP PUBLIC KEY BLOCK-----
-`.trim()
+`.trim();
 
 const workGpg = `
 -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -145,7 +146,7 @@ VTheSEmVAhwvBQJkXkJqAhsMBQkDwmcAAAoJEDheSEmVAhwvvlQBALNPXJcrZlhK
 hDH+oViNGCh8DQ==
 =NUN7
 -----END PGP PUBLIC KEY BLOCK-----
-`.trim()
+`.trim();
 
 /*
 const ntbGpg = `
