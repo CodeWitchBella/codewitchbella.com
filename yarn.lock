@@ -1460,36 +1460,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codewitchbella.com/remix@workspace:packages/remix":
-  version: 0.0.0-use.local
-  resolution: "@codewitchbella.com/remix@workspace:packages/remix"
-  dependencies:
-    "@isbl/react-resizer": "npm:0.2.4"
-    "@react-spring/web": "npm:^9.7.3"
-    "@remix-run/dev": "npm:^1.19.3"
-    "@remix-run/node": "npm:^1.19.3"
-    "@remix-run/react": "npm:^1.19.3"
-    "@remix-run/serve": "npm:^1.19.3"
-    "@tailwindcss/typography": "npm:^0.5.9"
-    "@types/luxon": "npm:^3.3.1"
-    "@types/react": "npm:^18.2.20"
-    "@types/react-dom": "npm:^18.2.7"
-    comlink: "npm:^4.4.1"
-    cross-env: "npm:^7.0.3"
-    esbuild: "npm:0.19.2"
-    fast-deep-equal: "npm:^3.1.3"
-    isbot: "npm:latest"
-    luxon: "npm:^3.4.0"
-    npm-run-all: "npm:^4.1.5"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    react-katex: "npm:^3.0.1"
-    spectacle: "npm:^10.1.5"
-    tailwindcss: "npm:^3.3.3"
-    typescript: "npm:^5.1.6"
-  languageName: unknown
-  linkType: soft
-
 "@emotion/hash@npm:^0.9.0":
   version: 0.9.1
   resolution: "@emotion/hash@npm:0.9.1"
@@ -4184,8 +4154,31 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "codewitchbella.com@workspace:."
   dependencies:
+    "@isbl/react-resizer": "npm:0.2.4"
+    "@react-spring/web": "npm:^9.7.3"
+    "@remix-run/dev": "npm:^1.19.3"
     "@remix-run/eslint-config": "npm:^1.19.3"
+    "@remix-run/node": "npm:^1.19.3"
+    "@remix-run/react": "npm:^1.19.3"
+    "@remix-run/serve": "npm:^1.19.3"
+    "@tailwindcss/typography": "npm:^0.5.9"
+    "@types/luxon": "npm:^3.3.1"
+    "@types/react": "npm:^18.2.20"
+    "@types/react-dom": "npm:^18.2.7"
+    comlink: "npm:^4.4.1"
+    cross-env: "npm:^7.0.3"
+    esbuild: "npm:0.19.2"
     eslint: "npm:^8.47.0"
+    fast-deep-equal: "npm:^3.1.3"
+    isbot: "npm:latest"
+    luxon: "npm:^3.4.0"
+    npm-run-all: "npm:^4.1.5"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    react-katex: "npm:^3.0.1"
+    spectacle: "npm:^10.1.5"
+    tailwindcss: "npm:^3.3.3"
+    typescript: "npm:^5.1.6"
   languageName: unknown
   linkType: soft
 

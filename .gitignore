@@ -1,3 +1,7 @@
+/.cache
+/build
+/public/build
+
 *.tsbuildinfo
 .pnp.*
 .yarn/*
