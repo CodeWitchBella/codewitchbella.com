@@ -15,11 +15,17 @@ export default function Index() {
 
                   <div className="absolute rounded-full bg-fuchsia-300 -bottom-24 right-20 w-72 h-72 mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
                   <div className="relative">
-                    <img
-                      className="object-cover object-center mx-auto rounded-lg shadow-2xl"
-                      alt="hero"
-                      src="/static/avatar3_cropped.png"
-                    />
+                    <picture>
+                      <source
+                        srcSet="/static/avatar3_cropped_512.jpg 1x, /static/avatar3_cropped_1024.jpg 2x"
+                        type="image/jpeg"
+                      />
+                      <img
+                        className="object-cover object-center mx-auto rounded-lg shadow-2xl"
+                        alt="hero"
+                        src="/static/avatar3_cropped.png"
+                      />
+                    </picture>
                   </div>
                 </div>
               </div>
