@@ -58,8 +58,10 @@ function NL({ to, children }: { to: string; children: React.ReactNode }) {
       <NavLink
         to={to}
         className={({ isActive }) =>
-          "px-2 lg:px-6 text-smsm:px-3 text-gray-500 block border-b-2 py-3 border-transparent hover:border-blue-600 hover:text-blue-500" +
-          (isActive ? " border-blue-600 text-blue-500" : "")
+          "px-2 lg:px-6 text-smsm:px-3 block border-b-2 py-3 hover:border-blue-600 hover:text-blue-500" +
+          (isActive
+            ? " border-blue-600 text-blue-500"
+            : " border-transparent text-gray-500")
         }
       >
         {children}
