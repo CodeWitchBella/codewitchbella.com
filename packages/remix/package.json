@@ -1,8 +1,9 @@
 {
   "private": true,
-  "name": "@codewitchbella.com/remix",
+  "name": "codewitchbella.com",
   "description": "",
   "license": "",
+  "packageManager": "yarn@4.0.0-rc.48+sha256.cdff7838754ec6911cd6915b110060255d794480faae45ad66eb205d4563be62",
   "scripts": {
     "build": "cross-env NODE_ENV=production remix build",
     "dev": "remix dev"
@@ -26,18 +27,20 @@
   },
   "devDependencies": {
     "@remix-run/dev": "^1.19.3",
+    "@remix-run/eslint-config": "^1.19.3",
     "@types/luxon": "^3.3.1",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "cross-env": "^7.0.3",
     "esbuild": "0.19.2",
+    "eslint": "^8.47.0",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.1.6"
   },
   "sideEffects": false,
   "main": "dist/worker.js",
   "engines": {
-    "node": ">=14",
-    "yarn": ">=2"
+    "yarn": ">=2",
+    "node": ">=18"
   }
 }
