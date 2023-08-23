@@ -59,49 +59,68 @@ export default function Index() {
           </div>
         </div>
       </section>
+      <section className="max-w-prose mx-auto">
+        <Timeline>
+          <TimelineItem
+            date="Září 2022 — současnost"
+            title="Stránky našeho oddílu Brehoni"
+          >
+            <ExternalLink href="https://brehoni.cz">brehoni.cz</ExternalLink>
+          </TimelineItem>
+          <TimelineItem date="Červen 2018 — současnost" title="Zpěvník">
+            <p className="mb-0">
+              Více jak 250 písní, funguje offline včetně fulltext vyhledávání.
+              Má light a dark mode, kolekce písní a umí generovat PDF. Česká a
+              anglická jazyková mutace. Dlouhodobě udržovaný projekt.
+            </p>
+            <ExternalLink href="https://zpevnik.skorepova.info">
+              zpevnik.skorepova.info
+            </ExternalLink>
+          </TimelineItem>
+          <TimelineItem date="2021" title="Host">
+            <p className="mb-0">
+              Multiplayer VR experience. Vytvořeno v rámci předmětu ITT.
+              Obsahuje motion capture data.
+            </p>
+            <ExternalLink href="https://github.com/CodeWitchBella/itt2021-host#readme">
+              Github Repozitář
+            </ExternalLink>
+          </TimelineItem>
+          <TimelineItem title="Rekonstrukce státu" date="2018 — 2021">
+            <p>
+              Webová prezentace{" "}
+              <ExternalLink href="https://rekonstrukcestatu.cz">
+                rekonstrukcestatu.cz
+              </ExternalLink>{" "}
+              včetně CMS a migrace z existujícího řešení. Dále obsahovalo
+              hodnocení politiků, který je stále jednou za čas obnoven a použit.
+              V současnosti nedostupné.
+            </p>
+          </TimelineItem>
+          <TimelineItem title="Reflektor" date="2018 — 2021">
+            <p>
+              React Native aplikace pro Android a iOS. Stále dostupné, ale už
+              neudržované.
+            </p>
+          </TimelineItem>
+          <TimelineItem date="May 2018" title="Mantinely Demokracie">
+            <p>
+              Webová prezentace projektu Rekonstrukce státu včetně jednoduchého
+              CMS a interaktivního generátoru sdílitelných grafik. V současnosti
+              nedostupné.
+            </p>
+          </TimelineItem>
+          <TimelineItem title="ok1kvk.cz" date="2015">
+            <p className="mb-0">
+              Webové stránky pro radioamatérský klub OK1KVK. Nadále je udržuji v
+              chodu, ale základní strukturu jsem již dlouho neupravila.
+            </p>
+            <ExternalLink href="https://ok1kvk.cz">ok1kvk.cz</ExternalLink>
+          </TimelineItem>
+        </Timeline>
+      </section>
       <section className="prose max-w-prose mx-auto">
         <ul>
-          <li>
-            <ExternalLink href="https://brehoni.cz">
-              Stránky našeho oddílu Brehoni
-            </ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href="https://isbl.cz/zpevnik">
-              Zpěvník (funguje offline)
-            </ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href="https://github.com/CodeWitchBella/itt2021-host#readme">
-              Host
-            </ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href="https://isbl.cz/mantinely">
-              mantinelydemokracie.cz
-            </ExternalLink>{" "}
-            (archiv)
-          </li>
-          <li>
-            Reflektor{" "}
-            <ExternalLink href="https://isbl.cz/reflektor-android">
-              Google Play
-            </ExternalLink>{" "}
-            <ExternalLink href="https://isbl.cz/reflektor-ios">
-              App Store
-            </ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href="https://ok1kvk.cz/tag/vse/1/">
-              ok1kvk.cz
-            </ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href="https://rekonstrukcestatu.cz/">
-              Rekonstrukce státu.cz
-            </ExternalLink>{" "}
-            (předchozí verze)
-          </li>
           <li>
             Profil na{" "}
             <ExternalLink href="https://isbl.cz/gitlab">
@@ -114,6 +133,37 @@ export default function Index() {
       </section>
       <Technical />
     </>
+  );
+}
+
+function TimelineItem({
+  date,
+  title,
+  children,
+}: {
+  date: string;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <li className="mb-10 ml-4">
+      <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+      <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+        {date}
+      </time>
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        {title}
+      </h3>
+      <div className="prose">{children}</div>
+    </li>
+  );
+}
+
+function Timeline({ children }: { children: React.ReactNode }) {
+  return (
+    <ol className="relative border-l border-gray-200 dark:border-gray-700">
+      {children}
+    </ol>
   );
 }
 
