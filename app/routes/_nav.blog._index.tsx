@@ -11,7 +11,9 @@ export async function loader() {
 
 export default function Posts() {
   const posts = useLoaderData<typeof loader>();
-  console.log(posts);
+  if (!posts.length) {
+    return <div className="prose mx-auto">Nothing to see here, yet.</div>;
+  }
   return (
     <div className="prose mx-auto">
       <h1>Posts</h1>
