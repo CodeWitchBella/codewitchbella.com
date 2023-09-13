@@ -3,7 +3,7 @@ import path from "path";
 import { bundleMDX, readFile, readdir } from "./server-only.server.js";
 
 function blogsPath() {
-  return path.join(__dirname, "..", "blog");
+  return __dirname + "/../blog";
 }
 
 export async function getPost(slug: string) {
