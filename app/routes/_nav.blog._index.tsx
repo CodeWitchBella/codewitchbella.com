@@ -10,7 +10,7 @@ export default function Posts() {
   const posts = useLoaderData<typeof loader>();
   console.log(posts);
   return (
-    <div>
+    <div className="prose mx-auto">
       <h1>Posts</h1>
       <ul>
         {posts.map((post) => (
