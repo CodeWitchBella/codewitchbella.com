@@ -17,5 +17,12 @@ export default {
     "@isbl/bcryptjs",
     "@isbl/ts-utils",
     "@isbl/react-resizer",
+    "mdx-bundler",
+    /^rehype.*/,
+    /^remark.*/,
+    /^unified.*/,
+    /^(unist|hast|micromark|mdast|estree).*/,
+    "lowlight",
+    "fault",
   ],
 };

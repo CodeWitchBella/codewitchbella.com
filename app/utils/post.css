@@ -1,0 +1,9 @@
+@import "highlight.js/styles/isbl-editor-dark.css";
+
+.prose pre {
+    padding: 0;
+}
+.prose pre code {
+    background: none;
+    width: fit-content;
+}

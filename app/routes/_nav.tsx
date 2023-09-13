@@ -1,7 +1,20 @@
-import { NavLink, Outlet } from "@remix-run/react";
+import {
+  NavLink,
+  Outlet,
+  isRouteErrorResponse,
+  useRouteError,
+} from "@remix-run/react";
 import { useState } from "react";
 
-export default function Nav() {
+export default function NavRoute() {
+  return (
+    <Nav>
+      <Outlet />
+    </Nav>
+  );
+}
+
+function Nav({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -21,15 +34,15 @@ export default function Nav() {
             <svg fill="currentColor" viewBox="0 0 20 20" className="w-8 h-8">
               {open ? (
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 />
               ) : (
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 />
               )}
             </svg>
@@ -47,7 +60,7 @@ export default function Nav() {
           </ul>
         </nav>
       </div>
-      <Outlet />
+      {children}
     </>
   );
 }
@@ -68,4 +81,31 @@ function NL({ to, children }: { to: string; children: React.ReactNode }) {
       </NavLink>
     </li>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <Nav>
+        <div className="prose mx-auto text-center">
+          <h1>
+            {error.status} {error.statusText}
+          </h1>
+        </div>
+      </Nav>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <Nav>
+        <h1>Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </Nav>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
+  }
 }

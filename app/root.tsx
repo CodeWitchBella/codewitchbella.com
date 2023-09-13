@@ -14,12 +14,7 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export const links: LinksFunction = () => {
-  return [
-    {
-      rel: "stylesheet",
-      href: css,
-    },
-  ];
+  return [{ rel: "stylesheet", href: css }];
 };
 
 export default function App() {

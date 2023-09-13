@@ -1,0 +1,64 @@
+---
+title: Use GitHub token to clone private repositories in CI via HTTPS
+published_at: "2023-09-13T10:07:09.583Z"
+---
+
+tl;dr: You can use yarn to install github repositories, even if the repository
+is private and you are using GitHub Actions as your CI.
+
+We have a private repository on GitHub that contains specification for our API.
+One of the goals of this effort was to generate typescript types so that the
+frontend team does not have to duplicate every endpoint specification in types.
+The question is how to pull this code into the frontend repo.
+
+The original proposal for this called for using git subtree. This is fine, but
+requires a bit of advanced knowledge of git to be able to update this. What if
+we could use something that every frontend dev is familiar with to pull the
+dependency: npm? The obvious way to do this would be to push the versions to npm,
+but that would add considerable complications to the CI of the specs repo. Then
+it occured to me: npm (and yarn, which is what we actually use) can install
+dependencies from GitHub. Now the question becomes: how do we authenticate the
+clone process when it installs?
+
+Fortunatelly, it seems that modern yarn uses normal `git clone` to clone repository
+first, then it packs it using `yarn pack` and then it installs the resulting
+tarball. This even allows us to have a build step in the process (to convert
+typescript to .d.ts and .js files bunlers expect to have in node_modules).
+On dev machines it therefore Just Works™️ as devs have SSH keys setup, which do
+have access to the appropriate repository.
+
+The other part of the equation was GitHub Actions. Those do have by default only
+access to the repository that triggered them. We already had a github token setup
+for other purposes, so this is not a big problem, but the question was: how do
+we inject this correctly so that git has access to it when yarn invokes it.
+Without furhter ado, here is the code
+
+```bash
+# create file which specifies the token
+echo "https://git:${{ secrets.GITHUB_TOKEN }}@github.com" > ${RUNNER_TEMP}/git-credentials.store
+# set git to look for the file
+git config --global credential.helper 'store --file ${RUNNER_TEMP}/git-credentials.store'
+# install dependencies
+yarn --immutable
+# delete the file
+rm -f ${RUNNER_TEMP}/git-credentials.store
+```
+
+One last consideration is that the last step should always run even if installation
+fails, so the actual github actions setup looks like this (it's a part of composite
+github action):
+
+```yaml
+- name: Install
+  shell: bash
+  run: |
+    set -xe
+    mkdir -p ${RUNNER_TEMP}
+    git config --global credential.helper 'store --file ${RUNNER_TEMP}/git-credentials.store'
+    echo "https://git:${{ inputs.token }}@github.com" > ${RUNNER_TEMP}/git-credentials.store
+    yarn --immutable
+- name: Cleanup
+  shell: bash
+  if: always()
+  run: rm -f ${RUNNER_TEMP}/git-credentials.store
+```
