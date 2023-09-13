@@ -1,9 +1,12 @@
+import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 
 import { getPosts } from "~/utils/post";
 
 export async function loader() {
-  return await getPosts();
+  return json(await getPosts(), {
+    headers: { "Cache-Control": "public, s-maxage=3600" },
+  });
 }
 
 export default function Posts() {
