@@ -62,3 +62,18 @@ github action):
   if: always()
   run: rm -f ${RUNNER_TEMP}/git-credentials.store
 ```
+
+The way this works is we set [git-credential-store](https://git-scm.com/docs/git-credential-store)
+as git credential helper. It's a program which provides git with credentials for
+accessing resources, which is exactly what we want here. It allows you to specify
+file for loading the data. Good thing about this is that since yarn is designed
+to access public repositories, it uses https to download them. We could probably
+convince it to clone the repo using ssh, but then we'd have to setup ssh deploy
+key. Setting up ssh keys is definitely possible, but this has fewer steps as you
+only need to output the token into one file and run one command to convince git
+to use it.
+
+Lastly, if you want to used this in Dockerfile, it's also possible via `ARG`, but
+make sure you delete the file in the same step as you create it so that the file
+does not end up in any layer. Ideally, you'd want to use multi-stage Dockerfile
+to avoid having this layer in resulting image at all.
