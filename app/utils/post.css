@@ -1,9 +1,17 @@
 @import "highlight.js/styles/isbl-editor-dark.css";
+@import "firacode/distr/fira_code.css";
 
 .prose pre {
-    padding: 0;
+  padding: 0;
 }
 .prose pre code {
-    background: none;
-    width: fit-content;
+  background: none;
+  width: fit-content;
+  font-family: "Fira Code", monospace;
+}
+
+@supports (font-variation-settings: normal) {
+  .prose pre code {
+    font-family: "Fira Code VF", monospace;
+  }
 }

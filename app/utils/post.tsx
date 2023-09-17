@@ -1,6 +1,7 @@
 import parseFrontMatter from "front-matter";
 import path from "path";
 import { bundleMDX, readFile, readdir } from "./server-only.server.js";
+import { notNull } from "@isbl/ts-utils";
 
 function blogsPath() {
   return __dirname + "/../blog";
@@ -56,13 +57,15 @@ export async function getPosts() {
   const posts = await Promise.all(
     postsPath.map(async (dirent) => {
       const file = await readFile(path.join(root, dirent.name));
-      const { attributes } = parseFrontMatter(file.toString());
+      const fm = parseFrontMatter(file.toString());
+      const attributes: any = fm.attributes;
+      if (typeof attributes !== "object" || !attributes) return null;
       return {
         slug: dirent.name.replace(/\.mdx/, ""),
-        //@ts-ignore
         title: attributes.title,
+        publishedAt: attributes.published_at,
       };
     }),
   );
-  return posts;
+  return posts.filter(notNull);
 }

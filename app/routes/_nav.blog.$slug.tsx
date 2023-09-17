@@ -5,6 +5,7 @@ import { getMDXComponent } from "mdx-bundler/client";
 import { useMemo } from "react";
 import { getPost } from "~/utils/post";
 import style from "../utils/post.css";
+import { __DEV__ } from "~/utils/utils";
 
 export const links: LinksFunction = () => {
   return [
@@ -25,7 +26,7 @@ export async function loader({ params, request }: DataFunctionArgs) {
   if (!slug) throw new Response("Not found", { status: 404 });
 
   const post = await getPost(slug);
-  if (post) {
+  if (post && (post.frontmatter.published_at || __DEV__)) {
     const { frontmatter, code } = post;
     return json(
       { frontmatter, code },
