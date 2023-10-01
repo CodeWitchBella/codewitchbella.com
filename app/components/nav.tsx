@@ -61,7 +61,7 @@ function NL({ to, children }: { to: string; children: React.ReactNode }) {
           "px-2 lg:px-6 text-smsm:px-3 block border-b-2 py-3 hover:border-rose-500 hover:text-rose-600 hover:dark:text-rose-300 hover:dark:border-rose-400" +
           (isActive
             ? " border-rose-500 text-rose-600 dark:text-rose-300 dark:border-rose-400"
-            : " border-transparent text-gray-500")
+            : " border-transparent text-slate-600 dark:text-slate-300")
         }
       >
         {children}
