@@ -7,7 +7,7 @@ let timeoutHandle: ReturnType<typeof setTimeout> | null;
 function CopyOnClick({ children }: { children: ReactNode }) {
   return (
     <div
-      className="not-prose font-mono bg-gray-200 rounded p-2 pr-6 max-h-28 overflow-y-auto overflow-x-hidden whitespace-pre-line"
+      className="not-prose font-mono bg-gray-200 dark:bg-gray-800 rounded p-2 pr-6 max-h-28 overflow-y-auto overflow-x-hidden whitespace-pre-line"
       onClick={(event) => {
         const selection = window.getSelection();
         if (!selection) return;
@@ -32,7 +32,7 @@ export function Technical() {
   return (
     <section className="my-8 prose max-w-prose mx-auto">
       <Button onClick={toggle}>Technical stuff</Button>
-      <div style={visible ? {} : { display: "none" }}>
+      <div style={visible ? {} : { display: "none" }} className="prose prose-pink dark:prose-invert pt-4">
         <h2>Desktop Linux (primary) SSH key</h2>
         <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBxPNmNRwDY3Az5S7O5IXVzHG0tNp1J1A9ndLvGjk1X7 isabella@desktop.isbl.cz`}</CopyOnClick>
         <h2>Desktop Windows SSH key</h2>

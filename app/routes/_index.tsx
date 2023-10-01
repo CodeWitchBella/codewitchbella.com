@@ -11,9 +11,9 @@ export default function Index() {
             <div className="w-full lg:max-w-lg lg:w-1/2 rounded-xl">
               <div>
                 <div className="relative w-full max-w-lg">
-                  <div className="absolute top-0 rounded-full bg-violet-300 -left-4 w-72 h-72 mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+                  <div className="absolute top-0 rounded-full bg-violet-300 dark:bg-violet-800 -left-4 w-72 h-72 filter blur-xl opacity-70 animate-blob"></div>
 
-                  <div className="absolute rounded-full bg-fuchsia-300 -bottom-24 right-20 w-72 h-72 mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+                  <div className="absolute rounded-full bg-fuchsia-300 dark:bg-fuchsia-900 -bottom-24 right-20 w-72 h-72 filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
                   <div className="relative">
                     <picture>
                       <source
@@ -31,26 +31,26 @@ export default function Index() {
               </div>
             </div>
             <div className="flex flex-col items-start mt-12 text-left lg:flex-grow lg:w-1/2 lg:pl-6 xl:pl-24 md:mb-0 xl:mt-0">
-              <span className="text-sm font-bold tracking-widest text-blue-600 uppercase">
+              <span className="text-sm font-bold tracking-widest text-rose-600 dark:text-rose-300 uppercase">
                 Ing.
               </span>
-              <h1 className="mb-8 text-4xl font-bold leading-none tracking-tighter text-neutral-600 md:text-7xl lg:text-5xl">
+              <h1 className="mb-8 text-4xl font-bold leading-none tracking-tighter text-neutral-600 dark:text-neutral-200 md:text-7xl lg:text-5xl">
                 Isabella Skořepová
               </h1>
-              <p className="mb-8 text-base leading-relaxed text-left text-gray-500">
+              <p className="mb-8 text-base leading-relaxed text-left text-gray-500 dark:text-neutral-300">
                 Mám stránky, mám stránky. Nic moc tu není, ale už to nevypadá
                 vyloženě hnusně. Jenom trochu 😄️️️️️️
               </p>
               <div className="flex gap-4 flex-wrap">
                 <Link
                   to="/blog"
-                  className="inline-flex items-center font-semibold text-blue-600 lg:mb-0 hover:text-neutral-600"
+                  className="inline-flex items-center font-semibold text-rose-600 dark:text-rose-300 lg:mb-0 hover:text-neutral-600"
                 >
                   Blog »
                 </Link>
                 <Link
                   to="/demos"
-                  className="inline-flex items-center font-semibold text-blue-600 lg:mb-0 hover:text-neutral-600"
+                  className="inline-flex items-center font-semibold text-rose-600 dark:text-rose-300 lg:mb-0 hover:text-neutral-600"
                 >
                   Demos »
                 </Link>
@@ -121,7 +121,7 @@ export default function Index() {
           </Timeline>
         </section>
       </div>
-      <section className="prose max-w-prose mx-auto">
+      <section className="prose prose-pink max-w-prose mx-auto dark:prose-invert">
         <ul>
           <li>
             Profil na{" "}
@@ -149,14 +149,14 @@ function TimelineItem({
 }) {
   return (
     <li className="mb-10 ml-4">
-      <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-      <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+      <div className="absolute w-3 h-3 bg-slate-500 rounded-full mt-1.5 -left-1.5 dark:bg-slate-500"></div>
+      <time className="mb-1 text-sm font-normal leading-none text-slate-700 dark:text-slate-400">
         {date}
       </time>
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
         {title}
       </h3>
-      <div className="prose">{children}</div>
+      <div className="prose prose-pink dark:prose-invert">{children}</div>
     </li>
   );
 }
@@ -164,7 +164,7 @@ function TimelineItem({
 function Timeline({ children }: { children: React.ReactNode }) {
   // https://flowbite.com/docs/components/timeline/
   return (
-    <ol className="relative border-l border-gray-200 dark:border-gray-700">
+    <ol className="relative border-l dark:border-gray-600 border-slate-400">
       {children}
     </ol>
   );
