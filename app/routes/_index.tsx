@@ -1,6 +1,7 @@
 import { Link } from "@remix-run/react";
 import { Technical } from "../components/landing-page/landing-page-technical";
 import type { PropsWithChildren } from "react";
+import { prose } from "~/components/css";
 
 export default function Index() {
   return (
@@ -44,13 +45,13 @@ export default function Index() {
               <div className="flex gap-4 flex-wrap">
                 <Link
                   to="/blog"
-                  className="inline-flex items-center font-semibold text-rose-600 dark:text-rose-300 lg:mb-0 hover:text-neutral-600"
+                  className="inline-flex items-center font-semibold text-rose-600 dark:text-rose-300 lg:mb-0 hover:text-rose-800 dark:hover:text-rose-500"
                 >
                   Blog »
                 </Link>
                 <Link
                   to="/demos"
-                  className="inline-flex items-center font-semibold text-rose-600 dark:text-rose-300 lg:mb-0 hover:text-neutral-600"
+                  className="inline-flex items-center font-semibold text-rose-600 dark:text-rose-300 lg:mb-0 hover:text-rose-800 dark:hover:text-rose-500"
                 >
                   Demos »
                 </Link>
@@ -121,7 +122,7 @@ export default function Index() {
           </Timeline>
         </section>
       </div>
-      <section className="prose prose-pink max-w-prose mx-auto dark:prose-invert">
+      <section className={prose+" max-w-prose mx-auto"}>
         <ul>
           <li>
             Profil na{" "}
@@ -156,7 +157,7 @@ function TimelineItem({
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
         {title}
       </h3>
-      <div className="prose prose-pink dark:prose-invert">{children}</div>
+      <div className={prose}>{children}</div>
     </li>
   );
 }

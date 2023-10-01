@@ -1,5 +1,6 @@
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
+import { prose } from "~/components/css";
 
 import { getPosts } from "~/utils/post";
 import { __DEV__ } from "~/utils/utils";
@@ -15,10 +16,10 @@ export async function loader() {
 export default function Posts() {
   const posts = useLoaderData<typeof loader>();
   if (!posts.length) {
-    return <div className="prose mx-auto">Nothing to see here, yet.</div>;
+    return <div className={prose+" mx-auto"}>Nothing to see here, yet.</div>;
   }
   return (
-    <div className="prose mx-auto">
+    <div className={prose+" mx-auto"}>
       <h1>Posts</h1>
       <ul>
         {posts.map((post) => (

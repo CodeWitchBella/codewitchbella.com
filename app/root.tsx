@@ -12,6 +12,7 @@ import type { V2_MetaFunction, LinksFunction } from "@remix-run/node";
 import css from "./index.css";
 import { Nav } from "./components/nav";
 import type { ReactNode } from "react";
+import { prose } from "./components/css";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Isabella Skořepová" }];
@@ -56,9 +57,9 @@ export function ErrorBoundary() {
     return (
       <Root>
         <Nav>
-          <div className="prose mx-auto text-center py-8">
+          <div className={prose +" mx-auto text-center py-8"}>
             <h1>{error.status}</h1>
-            <div className="-mt-8">
+            <div className="-mt-6">
               {typeof error.data === "string" ? error.data : null}
             </div>
           </div>

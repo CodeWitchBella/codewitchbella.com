@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { getPost } from "~/utils/post";
 import style from "../utils/post.css";
 import { __DEV__ } from "~/utils/utils";
+import { prose } from "~/components/css";
 
 export const links: LinksFunction = () => {
   return [
@@ -44,7 +45,7 @@ export default function Post() {
   const Component = useMemo(() => getMDXComponent(code), [code]);
 
   return (
-    <article className="mx-auto prose mb-8">
+    <article className={prose+" mx-auto mb-8"}>
       <Link to="/blog">&larr; Back to blog index</Link>
       <h1>{frontmatter.title}</h1>
       {frontmatter.published_at ? (
