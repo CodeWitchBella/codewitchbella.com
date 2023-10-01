@@ -2,34 +2,27 @@ import { Link } from "@remix-run/react";
 import { Technical } from "../components/landing-page/landing-page-technical";
 import type { PropsWithChildren } from "react";
 import { prose } from "~/components/css";
+import blob from '../components/blobanimation.svg'
 
 export default function Index() {
   return (
     <>
       <section>
         <div className="px-4 py-12 mx-auto max-w-7xl sm:px-6 md:px-12 lg:px-24 lg:py-24">
-          <div className="flex flex-wrap items-center mx-auto max-w-7xl">
-            <div className="w-full lg:max-w-lg lg:w-1/2 rounded-xl">
-              <div>
-                <div className="relative w-full max-w-lg">
-                  <div className="absolute top-0 rounded-full bg-violet-300 dark:bg-violet-800 -left-4 w-72 h-72 filter blur-xl opacity-70 animate-blob"></div>
-
-                  <div className="absolute rounded-full bg-fuchsia-300 dark:bg-fuchsia-900 -bottom-24 right-20 w-72 h-72 filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-                  <div className="relative">
-                    <picture>
-                      <source
-                        srcSet="/static/avatar3_cropped_512.jpg 1x, /static/avatar3_cropped_1024.jpg 2x"
-                        type="image/jpeg"
-                      />
-                      <img
-                        className="object-cover object-center mx-auto rounded-lg shadow-2xl"
-                        alt="hero"
-                        src="/static/avatar3_cropped.png"
-                      />
-                    </picture>
-                  </div>
-                </div>
-              </div>
+          <div className="flex flex-wrap items-center mx-auto max-w-7xl relative">
+            <img src={blob} width={850} className="absolute -top-48 -left-48 pointer-events-none" alt="" />
+            <div className="relative w-full lg:max-w-lg lg:w-1/2 rounded-xl">
+              <picture>
+                <source
+                  srcSet="/static/avatar3_cropped_512.jpg 1x, /static/avatar3_cropped_1024.jpg 2x"
+                  type="image/jpeg"
+                />
+                <img
+                  className="object-cover object-center mx-auto rounded-lg shadow-2xl"
+                  alt="hero"
+                  src="/static/avatar3_cropped.png"
+                />
+              </picture>
             </div>
             <div className="flex flex-col items-start mt-12 text-left lg:flex-grow lg:w-1/2 lg:pl-6 xl:pl-24 md:mb-0 xl:mt-0">
               <span className="text-sm font-bold tracking-widest text-rose-600 dark:text-rose-300 uppercase">
