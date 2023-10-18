@@ -1,0 +1,65 @@
+---
+title: Writing a song parser with Lezer
+# published_at: "2023-10-01T12:52:26.622Z"
+---
+
+import { Outlet } from "@remix-run/react"
+
+In this blog post I'll try to give a short introduction on the lezer parser
+language. It also contains interactive playground, which I think might be useful
+for exploring the language.
+
+I have a [songbook](https://zpevnik.skorepova.info/) web application which, among
+other things, functions as a songbook. That means that it stores songs which it
+can display. The app started life 5 years ago as school project which was a web
+rewrite of previous project in LaTeX. The core song format stayed backward-compatible
+without a major rewrite since then and I also added some features.
+
+All of that is to say: the song format is weird. The current parser for it is
+270 lines of javascript which is not particularly nice. At the same time, there
+is an editor component which uses [Monaco](https://microsoft.github.io/monaco-editor/)
+editor and has some basic syntax highlighting. Since the current configuration
+of Monaco weighs in at about 8MiBs[^1] I wanted to either slim it down or replace it.
+Another problem with Monaco is that is made for desktop and does not play nice
+with browsers on phones.[^2]
+
+Enter [CodeMirror 6](https://codemirror.net/), which has all the features I need
+but is smaller and works on phones. The trouble here is that I have to port my
+syntax highlighting logic to it. CodeMirror has multiple ways to achieve this,
+but I decided to go with the hard mode and write a parser with lezer. It does not
+have to support the full language but it should support enough so that syntax
+highlighting works.
+
+## Lezer introduction
+
+Lezer has a pretty [nice documentation](https://lezer.codemirror.net/), but in
+a nutshell it's a parser system with it's own grammar language. From this grammar
+you then generate javascript code. This javascript code can then parse the language
+you defined and once you define some mappings, CodeMirror can syntax highlight
+your language 🎉
+
+The gist is that you defined tokens (which are raw string sequences) and nodes,
+which can in turn consist of tokens, or nodes. But before we get to that, let's
+introduce the basics of the language on an example:
+
+<pre><code className="hljs"><span className="text-green-300 font-black">S:</span> When <span className="text-blue-300 font-semibold">[C]</span>the days are cold, And <span className="text-blue-300 font-semibold">[G]</span>the cards all fold
+And <span className="text-blue-300 font-semibold">[Ami]</span>the saints we see, Are <span className="text-blue-300 font-semibold">[F]</span>all made of gold
+When <span className="text-blue-300 font-semibold">[C]</span>your dreams all fail, And <span className="text-blue-300 font-semibold">[G]</span>the ones we hail
+Are <span className="text-blue-300 font-semibold">[Ami]</span>the worst of all, And <span className="text-blue-300 font-semibold">[F]</span>the blood’s run stale</code></pre>
+
+Here you can see two features of the language: `S:` which introduces a verse section
+and `[Chord]` which denotes a chord. Here's what the grammar for that looks like:
+
+<Outlet />
+
+
+[^1]: This is actually not as big of a problem as it might first seem. There are
+multiple things that make this more manageable. First is that the app is well
+code-split, so the initial load only loads in what you actually need. The second
+is that the app is fully offline-enabled so unless I release an update, you will
+never have to redownload that code. But it is still better to not have my app be
+twice as large as it needs to be.
+
+[^2]: I fix typos on my phone. To be able to do this I introduced a toggle which
+replaces the nice editor with syntax highlighting with plain textarea. This works
+but it'd be nice to make it work so that I can remove this toggle.

@@ -1,6 +1,6 @@
 import { json } from "@remix-run/node";
 import type { LinksFunction, DataFunctionArgs } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import { getMDXComponent } from "mdx-bundler/client";
 import { useMemo } from "react";
 import { getPost } from "~/utils/post";
@@ -23,10 +23,11 @@ type LoaderData = {
 };
 
 export async function loader({ params, request }: DataFunctionArgs) {
-  const slug = params.slug;
+  const slug = (new URL(request.url).pathname.slice('/blog/'.length))
   if (!slug) throw new Response("Not found", { status: 404 });
 
   const post = await getPost(slug);
+  console.log(post)
   if (post && (post.frontmatter.published_at || __DEV__)) {
     const { frontmatter, code } = post;
     return json(
@@ -42,14 +43,14 @@ export async function loader({ params, request }: DataFunctionArgs) {
 
 export default function Post() {
   const { code, frontmatter } = useLoaderData<LoaderData>();
-  const Component = useMemo(() => getMDXComponent(code), [code]);
+  const Component = useMemo(() => getMDXComponent(code, { remix: { Outlet } }), [code]);
 
   return (
     <article className={prose+" mx-auto mb-8"}>
       <Link to="/blog">&larr; Back to blog index</Link>
       <h1>{frontmatter.title}</h1>
       {frontmatter.published_at ? (
-        <div className="-mt-4 font-light text-slate-900">
+        <div className="-mt-4 font-light text-slate-900 dark:text-slate-50">
           Published: {frontmatter.published_at.split("T")[0]}
         </div>
       ) : null}

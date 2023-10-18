@@ -47,5 +47,5 @@ as git credential helper. It's a program which provides git with credentials for
 accessing resources, which is exactly what we want here. It allows you to specify
 file for loading the data.
 
-Lastly, if you want to used this in Dockerfile, use [`--mount=type=secret`](https://docs.docker.com/engine/reference/builder/#run---mounttypesecret)
+Lastly, if you want to used this in Dockerfile, use [<code>--mount=type=secret</code>](https://docs.docker.com/engine/reference/builder/#run---mounttypesecret)
 to give docker access to your file without saving it to the build history.

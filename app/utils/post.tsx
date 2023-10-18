@@ -1,7 +1,8 @@
 import parseFrontMatter from "front-matter";
 import path from "path";
-import { bundleMDX, readFile, readdir } from "./server-only.server.js";
+import { bundleMDX, gfmFootnote, readFile, readdir, gfmFootnoteFromMarkdown, gfmFootnoteToMarkdown } from "./server-only.server.js";
 import { notNull } from "@isbl/ts-utils";
+
 
 function blogsPath() {
   return __dirname + "/../blog";
@@ -36,11 +37,22 @@ export async function getPost(slug: string) {
   }
   const post = await bundleMDX({
     source,
+    globals: { '@remix-run/react': { varName: 'remix', namedExports: ['Outlet'] } },
     mdxOptions(options, frontmatter) {
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
+        // full gfm is broken, this at least gives me footnotes
+        function(this: any) {
+          const data = this.data()
+          const micromarkExtensions = data.micromarkExtensions || (data.micromarkExtensions = [])
+          const fromMarkdownExtensions = data.fromMarkdownExtensions || (data.fromMarkdownExtensions = [])
+          const toMarkdownExtensions = data.toMarkdownExtensions || (data.toMarkdownExtensions = [])
+          micromarkExtensions.push(gfmFootnote())
+          fromMarkdownExtensions.push(gfmFootnoteFromMarkdown())
+          toMarkdownExtensions.push(gfmFootnoteToMarkdown())
+        },
         rehypeHighlight,
-      ];
+      ].filter(notNull);
 
       return options;
     },
