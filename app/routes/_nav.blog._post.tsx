@@ -27,7 +27,6 @@ export async function loader({ params, request }: DataFunctionArgs) {
   if (!slug) throw new Response("Not found", { status: 404 });
 
   const post = await getPost(slug);
-  console.log(post)
   if (post && (post.frontmatter.published_at || __DEV__)) {
     const { frontmatter, code } = post;
     return json(

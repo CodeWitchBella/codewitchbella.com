@@ -2372,6 +2372,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lezer/generator@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "@lezer/generator@npm:1.5.1"
+  dependencies:
+    "@lezer/common": "npm:^1.0.2"
+    "@lezer/lr": "npm:^1.3.0"
+  bin:
+    lezer-generator: src/lezer-generator.cjs
+  checksum: 8317e67c72ebfe53238cf6b4e02fc1bdbd7a7f4a4b5e4f55fb32b59ccf13a3e79a227cbc8f366bdab95bb46b82b516523113d757ca4dc0d6a752978e0c2cd520
+  languageName: node
+  linkType: hard
+
 "@lezer/highlight@npm:^1.0.0, @lezer/highlight@npm:^1.1.3":
   version: 1.1.6
   resolution: "@lezer/highlight@npm:1.1.6"
@@ -3607,6 +3619,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@uiw/codemirror-themes@npm:^4.21.20":
+  version: 4.21.20
+  resolution: "@uiw/codemirror-themes@npm:4.21.20"
+  dependencies:
+    "@codemirror/language": "npm:^6.0.0"
+    "@codemirror/state": "npm:^6.0.0"
+    "@codemirror/view": "npm:^6.0.0"
+  peerDependencies:
+    "@codemirror/language": ">=6.0.0"
+    "@codemirror/state": ">=6.0.0"
+    "@codemirror/view": ">=6.0.0"
+  checksum: 9fe0098d2e26484491fc4e75162723ca51cac44e6ccf5b66079878cc2084c75ff70b76db5c194e8efce3518246da80fdf38178a11da7ab08a09b75e2963f25f5
+  languageName: node
+  linkType: hard
+
 "@uiw/react-codemirror@npm:^4.21.20":
   version: 4.21.20
   resolution: "@uiw/react-codemirror@npm:4.21.20"
@@ -4677,6 +4704,7 @@ __metadata:
     "@codesandbox/sandpack-react": "npm:^2.9.0"
     "@isbl/react-resizer": "npm:0.2.4"
     "@isbl/ts-utils": "npm:^1.0.1"
+    "@lezer/generator": "npm:^1.5.1"
     "@react-spring/web": "npm:^9.7.3"
     "@remix-run/dev": "npm:^1.19.3"
     "@remix-run/eslint-config": "npm:^1.19.3"
@@ -4687,6 +4715,7 @@ __metadata:
     "@types/luxon": "npm:^3.3.1"
     "@types/react": "npm:^18.2.20"
     "@types/react-dom": "npm:^18.2.7"
+    "@uiw/codemirror-themes": "npm:^4.21.20"
     "@uiw/react-codemirror": "npm:^4.21.20"
     comlink: "npm:^4.4.1"
     cross-env: "npm:^7.0.3"
