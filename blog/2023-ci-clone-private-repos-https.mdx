@@ -17,7 +17,7 @@ Without furhter ado, here is the code
 echo "https://git:${{ secrets.GITHUB_TOKEN }}@github.com" > ${RUNNER_TEMP}/git-credentials.store
 # set git to look for the file
 git config --global credential.helper 'store --file ${RUNNER_TEMP}/git-credentials.store'
-# install dependencies
+# do whatever needs to clone private repositories via https, in my case it was yarn install
 yarn --immutable
 # delete the file
 rm -f ${RUNNER_TEMP}/git-credentials.store
