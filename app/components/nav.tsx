@@ -5,7 +5,7 @@ export function Nav({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <div className="flex flex-col max-w-screen-xl p-5 mx-auto sm:items-center sm:justify-between sm:flex-row sm:px-6 lg:px-8">
+      <div className="flex flex-col max-w-screen-xl p-5 mx-auto sm:items-center sm:justify-between sm:flex-row sm:px-6 lg:px-8 w-full">
         <div className="flex flex-row items-center justify-between lg:justify-start">
           <a
             className="text-lg font-bold tracking-tighter text-rose-600 dark:text-rose-300 transition duration-500 ease-in-out transform tracking-relaxed lg:pr-8"

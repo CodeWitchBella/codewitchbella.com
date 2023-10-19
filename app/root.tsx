@@ -40,7 +40,7 @@ function Root({ children }: { children: ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-200">
+      <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-200 flex flex-col min-h-screen">
         {children}
         <ScrollRestoration />
         <Scripts />
