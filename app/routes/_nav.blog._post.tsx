@@ -1,5 +1,9 @@
 import { json } from "@remix-run/node";
-import type { LinksFunction, DataFunctionArgs } from "@remix-run/node";
+import type {
+  LinksFunction,
+  DataFunctionArgs,
+  V2_MetaFunction,
+} from "@remix-run/node";
 import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import { getMDXComponent } from "mdx-bundler/client";
 import { useMemo } from "react";
@@ -7,6 +11,7 @@ import { getPost } from "~/utils/post";
 import style from "../utils/post.css";
 import { __DEV__ } from "~/utils/utils";
 import { prose } from "~/components/css";
+import { notNull } from "@isbl/ts-utils";
 
 export const links: LinksFunction = () => {
   return [
@@ -17,13 +22,21 @@ export const links: LinksFunction = () => {
   ];
 };
 
+export const meta: V2_MetaFunction<typeof loader> = (arg) => {
+  const { description, title } = arg.data?.frontmatter ?? {};
+  return [
+    description ? { property: "og:description", content: description } : null,
+    title ? { title : title + " | CodeWitchBella's blog" } : null,
+  ].filter(notNull);
+};
+
 type LoaderData = {
   frontmatter: any;
   code: string;
 };
 
 export async function loader({ params, request }: DataFunctionArgs) {
-  const slug = (new URL(request.url).pathname.slice('/blog/'.length))
+  const slug = new URL(request.url).pathname.slice("/blog/".length);
   if (!slug) throw new Response("Not found", { status: 404 });
 
   const post = await getPost(slug);
@@ -42,10 +55,13 @@ export async function loader({ params, request }: DataFunctionArgs) {
 
 export default function Post() {
   const { code, frontmatter } = useLoaderData<LoaderData>();
-  const Component = useMemo(() => getMDXComponent(code, { remix: { Outlet } }), [code]);
+  const Component = useMemo(
+    () => getMDXComponent(code, { remix: { Outlet } }),
+    [code],
+  );
 
   return (
-    <article className={prose+" mx-auto mb-8"}>
+    <article className={prose + " mx-auto mb-8"}>
       <Link to="/blog">&larr; Back to blog index</Link>
       <h1>{frontmatter.title}</h1>
       {frontmatter.published_at ? (
