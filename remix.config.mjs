@@ -23,6 +23,8 @@ export default {
     "devlop",
     "markdown-table",
     "longest-streak",
+    "is-absolute-url",
+    "space-separated-tokens",
     /^rehype.*/,
     /^remark.*/,
     /^unified.*/,
