@@ -8,6 +8,15 @@ import { __DEV__ } from "~/utils/utils";
 export async function loader() {
   let posts = await getPosts();
   if (!__DEV__) posts = posts.filter((post) => post.publishedAt);
+  posts = posts.sort((a, b) =>
+    !a.publishedAt || !b.publishedAt
+      ? a.publishedAt
+        ? -1
+        : b.publishedAt
+        ? 1
+        : 0
+      : a.publishedAt?.localeCompare(a.publishedAt),
+  );
   return json(posts, {
     headers: { "Cache-Control": "public, s-maxage=3600" },
   });
@@ -16,10 +25,10 @@ export async function loader() {
 export default function Posts() {
   const posts = useLoaderData<typeof loader>();
   if (!posts.length) {
-    return <div className={prose+" mx-auto"}>Nothing to see here, yet.</div>;
+    return <div className={prose + " mx-auto"}>Nothing to see here, yet.</div>;
   }
   return (
-    <div className={prose+" mx-auto"}>
+    <div className={prose + " mx-auto"}>
       <h1>Posts</h1>
       <ul>
         {posts.map((post) => (
