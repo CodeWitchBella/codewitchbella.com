@@ -11,11 +11,11 @@ export async function loader() {
   posts = posts.sort((a, b) =>
     !a.publishedAt || !b.publishedAt
       ? a.publishedAt
-        ? -1
-        : b.publishedAt
         ? 1
+        : b.publishedAt
+        ? -1
         : 0
-      : a.publishedAt?.localeCompare(a.publishedAt),
+      : b.publishedAt?.localeCompare(a.publishedAt),
   );
   return json(posts, {
     headers: { "Cache-Control": "public, s-maxage=3600" },
