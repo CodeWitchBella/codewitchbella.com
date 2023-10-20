@@ -38,6 +38,7 @@ function Root({ children }: { children: ReactNode }) {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="icon" href="/static/cwb.svg" type="image/svg+xml" />
         <link rel="me" href="https://tech.lgbt/@isbl" />
+        <link rel="me" href="https://hachyderm.io/@isbl" />
         <Meta />
         <Links />
       </head>
