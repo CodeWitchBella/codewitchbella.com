@@ -17,13 +17,21 @@ be named `fileName.ext` in git, which will cause the CI to fail (I hope you have
 a CI). And most problematically: they might not be able to fix the problem.
 
 Therefore, in every project I set the standards for, or have influence over, I
-advocate for `kebab-case.ext` file names. However, if someone else wrote the
+advocate for `kebab-case.ext` (in case of javascript/typescript) or `snake_case.ext`
+file names[^fn]. However, if someone else wrote the
 project and I'm now maintaining it, I'd have to rename all the files and update
 all the imports. That gets tedious really quick and is easy to get wrong.
 
-Usually I write a simple script which does exactly that and I figured I'd share
-the current incarnation as a starting point for your script. Please make sure
-that you have something which will check the result (like a bundler or typescript),
+[^fn]: Unless the language has strong naming convention, prefer those over random
+  blog posts.
+
+## Automatic renaming
+
+In case you find yourself in my situation of having a project written in typescript
+which follows the `TitleCase.ext` convention, you might find the following script
+useful. Please make sure
+that you have something which will check the result (like a bundler or typescript)
+and that you committed the previous state,
 because this is not a well-tested piece of code. I only know it worked on that
 one codebase I wrote it for.
 
