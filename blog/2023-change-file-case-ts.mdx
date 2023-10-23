@@ -1,0 +1,74 @@
+---
+title: Change file case in typescript project
+published_at: "2023-10-23T17:15:46.814Z"
+---
+
+When it comes to many contentious conventions in programming languages I'm
+personally for "pick one and stick to it" kind of solution. Ideally followed by
+enforcing the convention via some kind of static linter. Filenames are diffent.
+
+Unless your whole team is only on linux, then you should choose naming convention
+which dictates only lowercase filenames. Why? Because if you pick something like
+`FileName.ext`, then inevitable there will be the one dev who: names the file
+`fileName.ext`, renames it to `FileName.ext` and commits the result. What is the
+problem? Well, if they are on windows (and maybe macos) then depending on what
+interface they used for renaming the file, there is a chance that the file will
+be named `fileName.ext` in git, which will cause the CI to fail (I hope you have
+a CI). And most problematically: they might not be able to fix the problem.
+
+Therefore, in every project I set the standards for, or have influence over, I
+advocate for `kebab-case.ext` file names. However, if someone else wrote the
+project and I'm now maintaining it, I'd have to rename all the files and update
+all the imports. That gets tedious really quick and is easy to get wrong.
+
+Usually I write a simple script which does exactly that and I figured I'd share
+the current incarnation as a starting point for your script. Please make sure
+that you have something which will check the result (like a bundler or typescript),
+because this is not a well-tested piece of code. I only know it worked on that
+one codebase I wrote it for.
+
+
+```js
+// filename: kebabify.mjs
+import fs from 'node:fs'
+import path from 'node:path'
+
+// replace with your directory
+traverse('src')
+
+function traverse(dir) {
+  const files = fs.readdirSync(dir, { withFileTypes: true })
+  for (const file of files) {
+    const k = kebab(file.name)
+    if (k !== file.name) {
+      fs.renameSync(path.join(dir, file.name), path.join(dir, k))
+    }
+    if (file.isDirectory()) {
+      traverse(path.join(dir, k))
+    } else {
+      const contents = fs.readFileSync(path.join(dir, k), 'utf-8')
+      const changed = patch(contents)
+      if (contents !== changed) {
+        fs.writeFileSync(path.join(dir, k), changed)
+      }
+    }
+  }
+}
+
+function patch(src) {
+  // if you have some alias pointing to the source replace [.] with eg. [.~]
+  return src.replace(/from '[.]([^']+)'/g, v => {
+    return kebab(v).replace(/\/-/g, '/')
+  })
+}
+
+function kebab(src) {
+  return src.replace(/([A-Z])/g, (m) => `-${m.toLowerCase()}`).replace(/^-/,'')
+}
+```
+
+Note that the above code does not update dynamic imports as the codebase had few
+enough of those to update by hand.
+
+Also note that you'll probably want to go and rename files which started as
+`ExportPDF` and became `export-p-d-f` to `export-pdf`.
