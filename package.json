@@ -3,7 +3,7 @@
   "name": "codewitchbella.com",
   "description": "",
   "license": "",
-  "packageManager": "yarn@4.0.0-rc.48+sha256.cdff7838754ec6911cd6915b110060255d794480faae45ad66eb205d4563be62",
+  "packageManager": "yarn@4.0.1+sha256.5a9d054e67fbbae8774cd3667736fd74407ffbbb336898523ca1fe87b3fc4ee3",
   "scripts": {
     "build": "cross-env NODE_ENV=production remix build",
     "dev": "remix dev"
