@@ -148,7 +148,7 @@ function Playground({
         theme="dark"
       />
       <div className="flex gap-1 mt-2">
-        <div>Higlighting:</div>
+        <div>Highlighting:</div>
         {styles.map((s) => (
           <span key={s.name} style={s.style}>
             {s.name}
