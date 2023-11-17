@@ -1,0 +1,103 @@
+---
+title: Installing NixOS on RockPI 4C
+published_at: "2023-11-18T00:00:00.000Z"
+---
+
+**tl;dr**: use Tow-Boot on separate storage from your OS and use the UEFI image
+to install your OS. It's great all the SBC-specific pain is spent only on getting
+Tow-Boot to run — installing the OS becomes as easy as on x86 machines.
+
+I have a [RockPI 4C](https://rockpi.org/rockpi4) on which I store some files and
+run my Home Assistant. The problem is that I'm afraid to touch it as the current
+setup will be somewhat hard to replicate as it accumulated over the last two and
+a half years. As such I decided to reinstall it from scratch 🤓
+
+To not end up in this situation again, I decided to install nixos on it. This blog
+post documents how to do that. There are probably multiple ways to achieve this,
+but I decided to go with UEFI, so that I can use as much mainline stuff as possible.
+Let's see how far it gets me.
+
+## Step one: installing the UEFI firmware
+
+The SBC has built-in SPI storage and you can install a bootloader on it. U-Boot
+is the standard[^fn] here. There is a [Tow-Boot](https://tow-boot.org) project
+which describes itself as a user-friendly u-boot distribution and supports
+[various devices](https://tow-boot.org/devices/index.html), including RockPI 4C.
+This seems like natural choice here.
+
+[^fn]: Standard as in "it's what I'm used to seeing in this context". It's used
+  on my asahi laptop I used during this experiment as host system. I also vaguely
+  remember it from when I was rooting my phone but that's been multiple phone
+  refreshes ago now.
+
+Radxa (the maker of RockPI) has a guide on how to [flash the SPI](https://wiki.radxa.com/Rockpi4/dev/spi-install).
+As I already had something on the SPI, I needed to remove that. And as such I
+figured I'd install the Tow-Boot like this as well.
+
+```sh
+# Get rkdeveloptool
+nix shell nixpkgs#rkdeveloptool
+# list devices
+rkdeveloptool ld
+# Download the loader from the internet
+wget https://dl.radxa.com/rockpi/images/loader/spi/rk3399_loader_spinor_v1.15.114.bin
+# Download the loader from computer to SBC
+sudo rkdeveloptool db rk3399_loader_spinor_v1.15.114.bin
+
+# Download the latest release of Tow-Boot for my board found at https://github.com/Tow-Boot/Tow-Boot/releases
+wget https://github.com/Tow-Boot/Tow-Boot/releases/download/release-2022.07-006/radxa-RockPi4C-2022.07-006.tar.xz
+# Unpack the archive
+tar xf radxa-RockPi4C-2022.07-006.tar.xz
+# Write it to the SBC
+sudo rkdeveloptool wl 0 radxa-RockPi4C-2022.07-006/binaries/Tow-Boot.spi.bin
+# Restart the SBC
+sudo rkdeveloptool rd
+```
+
+I don't know if this actually worked as I during debugging other issues I also
+created eMMC with normal Tow-Boot installer.
+
+Make sure that you are connecting your SBC to display of reasonable resolution
+and that your keyboard is connected during the boot. Don't be like me :-)
+
+## Step two: Boot nixos installer
+
+Now with the firmware installed, we can install nixos according to the
+[official guide](https://nixos.wiki/wiki/NixOS_on_ARM/UEFI).
+Get the "NixOS unstable, new kernel" option. Exact version I used is [here][iso].
+While that was downloading I prepared the eMMC with GPT layout, EFI system
+partition (1GiB) and ext4 partition labelled nixos, so that I did not have to do
+this from cli after it boots (we are using the minimal image here).
+
+[iso]: https://hydra.nixos.org/build/241306652/download/1/nixos-minimal-23.11pre549786.c757e9bd77b1-aarch64-linux.iso
+
+The iso was written to my flash drive with `dd if=path.iso of=/dev/sdX bs=1M oflag=direct,sync status=progress`
+After plugging the usb drive in, inserting the eMMC, plugging in ethernet cable
+and then plugging in the power I was in nixos installer, the rest is a normal
+nixos installation from minimal image.
+
+## Step three: Install nixos
+
+```bash
+sudo -s
+mount /dev/mmcblk0p2 /mnt
+mkdir -p /mnt/boot/EFI
+mount /dev/mmcblk0p1 /mnt/boot/EFI
+nixos-generate-config --root /mnt
+chmod o+rx /mnt
+cd /mnt/configuration/nixos
+vim configuration.nix
+```
+
+In configuration.nix set the following:
+
+```nix
+boot.loader.efi.canTouchEfiVariables = false;
+```
+
+maybe set a hostname, but the rest can be configured after you boot the installed
+system. Now install the system:
+
+```bash
+nixos-install
+```
