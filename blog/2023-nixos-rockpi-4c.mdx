@@ -81,8 +81,8 @@ nixos installation from minimal image.
 ```bash
 sudo -s
 mount /dev/mmcblk0p2 /mnt
-mkdir -p /mnt/boot/EFI
-mount /dev/mmcblk0p1 /mnt/boot/EFI
+mkdir -p /mnt/boot
+mount /dev/mmcblk0p1 /mnt/boot
 nixos-generate-config --root /mnt
 chmod o+rx /mnt
 cd /mnt/configuration/nixos
