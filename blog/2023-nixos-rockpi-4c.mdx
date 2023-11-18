@@ -44,12 +44,10 @@ wget https://dl.radxa.com/rockpi/images/loader/spi/rk3399_loader_spinor_v1.15.11
 # Download the loader from computer to SBC
 sudo rkdeveloptool db rk3399_loader_spinor_v1.15.114.bin
 
-# Download the latest release of Tow-Boot for my board found at https://github.com/Tow-Boot/Tow-Boot/releases
-wget https://github.com/Tow-Boot/Tow-Boot/releases/download/release-2022.07-006/radxa-RockPi4C-2022.07-006.tar.xz
-# Unpack the archive
-tar xf radxa-RockPi4C-2022.07-006.tar.xz
+# Create file filed with zeros
+dd if=/dev/zero of=./zero.img bs=1M count=4
 # Write it to the SBC
-sudo rkdeveloptool wl 0 radxa-RockPi4C-2022.07-006/binaries/Tow-Boot.spi.bin
+sudo rkdeveloptool wl 0 zero.img
 # Restart the SBC
 sudo rkdeveloptool rd
 ```
@@ -59,6 +57,11 @@ created eMMC with normal Tow-Boot installer.
 
 Make sure that you are connecting your SBC to display of reasonable resolution
 and that your keyboard is connected during the boot. Don't be like me :-)
+
+Sidenote: to get the board working in USB OTG mode, USB A to USB C cable did not
+work. Instead, I had to use USB A (outie) to USB C adapter, plug in the C end of
+the cable, and plug that into USB C to USB A adapter. This unholy abomination was
+close enough to the abomination of USB A to USB A cable they suggest in the wiki.
 
 ## Step two: Boot nixos installer
 
@@ -93,6 +96,15 @@ In configuration.nix set the following:
 
 ```nix
 boot.loader.efi.canTouchEfiVariables = false;
+# systemd-boot did not work for me, so grub it is
+boot.loader.grub = {
+  enable = true;
+  efiSupport = true;
+  efiInstallAsRemovable = true;
+  device = "nodev";
+};
+# Also, I used the latest kernel, not sure if that's neccessary
+boot.kernelPackages = pkgs.linuxPackages_latest;
 ```
 
 maybe set a hostname, but the rest can be configured after you boot the installed
