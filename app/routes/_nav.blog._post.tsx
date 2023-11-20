@@ -23,10 +23,14 @@ export const links: LinksFunction = () => {
 };
 
 export const meta: V2_MetaFunction<typeof loader> = (arg) => {
-  const { description, title } = arg.data?.frontmatter ?? {};
+  const { description, title, published_at } = arg.data?.frontmatter ?? {};
   return [
+    { property: "og:type", content: "article" },
+    published_at
+      ? { property: "article:published_time", content: published_at }
+      : null,
     description ? { property: "og:description", content: description } : null,
-    title ? { title : title + " | CodeWitchBella's blog" } : null,
+    title ? { title: title + " | CodeWitchBella's blog" } : null,
   ].filter(notNull);
 };
 
