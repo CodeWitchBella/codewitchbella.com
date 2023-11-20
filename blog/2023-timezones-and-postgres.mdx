@@ -1,0 +1,65 @@
+---
+title: Converting UTC into specific timezone in PostgreSQL
+published_at: "2023-11-20T16:44:20.042Z"
+---
+
+Before I start: if you can, avoid this, transmit your dates in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+and only format it at the last moment possible. If you have to do time math,
+read on.
+
+**tl;dr:**
+
+```sql
+select
+    table.timestamp::timestamptz at time zone 'America/New_York' as timestamp_et
+from table;
+```
+
+The `::timestamptz` converts it from `timestamp` to `timestamptz` type. If your
+column is already of this type, you can remove it. Note that `timestamptz` is
+horribly mis-named. It does not, as you might expect, store timestamp+timezone,
+instead it's "timestamp in current timezone" instead of "timestamp in unknown
+timezone". Why would you ever want to store either of these? Beats me.
+
+The `at time zone '...'` portion converts it from current timezone into the
+specified timezone. Again, since postgres does not have a type that stores
+"timestamp+timezone", the result is `timestamp without time zone` or timestamp
+in unknown timezone. You can check that with `pg_typeof`.
+
+## Miscalenous ramblings
+
+Now that the cookbook-style section is over, here are some miscelaneous things
+I would very much not like to have to remember, but are unfortunatelly important.
+
+What is the current timezone? You can find out by running `SHOW TIMEZONE;`. My
+database thankfully is in UTC (the `Etc/UTC` timezone), so I'm safe. If your
+database is in some other timezone, I'd like to extend my sincere condolences.
+
+Can I change my local timezone? Yes, with `SET timezone TO 'Europe/Prague'`.
+What this does, is if you have `timestamptz` it will get printed in this timezone.
+Also, if you convert `timestamp` into `timestamptz` it'll use this timezone.
+This is because this conversion does not actually do anything, because `timestamptz`
+does not store the timezone at all.
+
+What if my timestamps are in different timezone than the current timezone? Well,
+then you use `timestamp at timezone '...'`. Yes, that's is the same syntax as
+converting from `timestamptz` to `timestamp`, but does the conversion in other
+direction. Anyway, the best way here is to just check if the output is what you
+expect as it depends on the types of your columns.
+
+*Warning:* Only ever use named timezones. They correctly handle daylight saving
+times, offset changes and other fun things. Also, ISO 8601 and POSIX don't agree
+on which direction is positive and which is negative. Posix is positive to west,
+ISO 8601 is positive to east. Yes, it's cursed.
+
+*Final tip:* always test your code with positive offsets and negative offsets. Eg.
+with `America/New_York` and `Europe/Prague`. It will reveal bugs where you are
+just truncating UTC timestamps instead of converting to correct day.
+
+## Summary
+
+All in all, it's not *too* bad as long as you realize that `timezone` and
+`timezonetz` are basically used in the oposite circumstances than you'd expect.
+The `tz` variant should be default you reach for when handling data in `UTC` (as
+long as that is your default). The plain variant is used when you want to convert
+that into some other timezone (eg. when you want to aggregate by date).
