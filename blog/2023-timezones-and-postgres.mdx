@@ -17,7 +17,7 @@ from table;
 
 The `::timestamptz` converts it from `timestamp` to `timestamptz` type. If your
 column is already of this type, you can remove it. Note that `timestamptz` is
-horribly mis-named. It does not, as you might expect, store timestamp+timezone,
+horribly misnamed. It does not, as you might expect, store timestamp+timezone,
 instead it's "timestamp in current timezone" instead of "timestamp in unknown
 timezone". Why would you ever want to store either of these? Beats me.
 
@@ -26,10 +26,10 @@ specified timezone. Again, since postgres does not have a type that stores
 "timestamp+timezone", the result is `timestamp without time zone` or timestamp
 in unknown timezone. You can check that with `pg_typeof`.
 
-## Miscalenous ramblings
+## Miscellaneous ramblings
 
-Now that the cookbook-style section is over, here are some miscelaneous things
-I would very much not like to have to remember, but are unfortunatelly important.
+Now that the cookbook-style section is over, here are some miscellaneous things
+I would very much not like to have to remember, but are unfortunately important.
 
 What is the current timezone? You can find out by running `SHOW TIMEZONE;`. My
 database thankfully is in UTC (the `Etc/UTC` timezone), so I'm safe. If your
@@ -42,7 +42,7 @@ This is because this conversion does not actually do anything, because `timestam
 does not store the timezone at all.
 
 What if my timestamps are in different timezone than the current timezone? Well,
-then you use `timestamp at timezone '...'`. Yes, that's is the same syntax as
+then you use `timestamp at timezone '...'`. Yes, that is the same syntax as
 converting from `timestamptz` to `timestamp`, but does the conversion in other
 direction. Anyway, the best way here is to just check if the output is what you
 expect as it depends on the types of your columns.
@@ -59,7 +59,7 @@ just truncating UTC timestamps instead of converting to correct day.
 ## Summary
 
 All in all, it's not *too* bad as long as you realize that `timezone` and
-`timezonetz` are basically used in the oposite circumstances than you'd expect.
-The `tz` variant should be default you reach for when handling data in `UTC` (as
+`timezonetz` are basically used in the opposite circumstances than you'd expect.
+The `tz` variant should be the default one you reach for when handling data in `UTC` (as
 long as that is your default). The plain variant is used when you want to convert
 that into some other timezone (eg. when you want to aggregate by date).
