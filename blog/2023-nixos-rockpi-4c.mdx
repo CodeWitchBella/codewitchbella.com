@@ -88,7 +88,7 @@ mkdir -p /mnt/boot
 mount /dev/mmcblk0p1 /mnt/boot
 nixos-generate-config --root /mnt
 chmod o+rx /mnt
-cd /mnt/configuration/nixos
+cd /mnt/etc/nixos
 vim configuration.nix
 ```
 
