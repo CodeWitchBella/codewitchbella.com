@@ -95,7 +95,8 @@ vim configuration.nix
 In configuration.nix set the following:
 
 ```nix
-boot.loader.efi.canTouchEfiVariables = false;
+# boot.loader.systemd-boot.enable = true; # comment this one out
+boot.loader.efi.canTouchEfiVariables = false; # and disable this
 # systemd-boot did not work for me, so grub it is
 boot.loader.grub = {
   enable = true;
