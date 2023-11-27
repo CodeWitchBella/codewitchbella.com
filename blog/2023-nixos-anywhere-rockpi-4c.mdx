@@ -207,7 +207,8 @@ Now run the following commands. Substitute your ip address (or hostname) and
 # create new flake.lock
 nix flake lock
 # run the install
-nix run github:nix-community/nixos-anywhere -- --flake .#server-name root@ip.address.here
+nix run github:nix-community/nixos-anywhere -- --flake '.#server-name' root@ip.address.here
+# consider passing --no-substitute-on-destination to use your local cache
 ```
 
 You need to have nix-command and flakes experimantal features enabled to be able
@@ -216,6 +217,6 @@ if you are curious about this topic.
 
 You also need to be able to build derivations for the rockpi. Since I have arm-based
 macbook, this is not a problem for me, but I did not try doing this from amd64-based
-machine yet, so YMMV.
+machine yet, so YMMV. You can workaround this by passing `--build-on-remote`.
 
 And we're done!
