@@ -1,0 +1,221 @@
+---
+title: Using nixos-anywhere to install nixos on RockPI 4C
+published_at: "2023-11-27T01:03:25.138Z"
+---
+
+I wanted to try a couple of different configurations on my server and having to
+type out couple of the same commands got old pretty quickly. Not to mention
+error-prone as I could never be fully sure if I did the exact thing I wanted.
+Thankfully, some nice people on fediverse [mentioned](https://nixos.paris/@raito/111428581628733335)
+nixos-anywhere, so I decided to give it a shot.
+
+This setup is much faster for two reasons. First is that I can leverage the
+power of declarative configuration, which allows me to change just the things I
+want to experiment with. But it also helps with the time it takes to build everything
+as I have a cache of all the things on my host machine I use to install the changes,
+which is shared between reinstalls.
+
+Let's get into the installation. As this is not that different from
+[installing nixos on RockPI 4C](/blog/2023-nixos-rockpi-4c) I'll not be repeating
+that here. Start by repeating steps one and two from the previous post and come
+back here :-)
+
+Also, this is not really specific to rockpi, so you should be able to follow
+this with minor tweaks on other SBCs as well. Inverse is also true and you should be
+able to follow nixos-anywhere's [quickstart](https://nix-community.github.io/nixos-anywhere/quickstart.html)
+instead of this, if you prefer.
+
+## Step three: Setting up SSH access
+
+On your target system (your RockPI), run the following command to set root password:
+
+```bash
+sudo passwd
+```
+
+That's all. You can `ssh-copy-key` but I find that superfluous.
+
+## Step four: Create your configuration
+
+Create a directory with following files. Starting with `flake.nix` which is the
+entrypoint for your configuration.
+
+```nix
+# flake.nix
+{
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+  inputs.disko.url = "github:nix-community/disko";
+  inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
+
+  outputs = { nixpkgs, disko, ... }:
+    {
+      # you can have multiple of those and also replace it with your server name
+      nixosConfigurations.server-name = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        modules = [
+          disko.nixosModules.disko
+          ./configuration.nix
+        ];
+      };
+    };
+}
+```
+
+Next, I'll setup my disk. I'm installing on my eMMC. I'm pretty sure that the `by-path`
+will be the same accross different rockpis, but if you have slightly different
+hardware you might need to change that. I could've used `/dev/mmcblk0`, but I'm
+a bit paranoid and would like to be able to use the SD card slot (which is
+`/dev/mmcblk1` without worrying that they'll swap for some reason).
+
+If you want to use a different setup (eg. [btrfs subvolumes](https://github.com/nix-community/disko/blob/master/example/btrfs-subvolumes.nix))
+take a look at the
+[examples directory](https://github.com/nix-community/disko/blob/master/example/)
+in disko's docs (nixos-anywhere uses disko for configuring the disks).
+
+```nix
+# disk-config.nix
+{ lib, ... }:
+{
+  disko.devices = {
+    disk.emmc = {
+      device = "/dev/disk/by-path/platform-fe330000.mmc"; # or /dev/mmcblk0
+      type = "disk";
+      content = {
+        type = "gpt"; # We're doing UEFI here
+        partitions.boot = {
+          name = "BOOT";
+          start = "1MiB";
+          size = "1G"; # This could probably be smaller, but let's allow many generations
+          type = "EF00";
+          content = {
+            type = "filesystem";
+            format = "vfat";
+            mountpoint = "/boot";
+          };
+        };
+        partitions.root = {
+          size = "100%";
+          content = {
+            type = "filesystem";
+            format = "ext4";
+            mountpoint = "/";
+          };
+        };
+      };
+    };
+  };
+}
+```
+
+And here's my system configuration. If you are familiar with nixos, you know what goes
+here. Otherwise, this is the main file to change your system configuration and
+refer to [nixos manual](https://nixos.org/manual/nixos/stable/) for more information.
+
+You'll want to set your own ssh key in this config.
+
+```nix
+# configuration.nix
+{ modulesPath, config, lib, pkgs, ... }:
+let
+  # ssh key here:
+  authorizedKeys = ["ssh-ed25519 <your key here>"];
+in
+{
+  imports = [
+    ./disk-config.nix
+  ];
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    efiInstallAsRemovable = true;
+    device = "nodev";
+  };
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  services.openssh.enable = true;
+
+  users.users.root.openssh.authorizedKeys.keys = authorizedKeys;
+
+  system.stateVersion = "23.11";
+}
+```
+
+And for reproducibility, here's my flake.lock, but do not copy that unless things
+changed so much that you're having trouble reproducing my results.
+
+<details>
+<summary>flake.lock</summary>
+
+```json
+{
+  "nodes": {
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1700927249,
+        "narHash": "sha256-iqmIWiEng890/ru7ZBf4nUezFPyRm2fjRTvuwwxqk2o=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "3cb78c93e6a02f494aaf6aeb37481c27a2e2ee22",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1700856099,
+        "narHash": "sha256-RnEA7iJ36Ay9jI0WwP+/y4zjEhmeN6Cjs9VOFBH7eVQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "0bd59c54ef06bc34eca01e37d689f5e46b3fe2f1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "disko": "disko",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
+```
+
+</details>
+
+## Step five: Install your system
+
+Now run the following commands. Substitute your ip address (or hostname) and
+`server-name` (from config) at the end of the command.
+
+```bash
+# create new flake.lock
+nix flake lock
+# run the install
+nix run github:nix-community/nixos-anywhere -- --flake .#server-name root@ip.address.here
+```
+
+You need to have nix-command and flakes experimantal features enabled to be able
+to use this command. I recommend checking out [nixos and flakes](https://nixos-and-flakes.thiscute.world/nixos-with-flakes/nixos-with-flakes-enabled)
+if you are curious about this topic.
+
+You also need to be able to build derivations for the rockpi. Since I have arm-based
+macbook, this is not a problem for me, but I did not try doing this from amd64-based
+machine yet, so YMMV.
+
+And we're done!
