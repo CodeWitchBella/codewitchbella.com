@@ -36,15 +36,15 @@ Just run the `lsmod` command. This outputs a list of 115 modules.
 I can narrow this down a little by excluding modules that are a dependency of
 other modules as that will be included by the dependant module (see the Used by
 column). This gets us down to 57 modules. Now we can test which modules are
-needed and which are not. What I did was input the list all modules first and
+needed and which are not. What I did was input the list of all modules first and
 confirm that it boots.
 
 After I was in known-working state, I deleted some modules and tried rebooting.
 Good thing here is that if it did not work, I could just select older generation
-and was back in working state again. When a deletion caused the system to no
+and I was back in working state again. When a deletion caused the system to no
 longer boot, I knew that I removed important module. In reality since it was more
 convenient to test with working boot, I prefered modules which I suspected are
-not needed first, but it could be in principle done even without that.
+not needed first, but in principle it could be done even without that.
 
 And that's it, I now have a working nixos-based rockpi4c including ssd support.
 I can't really imagine how painful it'd be with a distro which does not offer
