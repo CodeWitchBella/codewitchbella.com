@@ -1,0 +1,51 @@
+---
+title: Installing NixOS on RockPI 4C
+published_at: "2023-12-08T01:06:25.890Z"
+---
+
+In [previous](/blog/2023-nixos-rockpi-4c) [posts](/blog/2023-nixos-anywhere-rockpi-4c)
+I got nixos working on my RockPI 4C. One thing that did not sit right was that
+it required everything on the system to be on either the eMMC or SD card. I have
+a ssd connected to thing after all.
+
+Anyway, the reason for this is that the system packaged into initramfs (that's
+the stuff nixos puts in the [ESP](https://wiki.archlinux.org/title/EFI_system_partition))
+needs to be able to mount certain paths on the system.[^fn]
+
+[^fn]: Those paths are `/`, `/nix`, `/nix/store`, `/var`, `/var/log`, `/var/lib`,
+`/var/lib/nixos`, `/etc`, `/usr`. You can get this list by looking at docs
+of [virtualisation.fileSystems.\<name\>.neededForBoot](https://search.nixos.org/options?show=virtualisation.fileSystems.%3Cname%3E.neededForBoot).
+
+This should work automatically, but in my case, the system needs some extra
+kernel modules to be able to reach the SSD. I have my ssd installed in the
+[Penta SATA HAT](https://wiki.radxa.com/Penta_SATA_HAT), but I'd expect the same
+modules to be needed for other options as well. The magic incantation to make it
+work is:
+
+```nix
+  boot.initrd.availableKernelModules = [
+    "phy_rockchip_pcie"
+    "pcie_rockchip_host"
+  ];
+```
+
+How do you get this list you might ask? Well, since I know that the disks are
+working on my running system, I know the list of suspected kernel modules.
+Just run the `lsmod` command. This outputs a list of 115 modules.
+
+I can narrow this down a little by excluding modules that are a dependency of
+other modules as that will be included by the dependant module (see the Used by
+column). This gets us down to 57 modules. Now we can test which modules are
+needed and which are not. What I did was input the list all modules first and
+confirm that it boots.
+
+After I was in known-working state, I deleted some modules and tried rebooting.
+Good thing here is that if it did not work, I could just select older generation
+and was back in working state again. When a deletion caused the system to no
+longer boot, I knew that I removed important module. In reality since it was more
+convenient to test with working boot, I prefered modules which I suspected are
+not needed first, but it could be in principle done even without that.
+
+And that's it, I now have a working nixos-based rockpi4c including ssd support.
+I can't really imagine how painful it'd be with a distro which does not offer
+declarative configuration which could be deployed remotely.
