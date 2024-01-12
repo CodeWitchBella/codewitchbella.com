@@ -32,12 +32,14 @@ export function Technical() {
   return (
     <section className="my-8 prose max-w-prose mx-auto">
       <Button onClick={toggle}>Technical stuff</Button>
-      <div style={visible ? {} : { display: "none" }} className="prose prose-pink dark:prose-invert pt-4">
+      <div
+        style={visible ? {} : { display: "none" }}
+        className="prose prose-pink dark:prose-invert pt-4"
+      >
         <h2>Primary SSH key</h2>
-        <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMr5ynyyHtVRtoXOCDmyJv4l6JwBWGgt2b4lo1dWLHoW isabella@isbl.cz`}</CopyOnClick>
+        <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMr5ynyyHtVRtoXOCDmyJv4l6JwBWGgt2b4lo1dWLHoW isabella`}</CopyOnClick>
         <h2>SSH key used for signing latest git commits</h2>
-        <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGS4V/SauPK+C9moGX5gscGYYPNV5E6QNUyaZrL1eg0 signing@isbl.cz`}</CopyOnClick>
-        
+        <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGS4V/SauPK+C9moGX5gscGYYPNV5E6QNUyaZrL1eg0 signing`}</CopyOnClick>
       </div>
       <div
         className="copied invisible"
