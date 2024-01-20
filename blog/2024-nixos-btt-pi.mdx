@@ -1,0 +1,151 @@
+---
+title: Installing NixOS on BTT PI
+published_at: "2024-01-20T20:05:15.589Z"
+---
+
+BigTreeTech Pi is a special-purpose board that is similar to Orange Pi zero2 (it
+has the Allwinner H616), but built for 3d printers. I'll be using it for a
+3d printer, but I also wanted to use
+nixos to manage it. This is what I tried to get it to work. Ultimately, I gave (for now?).
+So if you're looking for how to get it running, the princess is in another castle. Sorry.
+
+## First attempt
+
+First I tried to use normal nixos firmware from [NixOS on ARM wiki page](https://nixos.wiki/wiki/NixOS_on_ARM#Installation).
+
+```sh
+sudo dd if=/path/to/nixos-sd-image-....img of=/dev/sdX status=progress
+```
+
+This obviously did not work. Since I couldn't find a good documented way of building
+a custom image with u-boot I gave up after some short experimentation. This is
+what you get for using weird SBCs...
+
+Next, I tried the image from [katyo/nixos-arm](https://github.com/katyo/nixos-arm)
+which did not work either.
+
+## Custom u-boot
+
+```nix
+# flake.nix
+{
+  description = "U-Boot stuffs";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+  outputs = inputs:
+    with (import inputs.nixpkgs {
+      system = "aarch64-linux";
+    }); {
+      devShells.aarch64-linux.default = mkShell {
+        buildInputs = [
+          gnumake
+          gcc
+          bison
+          flex
+          (python3.withPackages (ps: with ps; [setuptools]))
+          swig
+          openssl_3_1
+          ncurses
+          dtc
+        ];
+      };
+    };
+}
+```
+
+```sh
+nix develop # dependencies
+
+git clone https://github.com/ARM-software/arm-trusted-firmware.git
+cd arm-trusted-firmware
+git checkout 57410eebe697546e4d66f5b70acbc68131b28cb1
+make PLAT=sun50i_h616 DEBUG=1 bl31
+cd ..
+
+export SCP=/dev/null # I don't need suspend
+export BL31=$PWD/arm-trusted-firmware/build/sun50i_h616/debug/bl31.bin
+git clone git://git.denx.de/u-boot.git
+cd u-boot
+git checkout v2024.01
+make orangepi_zero2_defconfig
+make
+```
+
+U-boot's `board/sunxi/README.sunxi64` might be of interest to you.
+
+<details>
+<summary>flake.lock</summary>
+
+```json
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1705641746,
+        "narHash": "sha256-D6c2aH8HQbWc7ZWSV0BUpFpd94ImFyCP8jFIsKQ4Slg=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "d2003f2223cbb8cd95134e4a0541beea215c1073",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-23.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
+```
+
+</details>
+
+What I think is the reason for those attempts not working is that BTT Pi is not
+close enough to the Orange Pi Zero2 for the configs to work. But since I do not
+know if my attempts work on orange pi, I decided to scrap it and try something
+different. I might revisit this approach if at some point I'm trying to setup
+some next SBC and then I might have enough experience to get it working on this
+weird board...
+
+## Plan C: kexec
+
+Plan C: [nixos-anywhere](https://nix-community.github.io/nixos-anywhere/quickstart.html).
+
+First, I flashed the oficial minimal image:
+
+```
+sudo dd if=.../CB1_Debian11_minimal_kernel5.16_20230712.img of=/dev/sda status=progress bs=1M oflag=direct,sync
+```
+
+then I kexec'd nixos
+
+```
+curl -L https://github.com/nix-community/nixos-images/releases/download/nixos-unstable/nixos-kexec-installer-noninteractive-aarch64-linux.tar.gz | tar -xzf- -C /root
+```
+
+That did not work. I don't know why, but it might be because they call for 1.5G
+of RAM and this board only has 1. Oh well.
+
+## Conclusion
+
+I learned a bit, but ultimately failed. Next time I'll be getting a *board* that
+has better mainline support. I naively thought if a SOC has good support and I
+don't need any extra SBC stuffs it'll work. Well, I was wrong. To my defense,
+this one was included in the kit of the printer.
+
+It still works with the included armbian-based? image, so at least it's not going
+to the bin.
+
+
+## References
+
+- [U-Boot on sunxi](https://linux-sunxi.org/U-Boot)
+- [nixos on ARM64](https://nixos.wiki/wiki/NixOS_on_ARM)
+- [nixos wiki for Orange Pi Zero2](https://nixos.wiki/wiki/NixOS_on_ARM/Orange_Pi_Zero2_H616) 
