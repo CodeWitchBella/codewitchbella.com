@@ -40,6 +40,9 @@ export function Technical() {
         <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMr5ynyyHtVRtoXOCDmyJv4l6JwBWGgt2b4lo1dWLHoW isabella`}</CopyOnClick>
         <h2>SSH key used for signing latest git commits</h2>
         <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGS4V/SauPK+C9moGX5gscGYYPNV5E6QNUyaZrL1eg0 signing`}</CopyOnClick>
+
+        <h2>Desktop SSH key</h2>
+        <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFrYVxQiKKIzGqLIO+6w6qA1d+E9vR2bFLW0EuT4e6zA isabella@IsblDesktop`}</CopyOnClick>
       </div>
       <div
         className="copied invisible"
