@@ -43,6 +43,8 @@ export function Technical() {
 
         <h2>Desktop SSH key</h2>
         <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFrYVxQiKKIzGqLIO+6w6qA1d+E9vR2bFLW0EuT4e6zA isabella@IsblDesktop`}</CopyOnClick>
+        <h2>Asahi SSH key</h2>
+        <CopyOnClick>{`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIZdRoS3HXiUh77MLq2OczaysE79CK0NZGfHyH+3tBlv isabella@IsblAsahi`}</CopyOnClick>
       </div>
       <div
         className="copied invisible"
