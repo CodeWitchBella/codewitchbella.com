@@ -1,0 +1,47 @@
+---
+title: Absolutely silly way to build firmware for microcontrollers
+published_at: "2024-02-07T22:54:48.755Z"
+---
+
+Recently, I needed some firmware for a USB to CAN stick I bought off of aliexpress.
+But, there was no prebuilt version, so I had to build my own. Fortunatelly,
+I found [nice instructions](https://docs.meteyou.wtf/btt-u2c-v2.x/candlelight/) for it.
+Unfortunatelly, they were unusable for me because I use nixos and my second distro
+of choice is fedora.
+
+I didn't feel like I wanted spend time mapping the instructions to either of
+the distros (as cross-compiling is complicated). Also, first few attempts failed.
+So I decided to >>just use podman&lt;&lt;. Yeah, it's as silly as it sounds.
+
+Anywho, here's a Dockerfile:
+
+```Dockerfile
+FROM ubuntu:24.04
+
+RUN apt-get update
+RUN apt-get install -y cmake gcc-arm-none-eabi git dfu-util usbutils ninja-build
+RUN git clone --depth=1 -b stm32g0_support https://github.com/bigtreetech/candleLight_fw src
+WORKDIR /src
+RUN mkdir build \
+	&& cd build \
+	&& cmake .. -GNinja -DCMAKE_TOOLCHAIN_FILE=../cmake/gcc-arm-none-eabi-8-2019-q3-update.cmake
+WORKDIR /src/build
+RUN ninja budgetcan_fw
+```
+
+which you can just plop anywhere and run `podman build . --tag silly`.
+
+Now I needed a way to run the flashing utility. Since the flashing process is
+built into the build system, I decided to just run it from the container.
+This is the magic invocation:
+
+```
+podman run --rm -it --device=/dev/bus/usb/001/002:rwm silly
+```
+
+the `--device` option value comes from `lsusb` listing.
+
+Then I could just run `ninja budgetcan_fw` and my thingamagic was flashed.
+
+Way faster than trying to figure out how to do cross-compilation on nixos (though
+I'll probably want to go to that rabbit-hole eventually).
