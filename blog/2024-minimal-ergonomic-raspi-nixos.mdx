@@ -170,6 +170,12 @@ direnv, alejandra and devshell with some aliases.
 }
 ```
 
+```nix
+# add to system.nix
+nix.settings.experimental-features = ["nix-command" "flakes"];
+nix.settings.trusted-users = ["isabella"];
+```
+
 This gives me a `build` command to create the sd card image, `flash` command which
 takes sd card device as an argument and flashes it. Finally, it gives me `deploy`
 command which connects to the raspberry and updates it with last changes.
