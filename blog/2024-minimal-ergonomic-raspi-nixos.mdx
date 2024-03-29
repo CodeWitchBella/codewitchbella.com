@@ -159,6 +159,10 @@ direnv, alejandra and devshell with some aliases.
               name = "flash";
               command = "zstdcat ./result/sd-image/*.img.zst | sudo dd bs=1M iflag=fullblock of=$1 status=progress oflag=sync";
             }
+            {
+              name = "deploy";
+              command = "nixos-rebuild switch --flake .#rpi4b --target-host <IP-HERE> --use-remote-sudo";
+            }
           ];
         };
       }
