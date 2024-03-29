@@ -1,0 +1,382 @@
+---
+title: Minimal ergonomic nixos setup for Raspberry Pi projects
+published_at: "2024-03-29T19:32:21.405Z"
+---
+
+I wanted to do some experiments with blinking lights and figured that this would
+be the perfect opportunity to pull out the Raspberry Pi 4B from my drawer. The
+question then became - what OS to install there? With my nixos obsession lately,
+the choice was clear and this post summarises my starting point for setting it
+up.
+
+## Minimal flake
+
+Let's start with a minimal setup and build from there. This is what's needed to
+build a SD card image for my raspberry pi:
+
+```nix
+{ # flake.nix
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  };
+  outputs = {
+    self,
+    nixpkgs,
+    ...
+  }: rec {
+    nixosConfigurations.rpi4b = nixpkgs.lib.nixosSystem {
+      modules = [
+        "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
+        ./system.nix
+      ];
+    };
+    images.rpi4b = nixosConfigurations.rpi4b.config.system.build.sdImage;
+  };
+}
+```
+
+```
+{...}: { # system.nix
+    nixpkgs.hostPlatform.system = "aarch64-linux";
+    system.stateVersion = "24.05";
+}
+```
+
+Note that I run this on my aarch64-based laptop, so no cross-compilation black
+magic needed. Highly recommended.
+
+## SSH
+
+This is great but it's not of much use. Let's setup user account with SSH and
+sudo access. I'll also set a hostname so that I can more easily find the IP address
+by looking at my router.
+
+```nix
+{pkgs, ...} @ inputs: { # system.nix
+  nixpkgs.hostPlatform.system = "aarch64-linux";
+  networking.hostName = "blinky";
+
+  users.groups.isabella = {};
+  security.sudo.wheelNeedsPassword = false;
+  users.users.isabella = {
+    isNormalUser = true;
+    group = "isabella";
+    openssh.authorizedKeys.keys = [
+      # Replace this with YOUR key
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIZdRoS3HXiUh77MLq2OczaysE79CK0NZGfHyH+3tBlv"
+    ];
+    extraGroups = ["wheel"];
+  };
+
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = false;
+  };
+  system.stateVersion = "24.05";
+}
+```
+
+## GPIO
+
+As I mentioned in the begining, I want to work with some lights, which means that
+I need GPIO access. Let's do that:
+
+```
+{pkgs, ...} @ inputs: { # system.nix
+  # ...
+
+  users.groups.gpio = {};
+
+  # Change permissions gpio devices
+  services.udev.extraRules = ''
+    SUBSYSTEM=="bcm2835-gpiomem", KERNEL=="gpiomem", GROUP="gpio",MODE="0660"
+    SUBSYSTEM=="gpio", KERNEL=="gpiochip*", ACTION=="add", RUN+="${pkgs.bash}/bin/bash -c 'chown root:gpio /sys/class/gpio/export /sys/class/gpio/unexport ; chmod 220 /sys/class/gpio/export /sys/class/gpio/unexport'"
+    SUBSYSTEM=="gpio", KERNEL=="gpio*", ACTION=="add",RUN+="${pkgs.bash}/bin/bash -c 'chown root:gpio /sys%p/active_low /sys%p/direction /sys%p/edge /sys%p/value ; chmod 660 /sys%p/active_low /sys%p/direction /sys%p/edge /sys%p/value'"
+  '';
+
+  users.users.isabella = {
+    # ...
+    extraGroups = ["gpio" "wheel"];
+  };
+
+  # ...
+}
+```
+
+## Ergonomics
+
+Lastly, I don't like remembering commands and formatting code manually. Let's setup
+direnv, alejandra and devshell with some aliases.
+
+```
+{ # flake.nix
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+    };
+
+    devshell = {
+      url = "github:numtide/devshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    alejandra.url = "github:kamadorueda/alejandra/3.0.0";
+    alejandra.inputs.nixpkgs.follows = "nixpkgs";
+  };
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    flake-utils,
+    devshell,
+    ...
+  }:
+    rec {
+      nixosConfigurations.rpi4b = nixpkgs.lib.nixosSystem {
+        modules = [
+          "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
+          ./system.nix
+        ];
+      };
+      images.rpi4b = nixosConfigurations.rpi4b.config.system.build.sdImage;
+    }
+    // (flake-utils.lib.eachDefaultSystem (
+      system: let
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [devshell.overlays.default];
+        };
+      in {
+        formatter = inputs.alejandra.defaultPackage.${system};
+        devShell = pkgs.devshell.mkShell {
+          packages = [];
+          commands = [
+            {
+              name = "build";
+              command = "nix build .#images.rpi4b";
+            }
+            {
+              name = "flash";
+              command = "zstdcat ./result/sd-image/*.img.zst | sudo dd bs=1M iflag=fullblock of=$1 status=progress oflag=sync";
+            }
+          ];
+        };
+      }
+    ));
+}
+```
+
+This gives me a `build` command to create the sd card image, `flash` command which
+takes sd card device as an argument and flashes it. Finally, it gives me `deploy`
+command which connects to the raspberry and updates it with last changes.
+
+<details>
+<summary>flake.lock</summary>
+
+```json
+{
+  "nodes": {
+    "alejandra": {
+      "inputs": {
+        "fenix": "fenix",
+        "flakeCompat": "flakeCompat",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1660592437,
+        "narHash": "sha256-xFumnivtVwu5fFBOrTxrv6fv3geHKF04RGP23EsDVaI=",
+        "owner": "kamadorueda",
+        "repo": "alejandra",
+        "rev": "e7eac49074b70814b542fee987af2987dd0520b5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kamadorueda",
+        "ref": "3.0.0",
+        "repo": "alejandra",
+        "type": "github"
+      }
+    },
+    "devshell": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1711099426,
+        "narHash": "sha256-HzpgM/wc3aqpnHJJ2oDqPBkNsqWbW0WfWUO8lKu8nGk=",
+        "owner": "numtide",
+        "repo": "devshell",
+        "rev": "2d45b54ca4a183f2fdcf4b19c895b64fbf620ee8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "devshell",
+        "type": "github"
+      }
+    },
+    "fenix": {
+      "inputs": {
+        "nixpkgs": [
+          "alejandra",
+          "nixpkgs"
+        ],
+        "rust-analyzer-src": "rust-analyzer-src"
+      },
+      "locked": {
+        "lastModified": 1657607339,
+        "narHash": "sha256-HaqoAwlbVVZH2n4P3jN2FFPMpVuhxDy1poNOR7kzODc=",
+        "owner": "nix-community",
+        "repo": "fenix",
+        "rev": "b814c83d9e6aa5a28d0cf356ecfdafb2505ad37d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "fenix",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1701680307,
+        "narHash": "sha256-kAuep2h5ajznlPMD9rnQyffWG8EM/C73lejGofXvdM8=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "4022d587cbbfd70fe950c1e2083a02621806a725",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
+      "inputs": {
+        "systems": "systems_2"
+      },
+      "locked": {
+        "lastModified": 1710146030,
+        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flakeCompat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1650374568,
+        "narHash": "sha256-Z+s0J8/r907g149rllvwhb4pKi8Wam5ij0st8PwAh+E=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "b4a34015c698c7793d592d66adbab377907a2be8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1711523803,
+        "narHash": "sha256-UKcYiHWHQynzj6CN/vTcix4yd1eCu1uFdsuarupdCQQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "2726f127c15a4cc9810843b96cad73c7eb39e443",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "alejandra": "alejandra",
+        "devshell": "devshell",
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": "nixpkgs"
+      }
+    },
+    "rust-analyzer-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1657557289,
+        "narHash": "sha256-PRW+nUwuqNTRAEa83SfX+7g+g8nQ+2MMbasQ9nt6+UM=",
+        "owner": "rust-lang",
+        "repo": "rust-analyzer",
+        "rev": "caf23f29144b371035b864a1017dbc32573ad56d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rust-lang",
+        "ref": "nightly",
+        "repo": "rust-analyzer",
+        "type": "github"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
+```
+
+</details>
+
+## References
+
+Most of this stuff comes directly from nixos wiki [page on Raspberry Pi](https://nixos.wiki/wiki/NixOS_on_ARM/Raspberry_Pi).
+
+I also recommend using [nixos options search](https://search.nixos.org/options) website.
+
+Happy experimenting!
