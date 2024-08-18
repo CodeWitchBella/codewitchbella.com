@@ -42,7 +42,7 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 function Root({ children }: { children: ReactNode }) {
-  const { lang } = useLoaderData<typeof loader>();
+  const lang = useLoaderData<typeof loader>()?.lang ?? "en";
 
   return (
     <html lang={lang}>
