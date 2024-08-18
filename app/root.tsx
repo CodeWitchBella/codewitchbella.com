@@ -7,7 +7,6 @@ import {
   ScrollRestoration,
   isRouteErrorResponse,
   useLoaderData,
-  useMatches,
   useRouteError,
 } from "@remix-run/react";
 import {
