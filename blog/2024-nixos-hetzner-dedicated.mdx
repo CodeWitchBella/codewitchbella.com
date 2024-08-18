@@ -261,7 +261,7 @@ developing this in bigger repo which has more things going on...
 
 That also means that I can't give you a `flake.lock`.
 
-```
+```nix
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -298,7 +298,7 @@ One major hurdle was how to run the installer as kexec didn't seem to work for
 me in the rescue system. What I ended up doing was installing debian first, then
 running nixos everywhere with the following command:
 
-```
+```sh
 nix run github:nix-community/nixos-anywhere -- --flake '.#hetzner' root@your-ip
 ```
 
