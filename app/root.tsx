@@ -7,9 +7,15 @@ import {
   ScrollRestoration,
   isRouteErrorResponse,
   useLoaderData,
+  useMatches,
   useRouteError,
 } from "@remix-run/react";
-import { type V2_MetaFunction, type LinksFunction, type LoaderArgs, json } from "@remix-run/node";
+import {
+  type V2_MetaFunction,
+  type LinksFunction,
+  type LoaderArgs,
+  json,
+} from "@remix-run/node";
 import css from "./index.css";
 import { Nav } from "./components/nav";
 import type { ReactNode } from "react";
@@ -32,12 +38,15 @@ export default function App() {
 }
 
 export async function loader({ request }: LoaderArgs) {
-  const url = new URL(request.url)
-  return json({ lang: url.pathname === '/' ? 'cs' : 'en' })
+  const url = new URL(request.url);
+  return json({ lang: url.pathname === "/" ? "cs" : "en" });
 }
 
 function Root({ children }: { children: ReactNode }) {
-  const { lang } = useLoaderData<typeof loader>()
+  console.log(useMatches());
+  const data = useLoaderData<typeof loader>();
+  console.log(data);
+  const { lang } = data;
   return (
     <html lang={lang}>
       <head>
@@ -66,7 +75,7 @@ export function ErrorBoundary() {
     return (
       <Root>
         <Nav>
-          <div className={prose +" mx-auto text-center py-8"}>
+          <div className={prose + " mx-auto text-center py-8"}>
             <h1>{error.status}</h1>
             <div className="-mt-6">
               {typeof error.data === "string" ? error.data : null}
