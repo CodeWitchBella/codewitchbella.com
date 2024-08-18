@@ -24,7 +24,7 @@ export const loader = () => {
     "CCBot",
   ];
   const robotText =
-    disallow.map((v) => `User-agent: ${v}\nDisallow: /`).join("\n\n") +
+    //disallow.map((v) => `User-agent: ${v}\nDisallow: /`).join("\n\n") +
     `\n\nUser-agent: *\nAllow: /\n`;
   return new Response(robotText, {
     status: 200,
