@@ -43,10 +43,8 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 function Root({ children }: { children: ReactNode }) {
-  console.log(useMatches());
-  const data = useLoaderData<typeof loader>();
-  console.log(data);
-  const { lang } = data;
+  const { lang } = useLoaderData<typeof loader>();
+
   return (
     <html lang={lang}>
       <head>
