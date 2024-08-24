@@ -1,0 +1,244 @@
+---
+title: Automated backup of NixOS server using Restic
+published_at: "2024-08-24T18:08:54.718Z"
+---
+
+Recently, I started self-hosting a bunch of stuff on my server and, more importantly,
+it's things that other people use. Since I also got a new server, I had to set
+time to do it properly and setup automated backups.
+
+First things first. Figure out _what_ to backup and how to restore it. To make
+this part easier, I set the server up using [impermanence](https://github.com/nix-community/impermanence).
+It's a tool, which makes it easier to separate the reproducible things (/nix)
+which I can[^1] recreate and the _state_. The state is stored on `/persistent`
+and whenever you want something to be there, you can just bind-mount it. Everything
+else can created on boot (mostly symlinks to `/nix/store`).
+
+## BTRFS mirror
+
+I started by formatting the disk so that I have a btrfs spanning both ssd, set
+to mirror. Unfortunatelly, I couldn't find how to do this using disko (if you know,
+let me know), so this is one bit of manual post-install setup. I install the system
+on one disk, the other has a placeholder ext4 partition and I run the following
+commands to get it mirrored:
+
+```bash
+lsblk # to determine which is the placeholder partition
+# replace /dev/placeholder with your partition name, eg. /dev/sdb3
+blkdiscard /dev/placeholder -v # remove the partition
+btrfs device add /dev/placeholder / # add the disk
+btrfs device scan # make sure that the disk is properly remembered
+btrfs balance start -mconvert=raid1 / # convert metadata to mirror raid mode
+btrfs balance start -dconvert=raid1 / # same for data
+btrfs filesystem usage -T / # inspect the result
+```
+
+The reason why I do it this way, rather than using mdadm or similar, is that it
+gives me better control. For example if I wanted to un-mirror old disk snapshots,
+I could.
+
+## Impermanence
+
+With the disk setup, I enabled impermanence. I started by copy-pasting the example
+[boot.initrd.postDeviceCommands](https://search.nixos.org/options?channel=24.05&show=boot.initrd.postDeviceCommands&from=0&size=50&sort=relevance&type=packages&query=boot.initrd.postDeviceCommands)
+from [impermanence readme](https://github.com/nix-community/impermanence/blob/c7f5b394397398c023000cf843986ee2571a1fd7/README.org#btrfs-subvolumes). Afterwards I enabled impermanence module 
+
+```nix
+{
+  inputs = {
+    impermanence.url = "github:nix-community/impermanence";
+  };
+
+  outputs = { self, nixpkgs, impermanence, ... }:
+    {
+      nixosConfigurations.hetzner = nixpkgs.lib.nixosSystem {
+        # ...
+        modules = [
+          impermanence.nixosModules.impermanence
+          # ...
+        ];
+      };
+    };
+}
+```
+
+and configured it:
+
+```nix
+{lib, ...}: {
+  age.identityPaths = ["/persistent/etc/ssh/ssh_host_ed25519_key"]; # this is for agenix to work
+  environment.persistence."/persistent" = {
+    enable = true;
+    hideMounts = true; # probably not needed, we're not desktop, but why not
+    directories = [
+      "/var/lib/nixos" # stuff like uid maps
+      # Note that stuff like (below) can be accessed via the old snapshots
+      #  - "/var/log"
+      #  - "/var/lib/systemd/coredump"
+    ];
+    files = [
+      # so that systemd doesn't think each boot is the first
+      "/etc/machine-id"
+      # ssh host keys
+      "/etc/ssh/ssh_host_rsa_key"
+      "/etc/ssh/ssh_host_rsa_key.pub"
+      "/etc/ssh/ssh_host_ed25519_key"
+      "/etc/ssh/ssh_host_ed25519_key.pub"
+    ];
+    users.isabella = {
+      directories = [];
+      files = [];
+    };
+  };
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    mkdir /btrfs_tmp
+    mount /dev/md/rraid /btrfs_tmp
+    if [[ -e /btrfs_tmp/root ]]; then
+        mkdir -p /btrfs_tmp/old_roots
+        timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
+        mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
+    fi
+
+    delete_subvolume_recursively() {
+        IFS=$'\n'
+        for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+            delete_subvolume_recursively "/btrfs_tmp/$i"
+        done
+        btrfs subvolume delete "$1"
+    }
+
+    for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+        delete_subvolume_recursively "$i"
+    done
+
+    btrfs subvolume create /btrfs_tmp/root
+    umount /btrfs_tmp
+    rmdir /btrfs_tmp
+  '';
+}
+```
+
+## Restic
+ 
+For a blogpost about backups, there's not much backing up happening. Now's the time
+to do that. Let's start with simplified, minimal config:
+
+```nix
+{
+  pkgs,
+  config,
+  ...
+}: {
+  # agenix
+  age.secrets.restic-hetzner.file = ../../secrets/restic-hetzner.age;
+  age.secrets.restic-hetzner-password.file = ../../secrets/restic-hetzner-password.age;
+
+  # ssh known hosts
+  programs.ssh.knownHosts = {
+    "u419690.your-storagebox.de".publicKey = "<the public key>";
+  };
+
+  services.restic.backups = {
+    remotebackup = {
+      initialize = true;
+      paths = [ # what to backup
+        "/persistent"
+      ];
+      passwordFile = config.age.secrets.restic-hetzner-password.path; # encryption
+      repository = "sftp://<boxname>-<subN>@<boxname>.your-storagebox.de/"; @ where to store it
+      
+      extraOptions = [
+        # how to connect
+        "sftp.command='${pkgs.sshpass}/bin/sshpass -f ${config.age.secrets.restic-hetzner.path} -- ssh -4 u419690.your-storagebox.de -l u419690-sub1 -s sftp'"
+      ];
+      timerConfig = { # when to backup
+        OnCalendar = "00:05";
+        RandomizedDelaySec = "5h";
+      };
+    };
+  };
+}
+```
+
+There's couple of parts to it. First, I set the secrets using [agenix](https://github.com/ryantm/agenix).
+That has a bit of setup that is out of scope here. You could also just copy the
+files somewhere to the /persistent partition instead.
+
+Then I setup how to to connect to hetzner storage box. For that I need ssh knownHosts,
+restic repository and `sftp.command` for the password (there's no way to use ssh
+keys for this AFAICT).
+
+Lastly, I set the standard restic options as [explained on search.nixos.org](https://search.nixos.org/options?channel=24.05&from=0&size=50&sort=relevance&type=packages&query=services.restic.backups.%3Cname%3E).
+
+And that's it!
+
+## Postgres likes it atomic
+
+Or it would be, if I didn't want to run postgres on this server. As explained in
+the [documentation](https://www.postgresql.org/docs/current/backup.html), you really
+want the backups to be atomic. But that's exactly what BTRFS is good at. Inpired by
+[this blog post](https://blog.vsq.cz/blog/atomic-backups-with-restic-and-btrfs/),
+I added the following to my setup:
+
+```nix
+{
+  pkgs,
+  config,
+  ...
+}: {
+  # ...
+
+  services.restic.backups = {
+    remotebackup = {
+      # ...
+      exclude = [ # do not backup the snapshot twice
+        "/persistent/@backup-snapshot"
+      ];
+      backupPrepareCommand = ''
+        set -Eeuxo pipefail
+        # clean old snapshot
+        if btrfs subvolume delete /persistent/@backup-snapshot; then
+            echo "WARNING: previous run did not cleanly finish, removing old snapshot"
+        fi
+
+        btrfs subvolume snapshot -r /persistent /persistent/@backup-snapshot
+
+        umount /persistent
+        mount -t btrfs -o subvol=/persistent/@backup-snapshot /dev/disk/by-partlabel/disk-one-raid2 /persistent
+      '';
+      backupCleanupCommand = ''
+        btrfs subvolume delete /persistent/@backup-snapshot
+      '';
+    };
+  };
+
+  systemd.services.restic-backups-remotebackup = {
+    path = with pkgs; [btrfs-progs umount mount];
+    serviceConfig.PrivateMounts = true;
+  };
+}
+```
+
+This makes it so that:
+ - any mounting doesn't affect the outside system
+ - create a snapshot
+ - mounts it to /persistent
+ - backs it up
+ - cleans up the snapshot afterwards
+
+The reason why I mount the snapshot over the original partition is so that I don't
+have to deal with different paths for backup than for restore. 
+
+## Final remarks
+
+This is only reasonable, because I have a declarative way to setting this up. If
+I imagine setting this up manually, there wouldn't be much of a point to this as
+it would be too much work to restore. As it stands, the most annoying thing here
+is faffing about with ssh keys after restore.
+
+Also, I'll setup periodic db dumps, so theoretically, the atomicity will not be
+_that_ important. It's still nice to be able to just restore the whole disk
+without the db being too special, though.
+
+[^1]: hopefully, there's some caveats to this like source repos going down, but
+that's not something I'm too concerned about.
